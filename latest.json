@@ -1,9 +1,9 @@
 {
-  "version": "1.1.2",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.2",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.2/HYPERION.DIGITAL.EX.Setup.1.1.2.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.2/HYPERION.DIGITAL.EX.Setup.1.1.2.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.2/HYPERION.DIGITAL.EX.1.1.2.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.2/HYPERION.DIGITAL.EX.Portable.exe",
-  "notes": "The WISHLIST page now always shows ファイアアウト・シャイン at the top in its full store-page layout (uncropped cover, details, COMING SOON, Add to Wishlist / On Wishlist ✓), even if you haven't added it yet; other wishlisted games are listed below it. Top bar labels (GAME UPDATES, WISHLIST) no longer get cut off at small window sizes."
+  "version": "1.1.3",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.3",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.3/HYPERION.DIGITAL.EX.Setup.1.1.3.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.3/HYPERION.DIGITAL.EX.Setup.1.1.3.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.3/HYPERION.DIGITAL.EX.1.1.3.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.3/HYPERION.DIGITAL.EX.Portable.exe",
+  "notes": "ファイアアウト・シャイン is now marked COMING IN 2027 everywhere in the store and Wishlist, and its store page shows Release date: 2027."
 }
