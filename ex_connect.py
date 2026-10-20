@@ -4,7 +4,7 @@ Resumable (HTTP Range) downloads that survive restarts, SHA-256 verification, si
 import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, urllib.request, urllib.error, zipfile
 from ex_catalog import CATALOG, KNOWN_SIZES
 
-APP_VERSION = "1.0.3"
+APP_VERSION = "1.0.4"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
@@ -139,7 +139,7 @@ class ExConnect:
                 self.catalog[aid]["latest"] = c.get("latest"); self.catalog[aid]["assets"] = c.get("assets", {})
         self.online = None; self.synced_at = self.cache.get("synced_at"); self.self_latest = None
         self.installed = {}; self.running = {}
-        self.jobs = [Job(**j) for j in self.state["jobs"] if j.get("state") not in ("done", "cancelled")]
+        self.jobs = [Job(**j) for j in self.state["jobs"] if j.get("state") not in ("done", "cancelled") and j.get("app_id") in self.catalog]
         for j in self.jobs:
             if j.state in ("downloading", "queued", "verifying", "error"):
                 j.state = "queued"  # survive restarts: carry on where we left off

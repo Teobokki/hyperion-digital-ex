@@ -1126,7 +1126,7 @@ def smoke(win, out_dir, phase):
         log.write(time.strftime("%H:%M:%S ") + " ".join(str(x) for x in a) + "\n"); log.flush()
     def shot(name):
         win.grab().save(os.path.join(out_dir, name)); L("shot", name)
-    target = os.environ.get("HDX_SMOKE_APP", "dream-vine-launcher")
+    target = os.environ.get("HDX_SMOKE_APP", "ex-network")
     steps = []
     def at(t, f):
         steps.append((t, f))

@@ -12,7 +12,6 @@ SRC = {
  'ex-creator-studio': ('ex-creator-studio/assets/logo256.png', ['ex-creator-studio/docs/screenshot_character.png','ex-creator-studio/docs/screenshot_board_shots.png','ex-creator-studio/docs/screenshot_ex_studio.png','ex-creator-studio/docs/screenshot_rex_board.png']),
  'ex-network': ('exwifi/repo/logo256.png', ['exwifi/screenshot.png']),
  'ex-sudo-terminal': ('exsudo/repo/logo256.png', ['exsudo/screenshot.png']),
- 'dream-vine-launcher': ('dream-vine-launcher/assets/icon256.png', ['dream-vine-launcher/docs/screenshot_play.png','dream-vine-launcher/docs/screenshot_installations.png','dream-vine-launcher/docs/screenshot_first_run_setup.png','dream-vine-launcher/docs/screenshot_settings.png']),
 }
 EXTRA = json.load(open(os.path.join(OUT, 'extra_shots.json'))) if os.path.exists(os.path.join(OUT, 'extra_shots.json')) else {}
 

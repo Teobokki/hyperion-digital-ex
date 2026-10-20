@@ -25,8 +25,11 @@ The EX Inc. store and library for Windows. Every EX game and app is in one store
 | ![Download in progress](docs/screenshot_download_in_progress.png) | ![EX CONNECT](docs/screenshot_ex_connect.png) |
 
 ## Catalog
-Games: DREAM VINE, PIKNOTT CELESTIKA. Apps & Tools: HYPERIA, EX CREATOR STUDIO, EX NETWORK, EX SUDO TERMINAL, FIREOUT REVOLUTION™, DREAM VINE LAUNCHER.
+Games: DREAM VINE, PIKNOTT CELESTIKA. Apps & Tools: HYPERIA, EX CREATOR STUDIO, EX NETWORK, EX SUDO TERMINAL, FIREOUT REVOLUTION™.
 Icons and screenshots are each app's own artwork, bundled from its source. The HYPERION DIGITAL EX icon is EX Inc.'s own artwork (`assets/icon_source_user.png`).
+
+## What's new in 1.0.4
+- DREAM VINE LAUNCHER is no longer listed. DREAM VINE itself is unchanged, and an installed launcher is left untouched.
 
 ## What's new in 1.0.3
 - Featured & Recommended now has a single card: EX Inc.'s winter promo banner, shown whole (3:2). Clicking it jumps to the Games section.
@@ -42,9 +45,9 @@ Icons and screenshots are each app's own artwork, bundled from its source. The H
 
 ## Download
 From [Releases](https://github.com/Teobokki/hyperion-digital-ex/releases/latest):
-- `HYPERION.DIGITAL.EX.Setup.1.0.3.exe`: the installer. It installs per user, needs no admin, and adds Start menu and optional desktop shortcuts.
+- `HYPERION.DIGITAL.EX.Setup.1.0.4.exe`: the installer. It installs per user, needs no admin, and adds Start menu and optional desktop shortcuts.
 - `HYPERION.DIGITAL.EX.Portable.exe`: a single-file portable exe.
-- `HYPERION.DIGITAL.EX.1.0.3.Windows.x64.zip`: the full app folder.
+- `HYPERION.DIGITAL.EX.1.0.4.Windows.x64.zip`: the full app folder.
 
 The app is unsigned, so SmartScreen may warn you: **More info → Run anyway**.
 

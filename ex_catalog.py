@@ -105,19 +105,6 @@ CATALOG = [
                "It fits each slide to the window and refreshes live when the PDF changes."),
         features=["Fit-to-window slide view", "Live refresh when the PDF changes",
                   "Left/Right arrow keys change slides", "Built-in update check"]),
-    dict(
-        id="dream-vine-launcher", name="DREAM VINE LAUNCHER", repo="dream-vine-launcher", category=APPS,
-        genre="Tool · Launcher", tool=True,
-        exe="DREAM VINE LAUNCHER.exe", folder="DREAM VINE LAUNCHER",
-        portable=["DREAM VINE LAUNCHER.exe", "DREAM.VINE.LAUNCHER.exe"], version="1.0.2",
-        tagline="The home for DREAM VINE: installs, updates and launches both Desktop and Portable editions.",
-        about=("DREAM VINE LAUNCHER installs, updates and launches both editions of DREAM VINE: the Desktop install and "
-               "the Portable exe in your Downloads folder. It shows the status of each copy, keeps both ready by "
-               "default, and PLAY works offline once a copy is installed."),
-        features=["Installs DREAM VINE Desktop (Setup) and DREAM VINE Portable",
-                  "Installed / Not installed / Update available status for each copy",
-                  "Keeps both installations ready (optional)", "PLAY works offline",
-                  "Remembers your last selected installation"]),
 ]
 
 # release asset sizes (bytes) at the time HYPERION DIGITAL EX 1.0.0 shipped; live sizes come from GitHub.
