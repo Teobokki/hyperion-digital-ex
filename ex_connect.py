@@ -4,7 +4,7 @@ Resumable (HTTP Range) downloads that survive restarts, SHA-256 verification, si
 import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, urllib.request, urllib.error, zipfile
 from ex_catalog import CATALOG, KNOWN_SIZES
 
-APP_VERSION = "1.0.4"
+APP_VERSION = "1.0.5"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
@@ -276,7 +276,7 @@ class ExConnect:
                     loc = e.get("InstallLocation", "").strip('"')
                     p = os.path.join(loc, exe) if loc else ""
                     if p and os.path.exists(p):
-                        info = {"exe": p, "version": e.get("DisplayVersion") or file_version(p), "source": "Setup install",
+                        info = {"exe": p, "version": file_version(p) or e.get("DisplayVersion"), "source": "Setup install",
                                 "uninstall": e.get("QuietUninstallString") or e.get("UninstallString")}
                         break
             # 2. default per-user install folder
@@ -292,16 +292,18 @@ class ExConnect:
                 p = find_exe(root, exe)
                 if p:
                     mark = self._load(os.path.join(root, "ex_connect_install.json"), {})
-                    info = {"exe": p, "version": mark.get("version") or file_version(p), "source": "EX CONNECT library", "library": root}
-            # 4. portable copies in Downloads
-            if not info:
-                for n in app.get("portable", []):
-                    p = os.path.join(downloads_folder(), n)
-                    if os.path.exists(p):
-                        info = {"exe": p, "version": file_version(p) or self.state["ex_installs"].get(p), "source": "Portable (Downloads)", "portable": p}
-                        break
+                    info = {"exe": p, "version": file_version(p) or mark.get("version"), "source": "EX CONNECT library", "library": root}
+            # 4. portable copies in Downloads (tracked even when a Setup install exists, so they get updated too)
+            portables = []
+            for n in app.get("portable", []):
+                p = os.path.join(downloads_folder(), n)
+                if os.path.exists(p):
+                    portables.append({"exe": p, "version": file_version(p) or self.state["ex_installs"].get(p) or "?"})
+            if not info and portables:
+                info = {"exe": portables[0]["exe"], "version": portables[0]["version"], "source": "Portable (Downloads)", "portable": portables[0]["exe"]}
             if info:
                 info["version"] = info.get("version") or self.state["ex_installs"].get(info["exe"]) or "?"
+                info["portables"] = portables
                 found[aid] = info
         self.installed = found
         return found
@@ -316,9 +318,25 @@ class ExConnect:
         inf = self.installed.get(aid)
         if not inf:
             return "install"
-        if inf.get("version") not in (None, "?") and vtuple(self.latest_version(aid)) > vtuple(inf["version"]):
+        if self.outdated_copies(aid):
             return "update"
         return "play"
+
+    def outdated_copies(self, aid):
+        """[(kind, exe, version)] of installed copies older than latest.json."""
+        inf = self.installed.get(aid)
+        if not inf:
+            return []
+        latest = vtuple(self.latest_version(aid)); out = []
+        def old(v):
+            return v in (None, "?") or latest > vtuple(v)
+        main_kind = "portable" if inf.get("portable") else ("zip" if inf.get("library") else "installer")
+        if old(inf.get("version")):
+            out.append((main_kind, inf["exe"], inf.get("version")))
+        for pc in inf.get("portables", []):
+            if pc["exe"] != inf["exe"] and old(pc["version"]):
+                out.append(("portable", pc["exe"], pc["version"]))
+        return out
 
     # ---------- downloads ----------
     def job_for(self, aid):
@@ -330,22 +348,29 @@ class ExConnect:
     def install(self, aid, update=False):
         if self.job_for(aid):
             return
-        inf = self.installed.get(aid) or {}
-        kind = asset = None
-        target = None
-        if update and inf.get("portable") and self._asset(aid, "portable"):
-            kind, asset = "portable", self._asset(aid, "portable"); target = inf["portable"]
-        elif update and inf.get("library") and self._asset(aid, "zip"):
-            kind, asset = "zip", self._asset(aid, "zip")
-        if not asset:
-            kind, asset = self.install_choice(aid)
-        if not asset:
+        plan = []
+        if update:
+            for kind, exe, _v in self.outdated_copies(aid):
+                if kind == "portable" and self._asset(aid, "portable"):
+                    plan.append(("portable", self._asset(aid, "portable"), exe))
+                elif kind == "zip" and self._asset(aid, "zip"):
+                    plan.append(("zip", self._asset(aid, "zip"), None))
+                elif kind != "portable":
+                    k, a = self.install_choice(aid)
+                    if a:
+                        plan.append((k, a, None))
+        if not plan:
+            k, a = self.install_choice(aid)
+            if a:
+                plan.append((k, a, None))
+        if not plan:
             self.notify("error", aid); return
         dl = os.path.join(self.dir, "downloads"); os.makedirs(dl, exist_ok=True)
-        j = Job(app_id=aid, url=asset["url"], name=asset["name"], kind=kind, part=os.path.join(dl, asset["name"] + ".part"),
-                total=asset["size"], sha256=asset["sha256"], version=asset["version"], target=target)
         with self.lock:
-            self.jobs.append(j)
+            for kind, asset, target in plan:
+                tag = "" if not target else "." + hashlib.sha1(target.lower().encode()).hexdigest()[:8]
+                self.jobs.append(Job(app_id=aid, url=asset["url"], name=asset["name"], kind=kind, part=os.path.join(dl, asset["name"] + tag + ".part"),
+                                     total=asset["size"], sha256=asset["sha256"], version=asset["version"], target=target))
         self.save(); self._wake.set(); self.notify("jobs", aid)
 
     def pause(self, aid):

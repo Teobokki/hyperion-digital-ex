@@ -158,7 +158,9 @@ class ActionBar(QWidget):
         text = {"install": "INSTALL", "play": "PLAY", "update": "UPDATE", "playing": "PLAYING", "queued": "QUEUED",
                 "downloading": "DOWNLOADING", "paused": "RESUME", "verifying": "VERIFYING", "installing": "INSTALLING", "error": "RETRY"}[st]
         mode = {"update": "update", "playing": "playing", "queued": "busy", "downloading": "busy", "verifying": "busy", "installing": "busy"}.get(st, "")
-        self.main.setText(("\u25B6  " if st == "play" else "") + text)
+        if st == "update":
+            text = "UPDATE TO %s" % latest
+        self.main.setText(("\u25B6  " if st == "play" else ("\u2B06  " if st == "update" else "")) + text)
         if self.main.property("mode") != mode:
             self.main.setProperty("mode", mode); self.main.style().unpolish(self.main); self.main.style().polish(self.main)
         self.main.setEnabled(st not in ("queued", "downloading", "verifying", "installing", "playing"))
@@ -176,8 +178,14 @@ class ActionBar(QWidget):
         elif st == "playing":
             self.info.setText("EX CONNECT: running %s · this session %s" % (self.svc.catalog[self.aid]["name"], xc.human_time(time.time() - self.svc.running[self.aid][1])))
         elif inf:
-            extra = ("  ·  Update %s available" % latest) if st == "update" else ""
-            self.info.setText("Installed %s (%s)%s  ·  Play time %s" % (inf["version"], inf["source"], extra, xc.human_time(self.svc.playtime(self.aid))))
+            if st == "update":
+                old = self.svc.outdated_copies(self.aid)
+                copies = ", ".join("%s %s" % ("Portable" if k == "portable" else "Installed", v or "?") for k, _e, v in old)
+                self.info.setText("Update available: %s  ·  you have %s  ·  EX CONNECT updates every copy" % (latest, copies))
+                self.info.setStyleSheet("color:%s;font-weight:700" % ACCENT)
+            else:
+                self.info.setStyleSheet("")
+                self.info.setText("Installed %s (%s)  ·  Up to date  ·  Play time %s" % (inf["version"], inf["source"], xc.human_time(self.svc.playtime(self.aid))))
         else:
             self.info.setText("Free  ·  %s download  ·  Version %s  ·  installs with EX CONNECT" % (self.svc.size_text(self.aid), latest))
 
@@ -988,7 +996,7 @@ class Main(QMainWindow):
         self.refresh_all()
         self.update_dismissed = False; self.update_dialog = None
         QTimer.singleShot(int(os.environ.get("HDX_FIRST_CHECK_MS", "5000")), self.auto_check)
-        self.update_timer = QTimer(self, interval=30 * 60 * 1000, timeout=self.auto_check); self.update_timer.start()
+        self.update_timer = QTimer(self, interval=30 * 60 * 1000, timeout=lambda: (self.auto_check(), self.svc.refresh())); self.update_timer.start()
 
     def go(self, key):
         self.current = key
@@ -1130,7 +1138,13 @@ def smoke(win, out_dir, phase):
     steps = []
     def at(t, f):
         steps.append((t, f))
-    if phase == "banner":
+    if phase == "dvupdate":
+        at(7000, lambda: (L("dv", win.svc.installed.get("dream-vine"), "latest", win.svc.latest_version("dream-vine"), "status", win.svc.status("dream-vine"), "outdated", win.svc.outdated_copies("dream-vine")), win.open_library("dream-vine")))
+        at(8500, lambda: shot("screenshot_dv_update_button.png"))
+        at(9000, lambda: win.open_product("dream-vine"))
+        at(10000, lambda: shot("screenshot_dv_update_product.png"))
+        at(10500, lambda: win.close())
+    elif phase == "banner":
         at(6000, lambda: shot("screenshot_store_banner.png"))
         at(7000, lambda: win.pages["store"].banner.clicked.emit())
         at(8500, lambda: (L("scroll after click", win.pages["store"].sc.verticalScrollBar().value()), shot("screenshot_banner_click_games.png")))
