@@ -1,9 +1,9 @@
 {
-  "version": "1.0.4",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.0.4",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.4/HYPERION.DIGITAL.EX.Setup.1.0.4.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.4/HYPERION.DIGITAL.EX.Setup.1.0.4.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.4/HYPERION.DIGITAL.EX.1.0.4.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.4/HYPERION.DIGITAL.EX.Portable.exe",
-  "notes": "DREAM VINE LAUNCHER is no longer listed in the store. DREAM VINE itself stays listed, and nothing you have installed is touched."
+  "version": "1.0.5",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.0.5",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.5/HYPERION.DIGITAL.EX.Setup.1.0.5.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.5/HYPERION.DIGITAL.EX.Setup.1.0.5.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.5/HYPERION.DIGITAL.EX.1.0.5.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.5/HYPERION.DIGITAL.EX.Portable.exe",
+  "notes": "Library apps now show a clear UPDATE button when a newer version is out (for example DREAM VINE 1.4.0), with more reliable version detection and a catalog refresh every 30 minutes."
 }
