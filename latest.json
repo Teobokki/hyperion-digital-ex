@@ -5,5 +5,5 @@
   "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.0/HYPERION.DIGITAL.EX.Setup.1.1.0.exe",
   "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.0/HYPERION.DIGITAL.EX.1.1.0.Windows.x64.zip",
   "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.0/HYPERION.DIGITAL.EX.Portable.exe",
-  "notes": "Fixed a bug where a small stray window with only an 'Uninstall' button could pop up next to the app (from the Featured & Recommended cards). Featured cards no longer have an Uninstall button; use the Library for that."
+  "notes": "New: WISHLIST. ファイアアウト・シャイン is now in the store as COMING SOON; add it to your Wishlist from its card or store page. The new WISHLIST button in the top bar shows your wishlisted games, and your wishlist is saved between restarts. New app icon: the yellow H logo. Japanese text now renders correctly."
 }
