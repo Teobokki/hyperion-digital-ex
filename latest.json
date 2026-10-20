@@ -1,9 +1,9 @@
 {
-  "version": "1.0.6",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.0.6",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.6/HYPERION.DIGITAL.EX.Setup.1.0.6.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.6/HYPERION.DIGITAL.EX.Setup.1.0.6.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.6/HYPERION.DIGITAL.EX.1.0.6.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.6/HYPERION.DIGITAL.EX.Portable.exe",
-  "notes": "New GAME UPDATES button: checks all your games and apps for updates in about a second and lists them with UPDATE buttons. Background checks now run every 5 minutes."
+  "version": "1.0.7",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.0.7",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.7/HYPERION.DIGITAL.EX.Setup.1.0.7.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.7/HYPERION.DIGITAL.EX.Setup.1.0.7.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.7/HYPERION.DIGITAL.EX.1.0.7.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.7/HYPERION.DIGITAL.EX.Portable.exe",
+  "notes": "Fixed the duplicated publisher in the footer: it now reads \"©2026 EX Inc./HYPERION DIGITAL ©2026 · v1.0.7\". The Settings page no longer repeats the publisher either."
 }
