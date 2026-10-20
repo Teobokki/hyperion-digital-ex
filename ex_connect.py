@@ -4,11 +4,12 @@ Resumable (HTTP Range) downloads that survive restarts, SHA-256 verification, si
 import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, urllib.request, urllib.error, zipfile
 from ex_catalog import CATALOG, KNOWN_SIZES
 
-APP_VERSION = "1.0.1"
+APP_VERSION = "1.0.2"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
 SELF_REPO = "hyperion-digital-ex"
+SELF_LATEST_URL = os.environ.get("HDX_SELF_LATEST_URL") or (RAW % SELF_REPO)
 WIN = sys.platform == "win32"
 CREATE_NO_WINDOW = 0x08000000
 
@@ -201,7 +202,7 @@ class ExConnect:
             for aid in self.catalog:
                 t = threading.Thread(target=one, args=(aid,), daemon=True); t.start(); threads.append(t)
             try:
-                self.self_latest = fetch_json(RAW % SELF_REPO)
+                self.self_latest = fetch_json(SELF_LATEST_URL)
             except Exception:
                 pass
             for t in threads:

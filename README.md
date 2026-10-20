@@ -4,7 +4,7 @@
 
 The EX Inc. store and library for Windows. Every EX game and app is in one storefront, and **EX CONNECT** installs, updates and launches each one right inside HYPERION DIGITAL EX.
 
-![Store](docs/screenshot_store_home.png)
+![Store](docs/screenshot_store_featured.png)
 
 ## Features
 - **Store**: a featured carousel, Games and Apps & Tools sections, search, and product pages with a screenshot gallery, description, features, version, download size and What's new.
@@ -28,14 +28,20 @@ The EX Inc. store and library for Windows. Every EX game and app is in one store
 Games: DREAM VINE, PIKNOTT CELESTIKA. Apps & Tools: HYPERIA, EX CREATOR STUDIO, EX NETWORK, EX SUDO TERMINAL, FIREOUT REVOLUTION™, DREAM VINE LAUNCHER.
 Icons and screenshots are each app's own artwork, bundled from its source. The HYPERION DIGITAL EX icon is EX Inc.'s own artwork (`assets/icon_source_user.png`).
 
+## What's new in 1.0.2
+- Featured & Recommended now shows only PIKNOTT CELESTIKA: one featured card, plus a new Recommended row.
+- HYPERION DIGITAL EX checks for its own updates a few seconds after launch and every 30 minutes. When a new version is out, it asks: **Update now** downloads the Setup (resumable, SHA-256 checked), installs it silently and restarts the app; **Later** won't ask again this session. Check for updates in Settings still works.
+
+![Update prompt](docs/screenshot_update_prompt.png)
+
 ## What's new in 1.0.1
 - New app icon (EX Inc. artwork) for the exe, installer, window/taskbar, top-bar logo and shortcuts.
 
 ## Download
 From [Releases](https://github.com/Teobokki/hyperion-digital-ex/releases/latest):
-- `HYPERION.DIGITAL.EX.Setup.1.0.1.exe`: the installer. It installs per user, needs no admin, and adds Start menu and optional desktop shortcuts.
+- `HYPERION.DIGITAL.EX.Setup.1.0.2.exe`: the installer. It installs per user, needs no admin, and adds Start menu and optional desktop shortcuts.
 - `HYPERION.DIGITAL.EX.Portable.exe`: a single-file portable exe.
-- `HYPERION.DIGITAL.EX.1.0.1.Windows.x64.zip`: the full app folder.
+- `HYPERION.DIGITAL.EX.1.0.2.Windows.x64.zip`: the full app folder.
 
 The app is unsigned, so SmartScreen may warn you: **More info → Run anyway**.
 

@@ -6,7 +6,7 @@ from PySide6.QtGui import (QPixmap, QPainter, QColor, QLinearGradient, QFont, QI
                            QDesktopServices, QFontDatabase)
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QLabel, QPushButton, QHBoxLayout, QVBoxLayout,
                                QGridLayout, QStackedWidget, QScrollArea, QFrame, QLineEdit, QProgressBar, QListWidget,
-                               QListWidgetItem, QMessageBox, QFileDialog, QCheckBox, QComboBox, QSizePolicy, QToolButton)
+                               QListWidgetItem, QMessageBox, QDialog, QFileDialog, QCheckBox, QComboBox, QSizePolicy, QToolButton)
 import ex_connect as xc
 from ex_catalog import GAMES, APPS
 
@@ -243,8 +243,13 @@ class Hero(QWidget):
         for b, d in ((self.l, -1), (self.r, 1)):
             b.setFixedSize(40, 64); b.setStyleSheet("QPushButton{background:rgba(0,0,0,0.35);border:none;font-size:30px;border-radius:6px} QPushButton:hover{background:rgba(92,184,255,0.45)}")
             b.clicked.connect(lambda _=False, d=d: self.go(self.i + d))
+            b.setVisible(len(ids) > 1)
+        if len(ids) <= 1:
+            self.timer.stop()
 
     def go(self, n):
+        if len(self.ids) <= 1:
+            return
         self.prev = self.i; self.i = n % len(self.ids); self.t = 0.0; self.anim.start(); self.timer.start()
 
     def _tick(self):
@@ -289,7 +294,7 @@ class Hero(QWidget):
         qp.setPen(QColor("#9be57c" if st in ("play", "playing") else MUTED)); f = QFont("Segoe UI", 10); f.setBold(True); qp.setFont(f)
         qp.drawText(56, 292, {"play": "IN YOUR LIBRARY", "playing": "PLAYING NOW", "update": "UPDATE AVAILABLE"}.get(st, "FREE  ·  v" + self.ui.svc.latest_version(a["id"])))
         n = len(self.ids); x0 = w / 2 - n * 11
-        for k in range(n):
+        for k in (range(n) if n > 1 else []):
             qp.setBrush(QColor(ACCENT) if k == self.i else QColor(255, 255, 255, 90)); qp.setPen(Qt.NoPen)
             qp.drawRoundedRect(QRectF(x0 + k * 22, h - 18, 16 if k == self.i else 10, 6), 3, 3)
 
@@ -326,6 +331,35 @@ class Card(QFrame):
         self.clicked.emit(self.aid)
 
 
+class RecCard(QFrame):
+    """Wide recommended card: cover art, screenshots, tagline and status."""
+    clicked = Signal(str)
+
+    def __init__(self, ui, aid):
+        super().__init__()
+        self.ui, self.aid = ui, aid; a = ui.svc.catalog[aid]
+        self.setObjectName("card"); self.setCursor(Qt.PointingHandCursor); self.setMaximumWidth(1260)
+        h = QHBoxLayout(self); h.setContentsMargins(0, 0, 16, 0); h.setSpacing(18)
+        img = QLabel(); img.setPixmap(cover_pix(pix(shots(aid)[0]), 300, 300, 7)); h.addWidget(img)
+        col = QVBoxLayout(); col.setContentsMargins(0, 16, 0, 16); col.setSpacing(8)
+        t = lbl(a["name"]); t.setStyleSheet("font-weight:900;font-size:22px;background:transparent"); col.addWidget(t)
+        g = lbl(a["category"] + "  \u00b7  " + a["genre"], "small"); g.setStyleSheet("background:transparent;color:%s" % ACCENT); col.addWidget(g)
+        d = lbl(a["tagline"], None, True); d.setStyleSheet("background:transparent;color:#c9d6e3;font-size:13px"); col.addWidget(d)
+        strip = QHBoxLayout(); strip.setSpacing(8)
+        for p in shots(aid)[1:5]:
+            s = QLabel(); s.setPixmap(cover_pix(pix(p), 200, 113, 5)); s.setStyleSheet("background:transparent"); strip.addWidget(s)
+        strip.addStretch(1); col.addLayout(strip)
+        self.status = lbl("", "small"); col.addWidget(self.status); col.addStretch(1)
+        h.addLayout(col, 1)
+        self.refresh()
+
+    def refresh(self):
+        Card.refresh(self)
+
+    def mousePressEvent(self, e):
+        self.clicked.emit(self.aid)
+
+
 # ---------------------------------------------------------------- pages
 def scroll(widget):
     s = QScrollArea(); s.setWidgetResizable(True); s.setWidget(widget); s.setFrameShape(QFrame.NoFrame)
@@ -343,6 +377,11 @@ class StorePage(QWidget):
         self.hero = Hero(ui, feat); self.hero.open_app.connect(ui.open_product); v.addWidget(self.hero)
         self.cards = []
         self.sections = []
+        rec = [a["id"] for a in ui.svc.catalog.values() if a.get("recommended")]
+        if rec:
+            v.addSpacing(10); v.addWidget(lbl("RECOMMENDED", "h2"))
+            for aid in rec:
+                rc = RecCard(ui, aid); rc.clicked.connect(ui.open_product); v.addWidget(rc); self.cards.append(rc)
         for cat, title in ((GAMES, "GAMES"), (APPS, "APPS & TOOLS")):
             ids = [a["id"] for a in ui.svc.catalog.values() if a["category"] == cat]
             hdr = QHBoxLayout(); hdr.addWidget(lbl("%s  ·  %d" % (title, len(ids)), "h2")); hdr.addStretch(1)
@@ -733,6 +772,142 @@ def set_startup(on):
             pass
 
 
+class UpdateDialog(QDialog):
+    """'Update available' prompt for HYPERION DIGITAL EX itself: Update now (resumable download, SHA-256 check,
+    silent Setup, relaunch) or Later (no more prompts this session)."""
+    prog = Signal(float, str)
+    failed = Signal(str)
+
+    def __init__(self, main, lj):
+        super().__init__(main)
+        self.main, self.lj = main, lj
+        self.setWindowTitle("HYPERION DIGITAL EX update"); self.setModal(False); self.setFixedWidth(560)
+        self.setStyleSheet("QDialog{background:%s;border:1px solid %s}" % (PANEL, LINE))
+        v = QVBoxLayout(self); v.setContentsMargins(26, 24, 26, 22); v.setSpacing(12)
+        top = QHBoxLayout(); top.setSpacing(16)
+        ic = QLabel(); ic.setPixmap(QPixmap(res("assets", "icon256.png")).scaled(76, 76, Qt.KeepAspectRatio, Qt.SmoothTransformation)); top.addWidget(ic, 0, Qt.AlignTop)
+        col = QVBoxLayout(); col.setSpacing(4)
+        k = lbl("UPDATE AVAILABLE", "h2"); k.setStyleSheet("color:%s;font-size:12px;font-weight:800;letter-spacing:2px" % ACCENT); col.addWidget(k)
+        t = lbl("HYPERION DIGITAL EX v%s" % lj.get("version"), None, True); t.setStyleSheet("font-size:21px;font-weight:900"); col.addWidget(t)
+        col.addWidget(lbl("You have v%s. The update installs in the background and HYPERION DIGITAL EX restarts by itself." % APP_VERSION, "muted", True))
+        top.addLayout(col, 1); v.addLayout(top)
+        nb = QFrame(); nb.setObjectName("infobox"); nl = QVBoxLayout(nb); nl.setContentsMargins(14, 10, 14, 12)
+        nl.addWidget(lbl("WHAT'S NEW", "small"))
+        n = lbl(lj.get("notes") or "Improvements and fixes.", None, True); n.setStyleSheet("font-size:13px;color:#c9d6e3"); nl.addWidget(n)
+        v.addWidget(nb)
+        self.bar = QProgressBar(); self.bar.setRange(0, 1000); self.bar.setTextVisible(False); self.bar.setFixedHeight(10); self.bar.hide(); v.addWidget(self.bar)
+        self.info = lbl("", "small", True); self.info.hide(); v.addWidget(self.info)
+        row = QHBoxLayout(); row.addStretch(1)
+        self.later = QPushButton("Later"); self.later.setObjectName("ghost"); self.later.setMinimumWidth(110); self.later.clicked.connect(self.on_later); row.addWidget(self.later)
+        self.go = QPushButton("Update now"); self.go.setObjectName("primary"); self.go.setMinimumWidth(170); self.go.clicked.connect(self.start); row.addWidget(self.go)
+        v.addLayout(row)
+        self.prog.connect(self.on_prog); self.failed.connect(self.on_fail)
+        self.cancel_flag = False
+
+    def on_later(self):
+        self.main.update_dismissed = True; self.cancel_flag = True; self.close()
+
+    def closeEvent(self, e):
+        self.main.update_dismissed = True; self.cancel_flag = True; e.accept()
+
+    def on_prog(self, f, text):
+        self.bar.setValue(int(f * 1000)); self.info.setText(text)
+
+    def on_fail(self, msg):
+        self.info.setText(msg); self.go.setEnabled(True); self.go.setText("Try again"); self.later.setEnabled(True)
+
+    def start(self):
+        self.go.setEnabled(False); self.go.setText("Updating\u2026"); self.bar.show(); self.info.show(); self.cancel_flag = False
+        import threading
+        threading.Thread(target=self.run, daemon=True).start()
+
+    def run(self):
+        lj = self.lj; exe = sys.executable
+        portable = getattr(sys, "frozen", False) and ("\\Programs\\" not in exe)
+        url = (lj.get("portable_url") if portable else None) or lj.get("installer_url") or lj.get("url")
+        if not url:
+            return self.failed.emit("No download is listed for this update.")
+        is_portable_dl = portable and url == lj.get("portable_url")
+        name = url.rsplit("/", 1)[-1]
+        dl = os.path.join(self.main.svc.dir, "downloads"); os.makedirs(dl, exist_ok=True)
+        part = os.path.join(dl, name + ".part"); final = part[:-5]
+        sha = size = None
+        try:  # expected SHA-256 from the GitHub release
+            m = __import__("re").search(r"/releases/download/([^/]+)/", url)
+            rel = xc.fetch_json("https://api.github.com/repos/Teobokki/%s/releases/tags/%s" % (xc.SELF_REPO, m.group(1)))
+            for a in rel.get("assets", []):
+                if a["name"] == name:
+                    sha = (a.get("digest") or "").replace("sha256:", "") or None; size = a.get("size")
+        except Exception:
+            pass
+        backoff = 2
+        while True:
+            if self.cancel_flag:
+                return
+            have = os.path.getsize(part) if os.path.exists(part) else 0
+            if size and have >= size:
+                break
+            try:
+                req = xc.urllib.request.Request(url, headers=dict(xc.UA, **({"Range": "bytes=%d-" % have} if have else {})))
+                with xc.urllib.request.urlopen(req, timeout=45, context=xc._ctx()) as r:
+                    if have and r.status == 200:
+                        have = 0
+                    cr = r.headers.get("Content-Range")
+                    if cr and cr.rsplit("/", 1)[-1].isdigit():
+                        size = int(cr.rsplit("/", 1)[-1])
+                    elif r.headers.get("Content-Length") and not size:
+                        size = have + int(r.headers["Content-Length"])
+                    done = have; t0 = time.time(); last = 0
+                    with open(part, "ab" if have else "wb") as f:
+                        while not self.cancel_flag:
+                            b = r.read(32768)
+                            if not b:
+                                break
+                            f.write(b); done += len(b)
+                            if self.main.svc.throttle:
+                                time.sleep(len(b) / (self.main.svc.throttle * 1024))
+                            if time.time() - last > 0.2:
+                                last = time.time(); sp = (done - have) / max(time.time() - t0, 0.01)
+                                self.prog.emit(done / size if size else 0, "Downloading %s  \u00b7  %s of %s  \u00b7  %s/s" % (name, xc.human(done), xc.human(size), xc.human(sp)))
+                backoff = 2
+                if not size or (os.path.getsize(part) >= size):
+                    break
+            except xc.urllib.error.HTTPError as e:
+                if e.code == 416:
+                    break
+                self.prog.emit(0, "HTTP %d, retrying\u2026" % e.code); time.sleep(backoff); backoff = min(backoff * 2, 30)
+            except Exception as e:
+                self.prog.emit(self.bar.value() / 1000, "Connection lost, retrying\u2026"); time.sleep(backoff); backoff = min(backoff * 2, 30)
+        self.prog.emit(1, "Verifying SHA-256\u2026")
+        import hashlib
+        h = hashlib.sha256()
+        with open(part, "rb") as f:
+            for b in iter(lambda: f.read(1 << 20), b""):
+                h.update(b)
+        if (sha and h.hexdigest() != sha.lower()) or (size and os.path.getsize(part) != size):
+            os.remove(part); return self.failed.emit("Verification failed (the download was corrupted). Press Try again.")
+        os.replace(part, final)
+        self.prog.emit(1, "Verified. Installing and restarting HYPERION DIGITAL EX\u2026")
+        try:
+            bat = os.path.join(self.main.svc.dir, "self_update.cmd")
+            if is_portable_dl:
+                body = 'ping 127.0.0.1 -n 3 >nul\r\nmove /y "%s" "%s" >nul\r\nstart "" "%s"\r\n' % (final, exe, exe)
+            else:
+                inst = os.path.join(os.environ.get("LOCALAPPDATA", ""), "Programs", "HYPERION DIGITAL EX", "HYPERION DIGITAL EX.exe")
+                relaunch = exe if (getattr(sys, "frozen", False) and not portable) else inst
+                body = ('ping 127.0.0.1 -n 3 >nul\r\n"%s" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /CLOSEAPPLICATIONS\r\n'
+                        'start "" "%s"\r\n' % (final, relaunch))
+            with open(bat, "w") as f:
+                f.write("@echo off\r\n" + body)
+            if os.environ.get("HDX_UPDATE_DRYRUN"):
+                return self.prog.emit(1, "Dry run: verified %s, would run %s" % (name, bat))
+            subprocess.Popen(["cmd", "/c", bat], creationflags=xc.CREATE_NO_WINDOW, close_fds=True)
+            self.main.svc.save()
+            os._exit(0)
+        except Exception as e:
+            self.failed.emit("Could not start the update: %s" % e)
+
+
 # ---------------------------------------------------------------- main window
 class Main(QMainWindow):
     def __init__(self):
@@ -750,7 +925,7 @@ class Main(QMainWindow):
         for key, t in (("store", "STORE"), ("library", "LIBRARY"), ("downloads", "DOWNLOADS"), ("connect", "EX CONNECT")):
             b = QPushButton(t); b.setObjectName("nav"); b.setCursor(Qt.PointingHandCursor); b.clicked.connect(lambda _=False, k=key: self.go(k)); th.addWidget(b); self.navs[key] = b
         th.addStretch(1)
-        self.search = QLineEdit(); self.search.setPlaceholderText("Search the store"); self.search.setFixedWidth(220); self.search.textChanged.connect(self.on_search); th.addWidget(self.search)
+        self.search = QLineEdit(); self.search.setPlaceholderText("Search the store"); self.search.setFixedWidth(170); self.search.textChanged.connect(self.on_search); th.addWidget(self.search)
         self.selfupd = QPushButton(""); self.selfupd.setObjectName("update"); self.selfupd.hide(); self.selfupd.clicked.connect(self.do_self_update); th.addWidget(self.selfupd)
         self.badge = QPushButton("\u25CF EX CONNECT"); self.badge.setObjectName("badge"); self.badge.setCursor(Qt.PointingHandCursor); self.badge.clicked.connect(lambda: self.go("connect")); th.addWidget(self.badge)
         gear = QPushButton("SETTINGS"); gear.setObjectName("nav"); gear.setToolTip("Settings"); gear.clicked.connect(lambda: self.go("settings")); th.addWidget(gear)
@@ -770,6 +945,9 @@ class Main(QMainWindow):
         self._last_prog = 0
         self.svc.refresh()
         self.refresh_all()
+        self.update_dismissed = False; self.update_dialog = None
+        QTimer.singleShot(int(os.environ.get("HDX_FIRST_CHECK_MS", "5000")), self.auto_check)
+        self.update_timer = QTimer(self, interval=30 * 60 * 1000, timeout=self.auto_check); self.update_timer.start()
 
     def go(self, key):
         self.current = key
@@ -805,6 +983,8 @@ class Main(QMainWindow):
             self.refresh_light(); return
         if ev == "catalog":
             self.update_self_badge()
+        if ev == "selfcheck":
+            self.on_self_checked(); return
         if ev == "error":
             QMessageBox.warning(self, APP_NAME, "EX CONNECT could not find a download for %s. Check your connection and try again." % self.svc.catalog[aid]["name"])
         self.refresh_all()
@@ -828,7 +1008,7 @@ class Main(QMainWindow):
 
     def update_footer(self):
         svc = self.svc; on = svc.online
-        self.badge.setText("\u25CF  EX CONNECT  ·  %s  ·  %d apps" % ({True: "Online", False: "Offline", None: "Connecting"}[on], svc.connected_count()))
+        self.badge.setText(("\u25CF  EX CONNECT  ·  %d apps" % svc.connected_count()) if self.selfupd.isVisible() else ("\u25CF  EX CONNECT  ·  %s  ·  %d apps" % ({True: "Online", False: "Offline", None: "Connecting"}[on], svc.connected_count())))
         self.badge.setMinimumWidth(self.badge.sizeHint().width())
         self.badge.setProperty("off", "true" if on is False else "false"); self.badge.style().unpolish(self.badge); self.badge.style().polish(self.badge)
         act = [j for j in svc.jobs if j.state in ("downloading", "verifying", "installing", "queued")]
@@ -864,61 +1044,35 @@ class Main(QMainWindow):
             if lj:
                 self.pages["settings"].ust.setText("You have the latest version.")
 
-    def check_self_update(self):
-        try:
-            self.svc.self_latest = xc.fetch_json(xc.RAW % xc.SELF_REPO)
-        except Exception as e:
-            self.pages["settings"].ust.setText("Could not check for updates (%s)." % type(e).__name__); return
-        self.update_self_badge()
-
-    def do_self_update(self):
-        lj = self.svc.self_latest or {}
-        exe = sys.executable
-        portable = getattr(sys, "frozen", False) and "Programs" not in exe
-        url = lj.get("portable_url") if portable else (lj.get("installer_url") or lj.get("url"))
-        if not url:
-            webbrowser.open(RELEASES); return
-        if QMessageBox.question(self, APP_NAME, "Download and install HYPERION DIGITAL EX %s now?" % lj.get("version")) != QMessageBox.Yes:
-            return
-        self.selfupd.setText("Downloading…"); self.selfupd.setEnabled(False)
+    def auto_check(self):
+        """Background self-update check: a few seconds after launch, then every 30 minutes."""
         import threading
 
         def run():
             try:
-                dst = (exe + ".new") if portable else os.path.join(self.svc.dir, "downloads", url.rsplit("/", 1)[-1])
-                os.makedirs(os.path.dirname(dst), exist_ok=True)
-                part = dst + ".part"
-                for _ in range(200):  # resumable, patient on slow links
-                    have = os.path.getsize(part) if os.path.exists(part) else 0
-                    req = xc.urllib.request.Request(url, headers=dict(xc.UA, **({"Range": "bytes=%d-" % have} if have else {})))
-                    try:
-                        with xc.urllib.request.urlopen(req, timeout=45, context=xc._ctx()) as r:
-                            mode = "ab" if (have and r.status == 206) else "wb"
-                            with open(part, mode) as f:
-                                while True:
-                                    b = r.read(65536)
-                                    if not b:
-                                        break
-                                    f.write(b)
-                        break
-                    except xc.urllib.error.HTTPError as e:
-                        if e.code == 416:
-                            break
-                        time.sleep(3)
-                    except Exception:
-                        time.sleep(3)
-                os.replace(part, dst)
-                if portable:
-                    bat = os.path.join(self.svc.dir, "self_update.cmd")
-                    with open(bat, "w") as f:
-                        f.write('@echo off\r\nping 127.0.0.1 -n 3 >nul\r\nmove /y "%s" "%s" >nul\r\nstart "" "%s"\r\n' % (dst, exe, exe))
-                    subprocess.Popen(["cmd", "/c", bat], creationflags=xc.CREATE_NO_WINDOW)
-                else:
-                    subprocess.Popen([dst, "/SILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/CLOSEAPPLICATIONS"])
-                os._exit(0)
+                self.svc.self_latest = xc.fetch_json(xc.SELF_LATEST_URL)
             except Exception:
-                webbrowser.open(RELEASES)
+                return
+            self.bridge.event.emit("selfcheck", "")
         threading.Thread(target=run, daemon=True).start()
+
+    def on_self_checked(self, manual=False):
+        self.update_self_badge(); self.update_footer()
+        lj = self.svc.self_latest or {}
+        newer = xc.vtuple(lj.get("version")) > xc.vtuple(APP_VERSION)
+        if newer and (manual or not self.update_dismissed) and not (self.update_dialog and self.update_dialog.isVisible()):
+            self.update_dialog = UpdateDialog(self, lj)
+            self.update_dialog.show(); self.update_dialog.raise_(); self.update_dialog.activateWindow()
+
+    def check_self_update(self):
+        try:
+            self.svc.self_latest = xc.fetch_json(xc.SELF_LATEST_URL)
+        except Exception as e:
+            self.pages["settings"].ust.setText("Could not check for updates (%s)." % type(e).__name__); return
+        self.on_self_checked(manual=True)
+
+    def do_self_update(self):
+        self.on_self_checked(manual=True)
 
     def closeEvent(self, e):
         self.svc.save(); e.accept()
@@ -935,7 +1089,18 @@ def smoke(win, out_dir, phase):
     steps = []
     def at(t, f):
         steps.append((t, f))
-    if phase == "1":
+    if phase == "update":
+        def comp(name):
+            d = win.update_dialog
+            base = win.grab(); qp = QPainter(base); qp.fillRect(base.rect(), QColor(0, 0, 0, 140))
+            dg = d.grab(); qp.drawPixmap((base.width() - dg.width()) // 2, (base.height() - dg.height()) // 2, dg); qp.end()
+            base.save(os.path.join(out_dir, name)); L("shot", name)
+        at(9000, lambda: (L("dialog", bool(win.update_dialog), win.svc.self_latest and win.svc.self_latest.get("version")), comp("screenshot_update_prompt.png")))
+        at(10000, lambda: win.update_dialog.start())
+        at(16000, lambda: comp("screenshot_update_downloading.png"))
+        at(36000, lambda: (L("info", win.update_dialog.info.text()), comp("screenshot_update_verified.png")))
+        at(41000, lambda: win.close())
+    elif phase == "1":
         at(7000, lambda: (L("online", win.svc.online, "installed", sorted(win.svc.installed)), shot("screenshot_store_home.png")))
         at(9000, lambda: win.open_product("piknott-celestika"))
         at(10500, lambda: shot("screenshot_product_page.png"))

@@ -7,7 +7,7 @@ CATALOG = [
     dict(
         id="dream-vine", name="DREAM VINE", repo="dream-vine", category=GAMES, genre="Sandbox · Survival · Creative",
         exe="DREAM VINE.exe", folder="DREAM VINE", portable=["DREAM VINE.exe", "DREAM.VINE.Portable.exe"],
-        version="1.3.2", featured=True,
+        version="1.3.2",
         tagline="An original block-building sandbox. Explore endless worlds, mine, craft, build and survive the night.",
         about=("DREAM VINE is an original block-building sandbox game by EX Inc. Explore endless procedurally generated "
                "worlds, mine, craft and build, survive the night, or fly around freely in Creative. All code, textures, "
@@ -25,7 +25,7 @@ CATALOG = [
         id="piknott-celestika", name="PIKNOTT CELESTIKA", repo="piknott-celestika", category=GAMES,
         genre="RPG · Monster catching · Cel-shaded",
         exe="PIKNOTT CELESTIKA.exe", folder="PIKNOTT CELESTIKA",
-        portable=["PIKNOTT CELESTIKA.exe", "PIKNOTT.CELESTIKA.Portable.exe"], version="1.0.0", featured=True,
+        portable=["PIKNOTT CELESTIKA.exe", "PIKNOTT.CELESTIKA.Portable.exe"], version="1.0.0", featured=True, recommended=True,
         tagline="A fully cel-shaded monster-catching RPG. Catch 13 PIKNOTT across the Celestika region.",
         about=("Explore the Celestika region as a boy in a red hoodie, sneak through tall grass, throw PIKCEL balls to "
                "catch wild PIKNOTT, and battle them with your team using an action-order battle system with "
@@ -41,7 +41,7 @@ CATALOG = [
         ]),
     dict(
         id="hyperia", name="HYPERIA", repo="hyperia", category=APPS, genre="Desktop shell",
-        exe="HYPERIA.exe", folder="HYPERIA", portable=[], version="1.1.23", featured=True,
+        exe="HYPERIA.exe", folder="HYPERIA", portable=[], version="1.1.23",
         tagline="A creative desktop shell for Windows: wallpaper, taskbar, Start menu and windows inside the shell.",
         about=("HYPERIA is a creative desktop shell from EX Inc. that runs on Windows: wallpaper, taskbar, Start menu, "
                "desktop icons and windows that open inside the shell. It is an app, not an operating system. Web apps "
@@ -55,7 +55,7 @@ CATALOG = [
     dict(
         id="ex-creator-studio", name="EX CREATOR STUDIO", repo="ex-creator-studio", category=APPS,
         genre="Creative · Lip-sync · Video",
-        exe="EX CREATOR STUDIO.exe", folder="EX CREATOR STUDIO", portable=[], version="1.3.0", featured=True,
+        exe="EX CREATOR STUDIO.exe", folder="EX CREATOR STUDIO", portable=[], version="1.3.0",
         tagline="One board. Any character. Type a line and watch it talk, then download it as an MP4.",
         about=("Upload any character or art to the REX BOARD and type what it should say. EX CREATOR STUDIO speaks it "
                "with an offline Windows voice and lip-syncs the character's mouth to it, then renders the result as "
