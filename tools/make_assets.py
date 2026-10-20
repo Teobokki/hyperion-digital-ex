@@ -52,6 +52,9 @@ for app, (icon, shots) in SRC.items():
     cover(hero_src, (1600, 600), right=True).save(os.path.join(d, 'hero.jpg'), quality=86)
     cover(ims[1] if len(ims) > 1 and app not in ('piknott-celestika', 'hyperia') else ims[0], (616, 353)).save(os.path.join(d, 'capsule.jpg'), quality=88)
 
+# ---- featured banner backdrop: blurred, darkened copy used only behind the letterbox ----
+_b = Image.open(os.path.join(OUT, 'featured_banner_user.jpg')).convert('RGB').resize((432, 288), Image.LANCZOS).filter(ImageFilter.GaussianBlur(18))
+Image.blend(_b, Image.new('RGB', _b.size, (10, 14, 22)), 0.45).save(os.path.join(OUT, 'featured_banner_bg.jpg'), quality=88)
 # ---- app icon: the user's own artwork (see tools/make_icon.py) ----
 exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'make_icon.py')).read())
 print('assets ok')

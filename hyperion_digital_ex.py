@@ -299,6 +299,46 @@ class Hero(QWidget):
             qp.drawRoundedRect(QRectF(x0 + k * 22, h - 18, 16 if k == self.i else 10, 6), 3, 3)
 
 
+class Banner(QWidget):
+    """The only Featured & Recommended card: EX Inc.'s promo banner, shown whole (3:2, letterboxed, no overlays)."""
+    clicked = Signal()
+
+    def __init__(self):
+        super().__init__()
+        self.img = QPixmap(res("assets", "featured_banner_user.jpg")); self.bg = QPixmap(res("assets", "featured_banner_bg.jpg"))
+        self.setCursor(Qt.PointingHandCursor); self.setToolTip("Browse games")
+        self.setMinimumHeight(360); self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed); self.hover = False
+
+    def resizeEvent(self, e):
+        h = int(min(600, max(360, self.width() * 0.42)))
+        if self.height() != h:
+            self.setFixedHeight(h)
+
+    def enterEvent(self, e):
+        self.hover = True; self.update()
+
+    def leaveEvent(self, e):
+        self.hover = False; self.update()
+
+    def mousePressEvent(self, e):
+        if e.button() == Qt.LeftButton:
+            self.clicked.emit()
+
+    def paintEvent(self, e):
+        qp = QPainter(self); qp.setRenderHint(QPainter.Antialiasing); qp.setRenderHint(QPainter.SmoothPixmapTransform)
+        w, h = self.width(), self.height()
+        path = QPainterPath(); path.addRoundedRect(QRectF(0, 0, w, h), 10, 10); qp.setClipPath(path)
+        qp.drawPixmap(0, 0, cover_pix(self.bg, w, h))
+        ih = h; iw = int(ih * self.img.width() / max(1, self.img.height()))
+        if iw > w:
+            iw = w; ih = int(iw * self.img.height() / self.img.width())
+        x, y = (w - iw) // 2, (h - ih) // 2
+        qp.drawPixmap(QRectF(x, y, iw, ih), self.img, QRectF(self.img.rect()))
+        qp.setClipping(False)
+        qp.setPen(QPen(QColor(ACCENT if self.hover else LINE), 2)); qp.setBrush(Qt.NoBrush)
+        qp.drawRoundedRect(QRectF(1, 1, w - 2, h - 2), 10, 10)
+
+
 # ---------------------------------------------------------------- store card
 class Card(QFrame):
     clicked = Signal(str)
@@ -372,19 +412,14 @@ class StorePage(QWidget):
         super().__init__()
         self.ui = ui
         inner = QWidget(); v = QVBoxLayout(inner); v.setContentsMargins(36, 24, 36, 30); v.setSpacing(16)
-        feat = [a["id"] for a in ui.svc.catalog.values() if a.get("featured")]
         v.addWidget(lbl("FEATURED & RECOMMENDED", "h2"))
-        self.hero = Hero(ui, feat); self.hero.open_app.connect(ui.open_product); v.addWidget(self.hero)
+        self.banner = Banner(); self.banner.clicked.connect(self.scroll_to_games); v.addWidget(self.banner)
         self.cards = []
-        self.sections = []
-        rec = [a["id"] for a in ui.svc.catalog.values() if a.get("recommended")]
-        if rec:
-            v.addSpacing(10); v.addWidget(lbl("RECOMMENDED", "h2"))
-            for aid in rec:
-                rc = RecCard(ui, aid); rc.clicked.connect(ui.open_product); v.addWidget(rc); self.cards.append(rc)
+        self.sections = {}
         for cat, title in ((GAMES, "GAMES"), (APPS, "APPS & TOOLS")):
             ids = [a["id"] for a in ui.svc.catalog.values() if a["category"] == cat]
-            hdr = QHBoxLayout(); hdr.addWidget(lbl("%s  ·  %d" % (title, len(ids)), "h2")); hdr.addStretch(1)
+            hl = lbl("%s  ·  %d" % (title, len(ids)), "h2"); self.sections[cat] = hl
+            hdr = QHBoxLayout(); hdr.addWidget(hl); hdr.addStretch(1)
             v.addSpacing(10); v.addLayout(hdr)
             grid = QGridLayout(); grid.setHorizontalSpacing(16); grid.setVerticalSpacing(16)
             for k, aid in enumerate(ids):
@@ -392,12 +427,18 @@ class StorePage(QWidget):
             grid.setColumnStretch(4, 1)
             v.addLayout(grid)
         v.addStretch(1)
-        lay = QVBoxLayout(self); lay.setContentsMargins(0, 0, 0, 0); lay.addWidget(scroll(inner))
+        self.sc = scroll(inner)
+        lay = QVBoxLayout(self); lay.setContentsMargins(0, 0, 0, 0); lay.addWidget(self.sc)
+
+    def scroll_to_games(self):
+        self.ui.go("store")
+        hl = self.sections[GAMES]
+        y = hl.mapTo(self.sc.widget(), QPointF(0, 0).toPoint()).y()
+        self.sc.verticalScrollBar().setValue(max(0, y - 12))
 
     def refresh(self):
         for c in self.cards:
             c.refresh()
-        self.hero.update()
 
 
 class SearchPage(QWidget):
@@ -1089,7 +1130,12 @@ def smoke(win, out_dir, phase):
     steps = []
     def at(t, f):
         steps.append((t, f))
-    if phase == "update":
+    if phase == "banner":
+        at(6000, lambda: shot("screenshot_store_banner.png"))
+        at(7000, lambda: win.pages["store"].banner.clicked.emit())
+        at(8500, lambda: (L("scroll after click", win.pages["store"].sc.verticalScrollBar().value()), shot("screenshot_banner_click_games.png")))
+        at(9500, lambda: win.close())
+    elif phase == "update":
         def comp(name):
             d = win.update_dialog
             base = win.grab(); qp = QPainter(base); qp.fillRect(base.rect(), QColor(0, 0, 0, 140))

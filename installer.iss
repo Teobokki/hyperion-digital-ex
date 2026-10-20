@@ -1,4 +1,4 @@
-#define MyVer "1.0.2"
+#define MyVer "1.0.3"
 [Setup]
 AppId={{9E4C1B27-7A3D-4F58-B6E2-HDEX00000001}
 AppName=HYPERION DIGITAL EX

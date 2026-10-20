@@ -25,7 +25,7 @@ CATALOG = [
         id="piknott-celestika", name="PIKNOTT CELESTIKA", repo="piknott-celestika", category=GAMES,
         genre="RPG · Monster catching · Cel-shaded",
         exe="PIKNOTT CELESTIKA.exe", folder="PIKNOTT CELESTIKA",
-        portable=["PIKNOTT CELESTIKA.exe", "PIKNOTT.CELESTIKA.Portable.exe"], version="1.0.0", featured=True, recommended=True,
+        portable=["PIKNOTT CELESTIKA.exe", "PIKNOTT.CELESTIKA.Portable.exe"], version="1.0.0",
         tagline="A fully cel-shaded monster-catching RPG. Catch 13 PIKNOTT across the Celestika region.",
         about=("Explore the Celestika region as a boy in a red hoodie, sneak through tall grass, throw PIKCEL balls to "
                "catch wild PIKNOTT, and battle them with your team using an action-order battle system with "
