@@ -1,9 +1,9 @@
 {
-  "version": "1.0.0",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.0.0",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.0/HYPERION.DIGITAL.EX.Setup.1.0.0.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.0/HYPERION.DIGITAL.EX.Setup.1.0.0.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.0/HYPERION.DIGITAL.EX.1.0.0.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.0/HYPERION.DIGITAL.EX.Portable.exe",
-  "notes": "First release of HYPERION DIGITAL EX: every EX game and app in one store, with EX CONNECT one-click install, resumable downloads, Play, Update and Uninstall."
+  "version": "1.0.1",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.0.1",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.1/HYPERION.DIGITAL.EX.Setup.1.0.1.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.1/HYPERION.DIGITAL.EX.Setup.1.0.1.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.1/HYPERION.DIGITAL.EX.1.0.1.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.1/HYPERION.DIGITAL.EX.Portable.exe",
+  "notes": "New app icon: EX Inc.'s own artwork for the exe, installer, window/taskbar, top-bar logo and shortcuts. No other changes."
 }
