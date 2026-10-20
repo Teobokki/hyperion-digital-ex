@@ -4,7 +4,7 @@ Resumable (HTTP Range) downloads that survive restarts, SHA-256 verification, si
 import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, urllib.request, urllib.error, zipfile
 from ex_catalog import CATALOG, KNOWN_SIZES
 
-APP_VERSION = "1.0.5"
+APP_VERSION = "1.0.6"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
@@ -37,7 +37,9 @@ def _ctx():
 
 
 def fetch_json(url, timeout=12):
-    req = urllib.request.Request(url, headers=dict(UA, **{"Cache-Control": "no-cache"}))
+    if url.startswith("https://raw.githubusercontent.com/"):  # cache-bust the raw CDN
+        url += ("&" if "?" in url else "?") + "t=%d" % int(time.time() * 1000)
+    req = urllib.request.Request(url, headers=dict(UA, **{"Cache-Control": "no-cache", "Pragma": "no-cache"}))
     with urllib.request.urlopen(req, timeout=timeout, context=_ctx()) as r:
         return json.loads(r.read(2_000_000).decode("utf-8"))
 
@@ -174,8 +176,9 @@ class ExConnect:
         return d
 
     # ---------- catalog sync ----------
-    def refresh(self, block=False):
+    def refresh(self, block=False, on_done=None):
         def run():
+            t_start = time.time()
             ok = 0
             threads = []
 
@@ -183,10 +186,15 @@ class ExConnect:
                 nonlocal ok
                 app = self.catalog[aid]
                 try:
-                    lj = fetch_json(RAW % app["repo"])
+                    lj = fetch_json(RAW % app["repo"], timeout=8)
                     ok += 1
                 except Exception:
-                    return
+                    try:  # fall back to the GitHub API copy of latest.json
+                        import base64
+                        c = fetch_json("https://api.github.com/repos/Teobokki/%s/contents/latest.json" % app["repo"], timeout=8)
+                        lj = json.loads(base64.b64decode(c["content"]).decode("utf-8")); ok += 1
+                    except Exception:
+                        return
                 app["latest"] = lj
                 ver = str(lj.get("version", app["version"]))
                 cached = self.cache.get("apps", {}).get(aid, {})
@@ -206,7 +214,7 @@ class ExConnect:
             except Exception:
                 pass
             for t in threads:
-                t.join(30)
+                t.join(20)
             self.online = ok > 0
             if ok:
                 self.synced_at = time.time()
@@ -218,7 +226,10 @@ class ExConnect:
                     pass
                 self.cache = {"apps": apps, "synced_at": self.synced_at}
             self.scan()
+            self.last_check_secs = time.time() - t_start
             self.notify("catalog", "")
+            if on_done:
+                on_done()
         if block:
             run()
         else:

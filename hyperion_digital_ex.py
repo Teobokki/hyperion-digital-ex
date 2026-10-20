@@ -69,7 +69,7 @@ QScrollBar::handle:horizontal {{ background: #2c3a49; border-radius: 5px; }}
 #topbar {{ background: qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 #17202b, stop:1 #111821); border-bottom: 1px solid {LINE}; }}
 #brand {{ font-size: 17px; font-weight: 800; letter-spacing: 2px; }}
 #brandsub {{ font-size: 17px; font-weight: 300; letter-spacing: 2px; color: {ACCENT}; }}
-QPushButton#nav {{ background: transparent; border: none; font-size: 14px; font-weight: 700; letter-spacing: 1px; color: {MUTED}; padding: 8px 14px; }}
+QPushButton#nav {{ background: transparent; border: none; font-size: 14px; font-weight: 700; letter-spacing: 1px; color: {MUTED}; padding: 8px 10px; }}
 QPushButton#nav:hover {{ color: {FG}; }}
 QPushButton#nav[active="true"] {{ color: {ACCENT}; border-bottom: 2px solid {ACCENT}; }}
 QLineEdit {{ background: {PANEL}; border: 1px solid {LINE}; border-radius: 6px; padding: 7px 10px; color: {FG}; selection-background-color: {ACCENT}; }}
@@ -974,8 +974,11 @@ class Main(QMainWindow):
         for key, t in (("store", "STORE"), ("library", "LIBRARY"), ("downloads", "DOWNLOADS"), ("connect", "EX CONNECT")):
             b = QPushButton(t); b.setObjectName("nav"); b.setCursor(Qt.PointingHandCursor); b.clicked.connect(lambda _=False, k=key: self.go(k)); th.addWidget(b); self.navs[key] = b
         th.addStretch(1)
-        self.search = QLineEdit(); self.search.setPlaceholderText("Search the store"); self.search.setFixedWidth(170); self.search.textChanged.connect(self.on_search); th.addWidget(self.search)
+        self.search = QLineEdit(); self.search.setPlaceholderText("Search the store"); self.search.setFixedWidth(150); self.search.textChanged.connect(self.on_search); th.addWidget(self.search)
         self.selfupd = QPushButton(""); self.selfupd.setObjectName("update"); self.selfupd.hide(); self.selfupd.clicked.connect(self.do_self_update); th.addWidget(self.selfupd)
+        self.gu = QPushButton("GAME UPDATES"); self.gu.setObjectName("nav"); self.gu.setCursor(Qt.PointingHandCursor); self.gu.setToolTip("Check all your games and apps for updates now")
+        self.gu.clicked.connect(self.game_updates); th.addWidget(self.gu)
+        self.gu_busy = False; self.gu_dots = 0; self.gu_timer = QTimer(self, interval=250, timeout=self._gu_spin); self.gu_panel = None
         self.badge = QPushButton("\u25CF EX CONNECT"); self.badge.setObjectName("badge"); self.badge.setCursor(Qt.PointingHandCursor); self.badge.clicked.connect(lambda: self.go("connect")); th.addWidget(self.badge)
         gear = QPushButton("SETTINGS"); gear.setObjectName("nav"); gear.setToolTip("Settings"); gear.clicked.connect(lambda: self.go("settings")); th.addWidget(gear)
         self.navs["settings"] = gear
@@ -996,7 +999,7 @@ class Main(QMainWindow):
         self.refresh_all()
         self.update_dismissed = False; self.update_dialog = None
         QTimer.singleShot(int(os.environ.get("HDX_FIRST_CHECK_MS", "5000")), self.auto_check)
-        self.update_timer = QTimer(self, interval=30 * 60 * 1000, timeout=lambda: (self.auto_check(), self.svc.refresh())); self.update_timer.start()
+        self.update_timer = QTimer(self, interval=5 * 60 * 1000, timeout=lambda: (self.auto_check(), self.svc.refresh())); self.update_timer.start()
 
     def go(self, key):
         self.current = key
@@ -1031,7 +1034,9 @@ class Main(QMainWindow):
             self._last_prog = now
             self.refresh_light(); return
         if ev == "catalog":
-            self.update_self_badge()
+            self.update_self_badge(); self.update_gu_badge()
+        if ev == "gu_done":
+            self.gu_busy = False; self.gu_timer.stop(); self.update_gu_badge(); self.refresh_all(); self.show_gu_panel(); return
         if ev == "selfcheck":
             self.on_self_checked(); return
         if ev == "error":
@@ -1057,7 +1062,8 @@ class Main(QMainWindow):
 
     def update_footer(self):
         svc = self.svc; on = svc.online
-        self.badge.setText(("\u25CF  EX CONNECT  ·  %d apps" % svc.connected_count()) if self.selfupd.isVisible() else ("\u25CF  EX CONNECT  ·  %s  ·  %d apps" % ({True: "Online", False: "Offline", None: "Connecting"}[on], svc.connected_count())))
+        self.badge.setText(("\u25CF  EX CONNECT  ·  %d" % svc.connected_count()) if (self.selfupd.isVisible() or on) else ("\u25CF  EX CONNECT  ·  %s" % ({True: "Online", False: "Offline", None: "Connecting"}[on])))
+        self.badge.setToolTip("EX CONNECT %s · %d apps connected" % ({True: "online", False: "offline", None: "connecting"}[on], svc.connected_count()))
         self.badge.setMinimumWidth(self.badge.sizeHint().width())
         self.badge.setProperty("off", "true" if on is False else "false"); self.badge.style().unpolish(self.badge); self.badge.style().polish(self.badge)
         act = [j for j in svc.jobs if j.state in ("downloading", "verifying", "installing", "queued")]
@@ -1083,6 +1089,61 @@ class Main(QMainWindow):
                 self.pages["connect"].refresh()
 
     # ----- self update -----
+    # ----- GAME UPDATES (instant check of every library app) -----
+    def updates_list(self):
+        return [aid for aid in self.svc.catalog if self.svc.status(aid) == "update"]
+
+    def update_gu_badge(self):
+        if self.gu_busy:
+            return
+        n = len(self.updates_list())
+        self.gu.setText("GAME UPDATES  (%d)" % n if n else "GAME UPDATES")
+        self.gu.setStyleSheet("QPushButton{color:%s}" % ORANGE if n else "")
+
+    def _gu_spin(self):
+        self.gu_dots = (self.gu_dots + 1) % 4
+        self.gu.setText("CHECKING" + "." * self.gu_dots + " " * (3 - self.gu_dots))
+
+    def game_updates(self):
+        if self.gu_busy:
+            return
+        if self.gu_panel and self.gu_panel.isVisible():
+            self.gu_panel.close()
+        self.gu_busy = True; self._gu_spin(); self.gu_timer.start()
+        self.svc.refresh(on_done=lambda: self.bridge.event.emit("gu_done", ""))
+
+    def show_gu_panel(self):
+        svc = self.svc; ups = self.updates_list()
+        p = QFrame(self, Qt.Popup); p.setObjectName("gupanel")
+        p.setStyleSheet("#gupanel{background:%s;border:1px solid %s;border-radius:8px}" % (PANEL, ACCENT))
+        v = QVBoxLayout(p); v.setContentsMargins(16, 14, 16, 14); v.setSpacing(10)
+        took = getattr(svc, "last_check_secs", 0)
+        head = lbl("GAME UPDATES", "h2"); v.addWidget(head)
+        if svc.online is False:
+            v.addWidget(lbl("Offline: could not reach the release channel. Try again when you are connected.", "muted", True))
+        elif not ups:
+            ok = lbl("\u2714  All games and apps are up to date"); ok.setStyleSheet("font-size:15px;font-weight:800;color:#9be57c"); v.addWidget(ok)
+        else:
+            t = lbl("%d update%s available" % (len(ups), "" if len(ups) == 1 else "s")); t.setStyleSheet("font-size:15px;font-weight:800;color:%s" % ORANGE); v.addWidget(t)
+            for aid in ups:
+                a = svc.catalog[aid]; inf = svc.installed.get(aid) or {}
+                row = QHBoxLayout(); row.setSpacing(10)
+                ic = QLabel(); ic.setPixmap(pix(art(aid, "icon.png")).scaled(32, 32, Qt.KeepAspectRatio, Qt.SmoothTransformation)); row.addWidget(ic)
+                col = QVBoxLayout(); col.setSpacing(0); n = lbl(a["name"]); n.setStyleSheet("font-weight:800"); col.addWidget(n)
+                old = ", ".join(v_ or "?" for _k, _e, v_ in svc.outdated_copies(aid))
+                col.addWidget(lbl("installed %s  \u2192  %s" % (old or inf.get("version", "?"), svc.latest_version(aid)), "small")); row.addLayout(col, 1)
+                b = QPushButton("\u2B06  UPDATE TO %s" % svc.latest_version(aid)); b.setObjectName("primary"); b.setProperty("mode", "update")
+                b.clicked.connect(lambda _=False, aid=aid, b=b: (svc.install(aid, update=True), b.setEnabled(False), b.setText("QUEUED"), self.refresh_all()))
+                row.addWidget(b); v.addLayout(row)
+            ua = QPushButton("Update all"); ua.setObjectName("ghost")
+            ua.clicked.connect(lambda: ([svc.install(x, update=True) for x in self.updates_list()], p.close(), self.go("downloads")))
+            v.addWidget(ua, 0, Qt.AlignRight)
+        v.addWidget(lbl("Checked %d apps in %.1f s  \u00b7  %s" % (len(svc.catalog), took, time.strftime("%H:%M:%S")), "small"))
+        p.setFixedWidth(470); p.adjustSize()
+        g = self.gu.mapToGlobal(self.gu.rect().bottomLeft())
+        p.move(min(g.x(), self.mapToGlobal(self.rect().topRight()).x() - p.width() - 10), g.y() + 6)
+        p.show(); self.gu_panel = p
+
     def update_self_badge(self):
         lj = self.svc.self_latest
         if lj and xc.vtuple(lj.get("version")) > xc.vtuple(APP_VERSION):
@@ -1138,7 +1199,22 @@ def smoke(win, out_dir, phase):
     steps = []
     def at(t, f):
         steps.append((t, f))
-    if phase == "dvupdate":
+    if phase == "gu":
+        def comp(name):
+            base = win.grab(); p = win.gu_panel
+            if p and p.isVisible():
+                qp = QPainter(base); pos = win.mapFromGlobal(p.pos()); qp.drawPixmap(pos, p.grab()); qp.end()
+            base.save(os.path.join(out_dir, name)); L("shot", name)
+        at(7000, lambda: (L("click GAME UPDATES"), setattr(win, "_t0", time.time()), win.game_updates()))
+        at(7300, lambda: comp("screenshot_game_updates_checking.png"))
+        def wait():
+            if win.gu_busy:
+                return QTimer.singleShot(100, wait)
+            L("check finished in %.2f s (svc %.2f s), updates: %s" % (time.time() - win._t0, win.svc.last_check_secs, win.updates_list()))
+            QTimer.singleShot(800, lambda: comp("screenshot_game_updates.png"))
+            QTimer.singleShot(1500, lambda: win.close())
+        at(7400, wait)
+    elif phase == "dvupdate":
         at(7000, lambda: (L("dv", win.svc.installed.get("dream-vine"), "latest", win.svc.latest_version("dream-vine"), "status", win.svc.status("dream-vine"), "outdated", win.svc.outdated_copies("dream-vine")), win.open_library("dream-vine")))
         at(8500, lambda: shot("screenshot_dv_update_button.png"))
         at(9000, lambda: win.open_product("dream-vine"))

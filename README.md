@@ -28,6 +28,12 @@ The EX Inc. store and library for Windows. Every EX game and app is in one store
 Games: DREAM VINE, PIKNOTT CELESTIKA. Apps & Tools: HYPERIA, EX CREATOR STUDIO, EX NETWORK, EX SUDO TERMINAL, FIREOUT REVOLUTION™.
 Icons and screenshots are each app's own artwork, bundled from its source. The HYPERION DIGITAL EX icon is EX Inc.'s own artwork (`assets/icon_source_user.png`).
 
+## What's new in 1.0.6
+- New **GAME UPDATES** button in the top bar. It re-checks every app's latest.json and installed version in parallel (about 1.5 s, cache-busted), then shows 'All games and apps are up to date' or a list with **UPDATE TO x.y.z** buttons and **Update all**. When updates are found, the button shows how many.
+- The automatic background check now runs every 5 minutes, with no popup for library apps.
+
+![GAME UPDATES](docs/screenshot_game_updates.png)
+
 ## What's new in 1.0.5
 - Clear **UPDATE TO x.y.z** button and an 'Update available' line in the Library and on product pages whenever an installed copy is older than the app's latest.json.
 - Versions are read from each exe's own version info first, then the Apps & features entry. Portable copies in Downloads are tracked next to Setup installs, and one Update click updates every outdated copy.
@@ -52,9 +58,9 @@ Icons and screenshots are each app's own artwork, bundled from its source. The H
 
 ## Download
 From [Releases](https://github.com/Teobokki/hyperion-digital-ex/releases/latest):
-- `HYPERION.DIGITAL.EX.Setup.1.0.5.exe`: the installer. It installs per user, needs no admin, and adds Start menu and optional desktop shortcuts.
+- `HYPERION.DIGITAL.EX.Setup.1.0.6.exe`: the installer. It installs per user, needs no admin, and adds Start menu and optional desktop shortcuts.
 - `HYPERION.DIGITAL.EX.Portable.exe`: a single-file portable exe.
-- `HYPERION.DIGITAL.EX.1.0.5.Windows.x64.zip`: the full app folder.
+- `HYPERION.DIGITAL.EX.1.0.6.Windows.x64.zip`: the full app folder.
 
 The app is unsigned, so SmartScreen may warn you: **More info → Run anyway**.
 
