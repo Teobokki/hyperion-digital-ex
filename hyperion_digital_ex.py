@@ -135,9 +135,9 @@ def lbl(text, name=None, wrap=False):
 
 # ---------------------------------------------------------------- action bar (Install / Play / Update / progress)
 class ActionBar(QWidget):
-    def __init__(self, ui, aid, big=True):
+    def __init__(self, ui, aid, big=True, uninstall=True):
         super().__init__()
-        self.ui, self.svc, self.aid = ui, ui.svc, aid
+        self.ui, self.svc, self.aid = ui, ui.svc, aid; self.allow_uninst = uninstall
         v = QVBoxLayout(self); v.setContentsMargins(0, 0, 0, 0); v.setSpacing(6)
         row = QHBoxLayout(); row.setSpacing(8)
         self.main = QPushButton("INSTALL"); self.main.setObjectName("primary"); self.main.setCursor(Qt.PointingHandCursor)
@@ -166,7 +166,7 @@ class ActionBar(QWidget):
         self.main.setEnabled(st not in ("queued", "downloading", "verifying", "installing", "playing"))
         active = st in ("queued", "downloading", "paused", "verifying", "installing", "error")
         self.pause.setVisible(st in ("queued", "downloading")); self.cancel.setVisible(st in ("queued", "downloading", "paused", "error"))
-        self.uninst.setVisible(bool(inf) and not active and st != "playing")
+        self.uninst.setVisible(self.allow_uninst and bool(inf) and not active and st != "playing")
         self.bar.setVisible(active)
         if j:
             self.bar.setValue(int(j.fraction * 1000))
@@ -361,7 +361,7 @@ class DreamVineCard(QFrame):
         t = lbl(a["name"]); t.setStyleSheet("background:transparent;font-size:40px;font-weight:900;color:%s" % FG); v.addWidget(t)
         d = lbl(a["tagline"], None, True); d.setMaximumWidth(620); d.setStyleSheet("background:transparent;color:#dbe6f0;font-size:15px"); v.addWidget(d)
         self.ver = lbl(""); self.ver.setStyleSheet("background:transparent;color:%s;font-weight:700;font-size:12px" % MUTED); v.addWidget(self.ver)
-        self.bar = ActionBar(ui, aid); self.bar.setMaximumWidth(620); self.bar.uninst.setParent(None); self.bar.setStyleSheet("QLabel{background:transparent}")  # keep the app-wide #primary (Library) button style
+        self.bar = ActionBar(ui, aid, uninstall=False); self.bar.setMaximumWidth(620); self.bar.setStyleSheet("QLabel{background:transparent}")  # keep the app-wide #primary (Library) button style
         v.addWidget(self.bar)
         self.refresh()
 
