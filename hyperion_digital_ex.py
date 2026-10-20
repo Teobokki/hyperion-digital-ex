@@ -789,7 +789,7 @@ class SettingsPage(QWidget):
         ul.addWidget(lbl("HYPERION DIGITAL EX  v%s" % APP_VERSION, None))
         self.ust = lbl("", "muted", True); ul.addWidget(self.ust)
         ub = QPushButton("Check for updates"); ub.clicked.connect(ui.check_self_update); ub.setFixedWidth(200); ul.addWidget(ub)
-        ul.addWidget(lbl("Publisher: %s\n%s" % (PUBLISHER, COPYRIGHT), "small"))
+        ul.addWidget(lbl(COPYRIGHT, "small"))
         v.addWidget(u); v.addStretch(1)
         lay = QVBoxLayout(self); lay.setContentsMargins(0, 0, 0, 0); lay.addWidget(scroll(inner))
 
@@ -990,7 +990,7 @@ class Main(QMainWindow):
             self.stack.addWidget(p)
         # footer
         foot = QFrame(); foot.setObjectName("footer"); foot.setFixedHeight(30); fh = QHBoxLayout(foot); fh.setContentsMargins(16, 0, 16, 0)
-        self.footl = lbl("", "small"); fh.addWidget(self.footl, 1); fh.addWidget(lbl(COPYRIGHT + "  ·  " + PUBLISHER + "  ·  v" + APP_VERSION, "small"))
+        self.footl = lbl("", "small"); fh.addWidget(self.footl, 1); fh.addWidget(lbl(COPYRIGHT + " · v" + APP_VERSION, "small"))
         v.addWidget(foot)
         self.go("store")
         self.tick = QTimer(self, interval=1000, timeout=self.on_tick); self.tick.start()
