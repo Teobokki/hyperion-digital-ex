@@ -52,26 +52,6 @@ for app, (icon, shots) in SRC.items():
     cover(hero_src, (1600, 600), right=True).save(os.path.join(d, 'hero.jpg'), quality=86)
     cover(ims[1] if len(ims) > 1 and app not in ('piknott-celestika', 'hyperia') else ims[0], (616, 353)).save(os.path.join(d, 'capsule.jpg'), quality=88)
 
-# ---- H monogram (drawn in code) ----
-def monogram(n):
-    S = 1024
-    im = Image.new('RGBA', (S, S), (0, 0, 0, 0))
-    g = Image.new('RGBA', (S, S))
-    gd = ImageDraw.Draw(g)
-    for y in range(S):
-        t = y / S
-        gd.line([(0, y), (S, y)], fill=(int(18 + 20 * t), int(28 + 10 * t), int(58 + 40 * t), 255))
-    mask = Image.new('L', (S, S), 0); ImageDraw.Draw(mask).rounded_rectangle((24, 24, S - 24, S - 24), radius=210, fill=255)
-    im.paste(g, (0, 0), mask)
-    d = ImageDraw.Draw(im)
-    d.rounded_rectangle((24, 24, S - 24, S - 24), radius=210, outline=(102, 192, 244, 255), width=22)
-    f = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 620)
-    bb = d.textbbox((0, 0), 'H', font=f)
-    x = (S - (bb[2] - bb[0])) / 2 - bb[0]; y = (S - (bb[3] - bb[1])) / 2 - bb[1]
-    d.text((x, y - 60), 'H', font=f, fill=(235, 245, 255, 255))
-    fe = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 120); d.text((S / 2, 880), 'EX', font=fe, fill=(102, 192, 244, 255), anchor='mm')
-    return im.resize((n, n), Image.LANCZOS)
-big = monogram(256)
-big.save(os.path.join(OUT, 'icon256.png')); monogram(64).save(os.path.join(OUT, 'icon64.png'))
-monogram(256).save(os.path.join(OUT, 'icon.ico'), sizes=[(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)])
+# ---- app icon: the user's own artwork (see tools/make_icon.py) ----
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'make_icon.py')).read())
 print('assets ok')

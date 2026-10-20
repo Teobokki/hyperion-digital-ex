@@ -744,7 +744,7 @@ class Main(QMainWindow):
         v = QVBoxLayout(root); v.setContentsMargins(0, 0, 0, 0); v.setSpacing(0)
         # top bar
         top = QFrame(); top.setObjectName("topbar"); top.setFixedHeight(64); th = QHBoxLayout(top); th.setContentsMargins(18, 0, 18, 0); th.setSpacing(6)
-        logo = QLabel(); logo.setPixmap(QPixmap(res("assets", "icon64.png")).scaled(38, 38, Qt.KeepAspectRatio, Qt.SmoothTransformation)); th.addWidget(logo)
+        logo = QLabel(); logo.setPixmap(QPixmap(res("assets", "icon256.png")).scaled(46, 46, Qt.KeepAspectRatio, Qt.SmoothTransformation)); th.addWidget(logo)
         th.addSpacing(6); th.addWidget(lbl("HYPERION", "brand")); th.addWidget(lbl("DIGITAL EX", "brandsub")); th.addSpacing(26)
         self.navs = {}
         for key, t in (("store", "STORE"), ("library", "LIBRARY"), ("downloads", "DOWNLOADS"), ("connect", "EX CONNECT")):
