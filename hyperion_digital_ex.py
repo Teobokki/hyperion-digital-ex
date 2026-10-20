@@ -308,7 +308,7 @@ class Hero(QWidget):
 
 
 class Banner(QWidget):
-    """The only Featured & Recommended card: EX Inc.'s promo banner, shown whole (3:2, letterboxed, no overlays)."""
+    """Featured & Recommended card 1: EX Inc.'s promo banner, shown whole (3:2, letterboxed, no overlays)."""
     clicked = Signal()
 
     def __init__(self):
@@ -345,6 +345,92 @@ class Banner(QWidget):
         qp.setClipping(False)
         qp.setPen(QPen(QColor(ACCENT if self.hover else LINE), 2)); qp.setBrush(Qt.NoBrush)
         qp.drawRoundedRect(QRectF(1, 1, w - 2, h - 2), 10, 10)
+
+
+class DreamVineCard(QFrame):
+    """Featured card 2: DREAM VINE store art, name, tagline, latest version and Install/Play/Update."""
+    clicked = Signal(str)
+
+    def __init__(self, ui, aid="dream-vine"):
+        super().__init__()
+        self.ui, self.aid = ui, aid; a = ui.svc.catalog[aid]
+        sh = shots(aid); self.img = pix(sh[0] if sh else art(aid, "hero.jpg"))
+        self.setCursor(Qt.PointingHandCursor); self.setToolTip("Open DREAM VINE in the store"); self.hover = False
+        v = QVBoxLayout(self); v.setContentsMargins(56, 40, 56, 40); v.setSpacing(10); v.addStretch(1)
+        k = lbl("FEATURED  \u00b7  " + a["category"].upper()); k.setStyleSheet("background:transparent;color:%s;font-weight:800;letter-spacing:2px;font-size:12px" % ACCENT); v.addWidget(k)
+        t = lbl(a["name"]); t.setStyleSheet("background:transparent;font-size:40px;font-weight:900;color:%s" % FG); v.addWidget(t)
+        d = lbl(a["tagline"], None, True); d.setMaximumWidth(620); d.setStyleSheet("background:transparent;color:#dbe6f0;font-size:15px"); v.addWidget(d)
+        self.ver = lbl(""); self.ver.setStyleSheet("background:transparent;color:%s;font-weight:700;font-size:12px" % MUTED); v.addWidget(self.ver)
+        self.bar = ActionBar(ui, aid); self.bar.setMaximumWidth(620); self.bar.uninst.setParent(None); self.bar.setStyleSheet("background:transparent")
+        v.addWidget(self.bar)
+        self.refresh()
+
+    def refresh(self):
+        self.ver.setText("LATEST VERSION  v%s  \u00b7  %s" % (self.ui.svc.latest_version(self.aid), self.ui.svc.catalog[self.aid]["genre"]))
+        self.bar.refresh()
+
+    def enterEvent(self, e):
+        self.hover = True; self.update()
+
+    def leaveEvent(self, e):
+        self.hover = False; self.update()
+
+    def mousePressEvent(self, e):
+        if e.button() == Qt.LeftButton:
+            self.clicked.emit(self.aid)
+
+    def paintEvent(self, e):
+        qp = QPainter(self); qp.setRenderHint(QPainter.Antialiasing); qp.setRenderHint(QPainter.SmoothPixmapTransform)
+        w, h = self.width(), self.height()
+        path = QPainterPath(); path.addRoundedRect(QRectF(0, 0, w, h), 10, 10); qp.setClipPath(path)
+        qp.drawPixmap(0, 0, cover_pix(self.img, w, h))
+        g = QLinearGradient(0, 0, w * 0.8, 0); g.setColorAt(0, QColor(8, 12, 18, 235)); g.setColorAt(0.6, QColor(8, 12, 18, 140)); g.setColorAt(1, QColor(8, 12, 18, 0))
+        qp.fillRect(0, 0, w, h, g)
+        qp.setClipping(False)
+        qp.setPen(QPen(QColor(ACCENT if self.hover else LINE), 2)); qp.setBrush(Qt.NoBrush)
+        qp.drawRoundedRect(QRectF(1, 1, w - 2, h - 2), 10, 10)
+
+
+class FeaturedCarousel(QWidget):
+    """Featured & Recommended: card 1 = promo banner (whole, uncropped), card 2 = DREAM VINE. Arrows + dots, 8 s auto-rotate, pauses on hover."""
+
+    def __init__(self, ui, banner):
+        super().__init__()
+        self.banner = banner; self.dv = DreamVineCard(ui); self.dv.clicked.connect(ui.open_product)
+        self.stack = QStackedWidget(); self.stack.addWidget(banner); self.stack.addWidget(self.dv)
+        self.stack.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        v = QVBoxLayout(self); v.setContentsMargins(0, 0, 0, 0); v.setSpacing(8); v.addWidget(self.stack)
+        row = QHBoxLayout(); row.setSpacing(8); row.addStretch(1)
+        self.l = QPushButton("\u2039"); self.r = QPushButton("\u203A"); self.dots = []
+        for b, d in ((self.l, -1), (self.r, 1)):
+            b.setFixedSize(36, 28); b.setCursor(Qt.PointingHandCursor)
+            b.setStyleSheet("QPushButton{background:rgba(255,255,255,0.08);border:none;font-size:20px;border-radius:5px;padding:0} QPushButton:hover{background:rgba(92,184,255,0.45)}")
+            b.clicked.connect(lambda _=False, d=d: self.go(self.stack.currentIndex() + d))
+        row.addWidget(self.l)
+        for k in range(2):
+            dt = QPushButton(); dt.setCursor(Qt.PointingHandCursor); dt.clicked.connect(lambda _=False, k=k: self.go(k)); self.dots.append(dt); row.addWidget(dt)
+        row.addWidget(self.r); row.addStretch(1); v.addLayout(row)
+        self.timer = QTimer(self, interval=8000, timeout=lambda: self.go(self.stack.currentIndex() + 1)); self.timer.start()
+        self.go(0)
+
+    def resizeEvent(self, e):
+        h = int(min(600, max(360, self.width() * 0.42)))
+        self.stack.setFixedHeight(h); self.banner.setFixedHeight(h); self.dv.setFixedHeight(h)
+
+    def go(self, n):
+        n %= 2; self.stack.setCurrentIndex(n); self.timer.start()
+        for k, dt in enumerate(self.dots):
+            dt.setFixedSize(22 if k == n else 10, 8)
+            dt.setStyleSheet("QPushButton{background:%s;border:none;border-radius:4px;padding:0}" % (ACCENT if k == n else "rgba(255,255,255,0.35)"))
+
+    def enterEvent(self, e):
+        self.timer.stop()
+
+    def leaveEvent(self, e):
+        self.timer.start()
+
+    def refresh(self):
+        self.dv.refresh()
 
 
 # ---------------------------------------------------------------- store card
@@ -421,7 +507,8 @@ class StorePage(QWidget):
         self.ui = ui
         inner = QWidget(); v = QVBoxLayout(inner); v.setContentsMargins(36, 24, 36, 30); v.setSpacing(16)
         v.addWidget(lbl("FEATURED & RECOMMENDED", "h2"))
-        self.banner = Banner(); self.banner.clicked.connect(self.scroll_to_games); v.addWidget(self.banner)
+        self.banner = Banner(); self.banner.clicked.connect(self.scroll_to_games)
+        self.featured = FeaturedCarousel(ui, self.banner); v.addWidget(self.featured)
         self.cards = []
         self.sections = {}
         for cat, title in ((GAMES, "GAMES"), (APPS, "APPS & TOOLS")):
@@ -445,6 +532,7 @@ class StorePage(QWidget):
         self.sc.verticalScrollBar().setValue(max(0, y - 12))
 
     def refresh(self):
+        self.featured.refresh()
         for c in self.cards:
             c.refresh()
 
@@ -1225,6 +1313,14 @@ def smoke(win, out_dir, phase):
         at(7000, lambda: win.pages["store"].banner.clicked.emit())
         at(8500, lambda: (L("scroll after click", win.pages["store"].sc.verticalScrollBar().value()), shot("screenshot_banner_click_games.png")))
         at(9500, lambda: win.close())
+    elif phase == "featured":
+        def both():
+            f = win.pages["store"].featured; f.go(0); a = f.grab(); f.go(1); QApplication.processEvents(); b = f.grab()
+            out = QPixmap(a.width(), a.height() + b.height() + 16); out.fill(QColor(BG))
+            qp = QPainter(out); qp.drawPixmap(0, 0, a); qp.drawPixmap(0, a.height() + 16, b); qp.end()
+            out.save(os.path.join(out_dir, "screenshot_featured_dreamvine.png")); L("shot featured")
+        at(5000, both)
+        at(6000, lambda: win.close())
     elif phase == "update":
         def comp(name):
             d = win.update_dialog
