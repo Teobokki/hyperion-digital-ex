@@ -4,7 +4,7 @@ Resumable (HTTP Range) downloads that survive restarts, SHA-256 verification, si
 import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, urllib.request, urllib.error, zipfile
 from ex_catalog import CATALOG, KNOWN_SIZES
 
-APP_VERSION = "1.1.0"
+APP_VERSION = "1.1.1"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
@@ -133,7 +133,7 @@ class ExConnect:
         self.state = self._load(self.state_path, {})
         self.state.setdefault("settings", {"library": os.path.join(self.dir, "library"), "method": "setup", "startup": False})
         self.state.setdefault("playtime", {}); self.state.setdefault("last_played", {}); self.state.setdefault("jobs", [])
-        self.state.setdefault("ex_installs", {})
+        self.state.setdefault("ex_installs", {}); self.state.setdefault("wishlist", [])
         self.catalog = {a["id"]: dict(a) for a in CATALOG}
         self.cache = self._load(os.path.join(self.dir, "catalog_cache.json"), {})
         for aid, c in self.cache.get("apps", {}).items():
@@ -610,6 +610,23 @@ class ExConnect:
                 pass
             self.scan(); self.notify("installed", aid)
         threading.Thread(target=run, daemon=True).start()
+
+    # ---------- wishlist (saved in the state file) ----------
+    def wishlist(self):
+        return list(self.state.get("wishlist", []))
+
+    def on_wishlist(self, aid):
+        return aid in self.state.get("wishlist", [])
+
+    def toggle_wishlist(self, aid, on=None):
+        wl = self.state.setdefault("wishlist", [])
+        on = (aid not in wl) if on is None else on
+        if on and aid not in wl:
+            wl.append(aid)
+        elif not on and aid in wl:
+            wl.remove(aid)
+        self.save()
+        return on
 
     def connected_count(self):
         return len(self.installed)

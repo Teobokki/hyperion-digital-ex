@@ -8,7 +8,8 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QLabel, QPush
                                QGridLayout, QStackedWidget, QScrollArea, QFrame, QLineEdit, QProgressBar, QListWidget,
                                QListWidgetItem, QMessageBox, QDialog, QFileDialog, QCheckBox, QComboBox, QSizePolicy, QToolButton)
 import ex_connect as xc
-from ex_catalog import GAMES, APPS
+from ex_catalog import GAMES, APPS, UPCOMING
+SOON = {a["id"]: a for a in UPCOMING}
 
 APP_NAME = "HYPERION DIGITAL EX"
 APP_VERSION = xc.APP_VERSION
@@ -58,7 +59,7 @@ def cover_pix(p, w, h, radius=0):
 
 
 QSS = f"""
-* {{ font-family: 'Segoe UI', 'Arial'; color: {FG}; }}
+* {{ font-family: 'Segoe UI', 'Yu Gothic UI', 'Meiryo', 'MS Gothic', 'Arial'; color: {FG}; }}
 QMainWindow, #root {{ background: {BG}; }}
 QScrollArea, QScrollArea > QWidget > QWidget {{ background: transparent; border: none; }}
 QScrollBar:vertical {{ background: {BG}; width: 10px; margin: 0; }}
@@ -448,6 +449,134 @@ class FeaturedCarousel(QWidget):
             g.refresh()
 
 
+# ---------------------------------------------------------------- upcoming games + wishlist
+def fit_pix(p, w, h, radius=0, bg=None):
+    """scale pixmap to fit inside w x h (letterboxed, nothing cropped)"""
+    out = QPixmap(w, h); out.fill(Qt.transparent)
+    qp = QPainter(out); qp.setRenderHint(QPainter.Antialiasing); qp.setRenderHint(QPainter.SmoothPixmapTransform)
+    path = QPainterPath(); path.addRoundedRect(QRectF(0, 0, w, h), radius, radius); qp.setClipPath(path)
+    qp.fillRect(0, 0, w, h, QColor(bg or "#06080c"))
+    if not p.isNull():
+        s = p.scaled(w, h, Qt.KeepAspectRatio, Qt.SmoothTransformation); qp.drawPixmap((w - s.width()) // 2, (h - s.height()) // 2, s)
+    qp.end()
+    return out
+
+
+def soon_cover(aid):
+    return pix(res("assets", SOON[aid]["cover"]))
+
+
+def soon_tag():
+    t = lbl("COMING SOON"); t.setStyleSheet("background:%s;color:#0e1319;font-weight:900;font-size:11px;letter-spacing:1px;border-radius:4px;padding:3px 8px" % ORANGE)
+    t.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+    return t
+
+
+class WishButton(QPushButton):
+    def __init__(self, ui, aid):
+        super().__init__()
+        self.ui, self.aid = ui, aid; self.setObjectName("ghost"); self.setCursor(Qt.PointingHandCursor)
+        self.clicked.connect(self.toggle); self.refresh()
+
+    def toggle(self):
+        self.ui.svc.toggle_wishlist(self.aid); self.ui.refresh_all()
+
+    def refresh(self):
+        on = self.ui.svc.on_wishlist(self.aid)
+        self.setText("On Wishlist \u2713" if on else "\u2661  Add to Wishlist")
+        self.setStyleSheet("QPushButton{color:%s;font-weight:700}" % ("#9be57c" if on else FG))
+
+
+class SoonCard(QFrame):
+    """Store card for an upcoming (not installable) game."""
+    clicked = Signal(str)
+
+    def __init__(self, ui, aid, w=300):
+        super().__init__()
+        self.ui, self.aid = ui, aid; a = SOON[aid]
+        self.setObjectName("card"); self.setCursor(Qt.PointingHandCursor); self.setFixedWidth(w)
+        v = QVBoxLayout(self); v.setContentsMargins(0, 0, 0, 10); v.setSpacing(6)
+        img = QLabel(); img.setPixmap(fit_pix(soon_cover(aid), w - 2, int((w - 2) * 0.5625), 7)); v.addWidget(img)
+        col = QVBoxLayout(); col.setContentsMargins(12, 2, 12, 0); col.setSpacing(2)
+        t = lbl(a["name"]); t.setStyleSheet("font-weight:800;font-size:14px;background:transparent"); col.addWidget(t)
+        g = lbl(a["genre"], "small"); g.setStyleSheet("background:transparent"); col.addWidget(g)
+        v.addLayout(col)
+        row = QHBoxLayout(); row.setContentsMargins(12, 0, 12, 0); row.addWidget(soon_tag()); row.addStretch(1)
+        self.wish = WishButton(ui, aid); row.addWidget(self.wish); v.addLayout(row)
+
+    def refresh(self):
+        self.wish.refresh()
+
+    def mousePressEvent(self, e):
+        self.clicked.emit(self.aid)
+
+
+class SoonPage(QWidget):
+    """Store page for an upcoming game: cover (uncropped), name, COMING SOON, publisher, description, wishlist toggle."""
+    def __init__(self, ui):
+        super().__init__()
+        self.ui = ui; self.aid = None; self.wish = None
+        self.inner = QWidget(); self.v = QVBoxLayout(self.inner); self.v.setContentsMargins(36, 20, 36, 30); self.v.setSpacing(14)
+        lay = QVBoxLayout(self); lay.setContentsMargins(0, 0, 0, 0); lay.addWidget(scroll(self.inner))
+
+    def show_app(self, aid):
+        self.aid = aid; a = SOON[aid]; clear_layout(self.v)
+        back = QPushButton("\u2039  Store"); back.setObjectName("ghost"); back.setFixedWidth(110); back.clicked.connect(lambda: self.ui.go("store")); self.v.addWidget(back)
+        row = QHBoxLayout(); row.setSpacing(28)
+        cov = QLabel(); cov.setPixmap(fit_pix(soon_cover(aid), 460, 460, 10)); row.addWidget(cov, 0, Qt.AlignTop)
+        col = QVBoxLayout(); col.setSpacing(10)
+        col.addWidget(soon_tag())
+        t = lbl(a["name"], None, True); t.setStyleSheet("font-size:34px;font-weight:900"); col.addWidget(t)
+        g = lbl(a["category"] + "  \u00b7  " + a["genre"], "small"); g.setStyleSheet("color:%s" % ACCENT); col.addWidget(g)
+        col.addWidget(lbl("Publisher: %s\nDeveloper: %s\nRelease date: To be announced" % (a["publisher"], a["developer"]), "muted"))
+        d = lbl(a["tagline"], None, True); d.setStyleSheet("font-size:15px;color:#dbe6f0"); col.addWidget(d)
+        ab = lbl(a["about"], "muted", True); ab.setMaximumWidth(640); col.addWidget(ab)
+        br = QHBoxLayout(); self.wish = WishButton(self.ui, aid); self.wish.setMinimumWidth(200); br.addWidget(self.wish)
+        br.addWidget(lbl("Not available to download yet.", "small")); br.addStretch(1); col.addLayout(br)
+        col.addStretch(1); row.addLayout(col, 1); self.v.addLayout(row); self.v.addStretch(1)
+
+    def refresh(self):
+        if self.wish:
+            try:
+                self.wish.refresh()
+            except RuntimeError:
+                pass
+
+
+class WishlistPage(QWidget):
+    def __init__(self, ui):
+        super().__init__()
+        self.ui = ui
+        self.inner = QWidget(); self.v = QVBoxLayout(self.inner); self.v.setContentsMargins(36, 24, 36, 30); self.v.setSpacing(12)
+        lay = QVBoxLayout(self); lay.setContentsMargins(0, 0, 0, 0); lay.addWidget(scroll(self.inner))
+        self._shown = None
+
+    def refresh(self):
+        wl = [x for x in self.ui.svc.wishlist() if x in SOON or x in self.ui.svc.catalog]
+        if wl == self._shown:
+            return
+        self._shown = wl; clear_layout(self.v)
+        self.v.addWidget(lbl("WISHLIST  \u00b7  %d" % len(wl), "h2"))
+        if not wl:
+            e = lbl("Your wishlist is empty. Open an upcoming game in the store and choose \u2661 Add to Wishlist.", "muted", True); self.v.addWidget(e)
+        for aid in wl:
+            soon = aid in SOON; a = SOON[aid] if soon else self.ui.svc.catalog[aid]
+            row = QFrame(); row.setObjectName("card"); row.setCursor(Qt.PointingHandCursor)
+            h = QHBoxLayout(row); h.setContentsMargins(0, 0, 14, 0); h.setSpacing(14)
+            im = QLabel(); im.setPixmap(fit_pix(soon_cover(aid), 232, 131, 7) if soon else cover_pix(pix(art(aid, "capsule.jpg")), 232, 131, 7)); h.addWidget(im)
+            col = QVBoxLayout(); col.setSpacing(4)
+            t = lbl(a["name"]); t.setStyleSheet("font-weight:800;font-size:16px;background:transparent"); col.addWidget(t)
+            g = lbl(a["category"] + "  \u00b7  " + a["genre"], "small"); g.setStyleSheet("background:transparent"); col.addWidget(g)
+            if soon:
+                tr = QHBoxLayout(); tr.addWidget(soon_tag()); tr.addStretch(1); col.addLayout(tr)
+            h.addLayout(col, 1)
+            rm = QPushButton("Remove"); rm.setObjectName("ghost"); rm.setCursor(Qt.PointingHandCursor)
+            rm.clicked.connect(lambda _=False, aid=aid: (self.ui.svc.toggle_wishlist(aid, False), self.ui.refresh_all())); h.addWidget(rm)
+            row.mousePressEvent = lambda e, aid=aid: self.ui.open_product(aid)
+            self.v.addWidget(row)
+        self.v.addStretch(1)
+
+
 # ---------------------------------------------------------------- store card
 class Card(QFrame):
     clicked = Signal(str)
@@ -527,13 +656,13 @@ class StorePage(QWidget):
         self.cards = []
         self.sections = {}
         for cat, title in ((GAMES, "GAMES"), (APPS, "APPS & TOOLS")):
-            ids = [a["id"] for a in ui.svc.catalog.values() if a["category"] == cat]
+            ids = [a["id"] for a in ui.svc.catalog.values() if a["category"] == cat] + [a["id"] for a in UPCOMING if a["category"] == cat]
             hl = lbl("%s  ·  %d" % (title, len(ids)), "h2"); self.sections[cat] = hl
             hdr = QHBoxLayout(); hdr.addWidget(hl); hdr.addStretch(1)
             v.addSpacing(10); v.addLayout(hdr)
             grid = QGridLayout(); grid.setHorizontalSpacing(16); grid.setVerticalSpacing(16)
             for k, aid in enumerate(ids):
-                c = Card(ui, aid); c.clicked.connect(ui.open_product); grid.addWidget(c, k // 4, k % 4, Qt.AlignLeft); self.cards.append(c)
+                c = (SoonCard if aid in SOON else Card)(ui, aid); c.clicked.connect(ui.open_product); grid.addWidget(c, k // 4, k % 4, Qt.AlignLeft); self.cards.append(c)
             grid.setColumnStretch(4, 1)
             v.addLayout(grid)
         v.addStretch(1)
@@ -1081,14 +1210,17 @@ class Main(QMainWindow):
         self.selfupd = QPushButton(""); self.selfupd.setObjectName("update"); self.selfupd.hide(); self.selfupd.clicked.connect(self.do_self_update); th.addWidget(self.selfupd)
         self.gu = QPushButton("GAME UPDATES"); self.gu.setObjectName("nav"); self.gu.setCursor(Qt.PointingHandCursor); self.gu.setToolTip("Check all your games and apps for updates now")
         self.gu.clicked.connect(self.game_updates); th.addWidget(self.gu)
+        self.wl = QPushButton("WISHLIST"); self.wl.setObjectName("nav"); self.wl.setCursor(Qt.PointingHandCursor); self.wl.setToolTip("Games on your wishlist")
+        self.wl.clicked.connect(lambda: self.go("wishlist")); th.addWidget(self.wl)
         self.gu_busy = False; self.gu_dots = 0; self.gu_timer = QTimer(self, interval=250, timeout=self._gu_spin); self.gu_panel = None
         self.badge = QPushButton("\u25CF EX CONNECT"); self.badge.setObjectName("badge"); self.badge.setCursor(Qt.PointingHandCursor); self.badge.clicked.connect(lambda: self.go("connect")); th.addWidget(self.badge)
         gear = QPushButton("SETTINGS"); gear.setObjectName("nav"); gear.setToolTip("Settings"); gear.clicked.connect(lambda: self.go("settings")); th.addWidget(gear)
-        self.navs["settings"] = gear
+        self.navs["settings"] = gear; self.navs["wishlist"] = self.wl
         v.addWidget(top)
         self.stack = QStackedWidget(); v.addWidget(self.stack, 1)
         self.pages = {"store": StorePage(self), "library": LibraryPage(self), "product": ProductPage(self), "downloads": DownloadsPage(self),
-                      "connect": ConnectPage(self), "settings": SettingsPage(self), "search": SearchPage(self)}
+                      "connect": ConnectPage(self), "settings": SettingsPage(self), "search": SearchPage(self),
+                      "soon": SoonPage(self), "wishlist": WishlistPage(self)}
         for p in self.pages.values():
             self.stack.addWidget(p)
         # footer
@@ -1110,7 +1242,7 @@ class Main(QMainWindow):
             self.search.blockSignals(True); self.search.clear(); self.search.blockSignals(False)
         self.stack.setCurrentWidget(self.pages[key])
         for k, b in self.navs.items():
-            on = k == key or (key == "product" and k == "store")
+            on = k == key or (key in ("product", "soon") and k == "store")
             b.setProperty("active", "true" if on else "false"); b.style().unpolish(b); b.style().polish(b)
         if key == "library" and not self.pages["library"].aid:
             first = next(iter(self.svc.installed), None) or next(iter(self.svc.catalog))
@@ -1118,6 +1250,8 @@ class Main(QMainWindow):
         self.refresh_all()
 
     def open_product(self, aid):
+        if aid in SOON:
+            self.pages["soon"].show_app(aid); self.go("soon"); return
         self.pages["product"].show_app(aid); self.go("product")
 
     def open_library(self, aid):
@@ -1156,7 +1290,9 @@ class Main(QMainWindow):
         self.update_footer()
 
     def refresh_all(self):
-        for k in ("store", "product", "library", "downloads", "connect"):
+        n = len([x for x in self.svc.wishlist() if x in SOON or x in self.svc.catalog])
+        self.wl.setText("WISHLIST  (%d)" % n if n else "WISHLIST")
+        for k in ("store", "product", "library", "downloads", "connect", "soon", "wishlist"):
             try:
                 self.pages[k].refresh()
             except RuntimeError:
@@ -1328,6 +1464,12 @@ def smoke(win, out_dir, phase):
         at(7000, lambda: win.pages["store"].banner.clicked.emit())
         at(8500, lambda: (L("scroll after click", win.pages["store"].sc.verticalScrollBar().value()), shot("screenshot_banner_click_games.png")))
         at(9500, lambda: win.close())
+    elif phase == "wishlist":
+        at(4000, lambda: (win.svc.toggle_wishlist("fireout-shine", True), win.open_product("fireout-shine")))
+        at(5500, lambda: shot("screenshot_fireout_shine.png"))
+        at(6000, lambda: win.go("wishlist"))
+        at(7000, lambda: shot("screenshot_wishlist.png"))
+        at(7500, lambda: win.close())
     elif phase == "featured":
         def both():
             f = win.pages["store"].featured; ims = []
@@ -1394,7 +1536,7 @@ def main():
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
     app = QApplication(sys.argv); app.setApplicationName(APP_NAME); app.setOrganizationName(PUBLISHER)
     app.setStyle("Fusion"); app.setStyleSheet(QSS); app.setWindowIcon(QIcon(res("assets", "icon.ico")))
-    f = QFont("Segoe UI", 10); app.setFont(f)
+    f = QFont("Segoe UI", 10); f.setFamilies(["Segoe UI", "Yu Gothic UI", "Meiryo", "MS Gothic", "Arial"]); app.setFont(f)
     if xc.WIN:
         try:
             import ctypes

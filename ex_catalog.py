@@ -107,6 +107,16 @@ CATALOG = [
                   "Left/Right arrow keys change slides", "Built-in update check"]),
 ]
 
+# upcoming games: shown in the store with COMING SOON and can be wishlisted; never installed, scanned or update-checked
+UPCOMING = [
+    dict(
+        id="fireout-shine", name="\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3", category=GAMES, genre="Racing \u00b7 Police chase",
+        publisher="EX Inc./HYPERION DIGITAL", developer="EX Inc./HYPERION DIGITAL", status="COMING SOON",
+        cover="fireout_shine_cover_user.jpg",
+        tagline="Street racing and police chases through neon-lit city streets.",
+        about="An upcoming street-racing game from EX Inc./HYPERION DIGITAL. Race through neon-lit city streets and get away from the police. More details will be announced later."),
+]
+
 # release asset sizes (bytes) at the time HYPERION DIGITAL EX 1.0.0 shipped; live sizes come from GitHub.
 KNOWN_SIZES = {
     "DREAM.VINE.Setup.1.3.2.exe": 58799178, "DREAM.VINE.1.3.2.Windows.x64.zip": 81397329,
