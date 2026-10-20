@@ -107,11 +107,11 @@ CATALOG = [
                   "Left/Right arrow keys change slides", "Built-in update check"]),
 ]
 
-# upcoming games: shown in the store with COMING SOON and can be wishlisted; never installed, scanned or update-checked
+# upcoming games: shown in the store with their status tag (e.g. COMING IN 2027) and can be wishlisted; never installed, scanned or update-checked
 UPCOMING = [
     dict(
         id="fireout-shine", name="\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3", category=GAMES, genre="Racing \u00b7 Police chase",
-        publisher="EX Inc./HYPERION DIGITAL", developer="EX Inc./HYPERION DIGITAL", status="COMING SOON",
+        publisher="EX Inc./HYPERION DIGITAL", developer="EX Inc./HYPERION DIGITAL", status="COMING IN 2027", release="2027",
         cover="fireout_shine_cover_user.jpg",
         tagline="Street racing and police chases through neon-lit city streets.",
         about="An upcoming street-racing game from EX Inc./HYPERION DIGITAL. Race through neon-lit city streets and get away from the police. More details will be announced later."),

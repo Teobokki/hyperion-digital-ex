@@ -471,9 +471,9 @@ def soon_cover(aid):
     return pix(res("assets", SOON[aid]["cover"]))
 
 
-def soon_tag():
-    t = lbl("COMING SOON"); t.setStyleSheet("background:%s;color:#0e1319;font-weight:900;font-size:11px;letter-spacing:1px;border-radius:4px;padding:3px 8px" % ORANGE)
-    t.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+def soon_tag(aid):
+    t = lbl(SOON[aid].get("status", "COMING SOON")); t.setStyleSheet("background:%s;color:#0e1319;font-weight:900;font-size:11px;border-radius:4px;padding:3px 10px" % ORANGE)
+    t.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed); t.ensurePolished(); t.setMinimumWidth(t.sizeHint().width() + 4)
     return t
 
 
@@ -506,7 +506,7 @@ class SoonCard(QFrame):
         t = lbl(a["name"]); t.setStyleSheet("font-weight:800;font-size:14px;background:transparent"); col.addWidget(t)
         g = lbl(a["genre"], "small"); g.setStyleSheet("background:transparent"); col.addWidget(g)
         v.addLayout(col)
-        row = QHBoxLayout(); row.setContentsMargins(12, 0, 12, 0); row.addWidget(soon_tag()); row.addStretch(1)
+        row = QHBoxLayout(); row.setContentsMargins(12, 0, 12, 0); row.addWidget(soon_tag(aid)); row.addStretch(1)
         self.wish = WishButton(ui, aid); row.addWidget(self.wish); v.addLayout(row)
 
     def refresh(self):
@@ -517,7 +517,7 @@ class SoonCard(QFrame):
 
 
 class SoonPage(QWidget):
-    """Store page for an upcoming game: cover (uncropped), name, COMING SOON, publisher, description, wishlist toggle."""
+    """Store page for an upcoming game: cover (uncropped), name, status tag, publisher, description, wishlist toggle."""
     def __init__(self, ui):
         super().__init__()
         self.ui = ui; self.aid = None; self.wish = None
@@ -543,10 +543,10 @@ def soon_panel(ui, aid, v):
         row = QHBoxLayout(); row.setSpacing(28)
         cov = QLabel(); cov.setPixmap(fit_pix(soon_cover(aid), 460, 460, 10)); row.addWidget(cov, 0, Qt.AlignTop)
         col = QVBoxLayout(); col.setSpacing(10)
-        col.addWidget(soon_tag())
+        col.addWidget(soon_tag(aid))
         t = lbl(a["name"], None, True); t.setStyleSheet("font-size:34px;font-weight:900"); col.addWidget(t)
         g = lbl(a["category"] + "  \u00b7  " + a["genre"], "small"); g.setStyleSheet("color:%s" % ACCENT); col.addWidget(g)
-        col.addWidget(lbl("Publisher: %s\nDeveloper: %s\nRelease date: To be announced" % (a["publisher"], a["developer"]), "muted"))
+        col.addWidget(lbl("Publisher: %s\nDeveloper: %s\nRelease date: %s" % (a["publisher"], a["developer"], a.get("release", "To be announced")), "muted"))
         d = lbl(a["tagline"], None, True); d.setStyleSheet("font-size:15px;color:#dbe6f0"); col.addWidget(d)
         ab = lbl(a["about"], "muted", True); ab.setMaximumWidth(640); col.addWidget(ab)
         br = QHBoxLayout(); wish = WishButton(ui, aid); wish.setMinimumWidth(200); br.addWidget(wish)
@@ -587,7 +587,7 @@ class WishlistPage(QWidget):
             t = lbl(a["name"]); t.setStyleSheet("font-weight:800;font-size:16px;background:transparent"); col.addWidget(t)
             g = lbl(a["category"] + "  \u00b7  " + a["genre"], "small"); g.setStyleSheet("background:transparent"); col.addWidget(g)
             if soon:
-                tr = QHBoxLayout(); tr.addWidget(soon_tag()); tr.addStretch(1); col.addLayout(tr)
+                tr = QHBoxLayout(); tr.addWidget(soon_tag(aid)); tr.addStretch(1); col.addLayout(tr)
             h.addLayout(col, 1)
             rm = QPushButton("Remove"); rm.setObjectName("ghost"); rm.setCursor(Qt.PointingHandCursor)
             rm.clicked.connect(lambda _=False, aid=aid: (self.ui.svc.toggle_wishlist(aid, False), self.ui.refresh_all())); h.addWidget(rm)
@@ -1490,7 +1490,7 @@ def smoke(win, out_dir, phase):
             L("top bar @%d:" % win.width(), [(b.text(), b.width(), b.sizeHint().width()) for b in (win.gu, win.wl, win.badge, win.navs["settings"])] + [(k, b.width(), b.sizeHint().width()) for k, b in win.navs.items()], "search", win.search.width())
             win.resize(1440, 900); QApplication.processEvents(); win.go("wishlist")
         at(4000, chk)
-        at(5500, lambda: (L("size", win.width(), win.height()), shot("screenshot_wishlist_v112.png")))
+        at(5500, lambda: (L("size", win.width(), win.height()), shot(os.environ.get("HDX_SMOKE_NAME", "screenshot_wishlist_v112.png"))))
         at(6000, lambda: win.close())
     elif phase == "wishlist":
         at(4000, lambda: (win.svc.toggle_wishlist("fireout-shine", True), win.open_product("fireout-shine")))
