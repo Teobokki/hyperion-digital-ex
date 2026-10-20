@@ -1,9 +1,9 @@
 {
-  "version": "1.0.8",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.0.8",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.8/HYPERION.DIGITAL.EX.Setup.1.0.8.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.8/HYPERION.DIGITAL.EX.Setup.1.0.8.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.8/HYPERION.DIGITAL.EX.1.0.8.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.8/HYPERION.DIGITAL.EX.Portable.exe",
-  "notes": "Featured & Recommended now has a DREAM VINE card right after the promo banner, with arrows and dots to switch (auto-rotates every 8 s, pauses on hover). It shows DREAM VINE's latest version and an Install / Play / Update button."
+  "version": "1.0.9",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.0.9",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.9/HYPERION.DIGITAL.EX.Setup.1.0.9.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.9/HYPERION.DIGITAL.EX.Setup.1.0.9.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.9/HYPERION.DIGITAL.EX.1.0.9.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.0.9/HYPERION.DIGITAL.EX.Portable.exe",
+  "notes": "Featured & Recommended: added a PIKNOTT CELESTIKA card after DREAM VINE (3 cards, banner first). Featured Install/Play/Update buttons now use the same style as the Library (green Play/Install, blue Update). The carousel rotates every 8 s continuously; a pause/play button next to the dots stops or resumes it."
 }
