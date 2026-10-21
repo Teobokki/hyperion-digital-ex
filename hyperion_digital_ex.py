@@ -426,19 +426,26 @@ class DreamVineCard(QFrame):
         qp.drawRoundedRect(QRectF(1, 1, w - 2, h - 2), 10, 10)
 
 
+FEATURED_IDS = ("fireout-shine",)
+FEATURED_BANNER = False
+
+
 class FeaturedCarousel(QWidget):
-    """Featured & Recommended: card 1 = FIREOUT SHINE, then DREAM VINE, PIKNOTT CELESTIKA, then the promo banner (whole, uncropped). Arrows + dots, 8 s auto-rotate (no hover pause); only the pause/play toggle stops it."""
+    """Featured & Recommended: FIREOUT SHINE is the only card (FEATURED_IDS); arrows, dots and auto-rotate only appear with 2+ cards. Arrows + dots, 8 s auto-rotate (no hover pause); only the pause/play toggle stops it."""
 
     def __init__(self, ui, banner):
         super().__init__()
-        self.banner = banner; self.games = [DreamVineCard(ui, aid) for aid in ("fireout-shine", "dream-vine", "piknott-celestika")]
+        self.banner = banner; self.games = [DreamVineCard(ui, aid) for aid in FEATURED_IDS]
         self.dv = self.games[0]
         for g in self.games:
             g.clicked.connect(ui.open_product)
         self.stack = QStackedWidget()
-        for g in self.games:            # card 1 = FIREOUT SHINE, then DREAM VINE, PIKNOTT CELESTIKA, then the promo banner
+        for g in self.games:            # FIREOUT SHINE only; other games stay in GAMES and the Library
             self.stack.addWidget(g)
-        self.stack.addWidget(banner)
+        if FEATURED_BANNER:
+            self.stack.addWidget(banner)
+        else:
+            banner.setParent(self); banner.hide()
         self.stack.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         v = QVBoxLayout(self); v.setContentsMargins(0, 0, 0, 0); v.setSpacing(8); v.addWidget(self.stack)
         row = QHBoxLayout(); row.setSpacing(8); row.addStretch(1)
@@ -455,6 +462,10 @@ class FeaturedCarousel(QWidget):
         self.pp.setStyleSheet("QPushButton{background:rgba(255,255,255,0.08);border:none;font-size:13px;border-radius:5px;padding:0} QPushButton:hover{background:rgba(92,184,255,0.45)}")
         self.pp.clicked.connect(self.toggle); row.addWidget(self.pp); row.addStretch(1); v.addLayout(row)
         self.timer = QTimer(self, interval=8000, timeout=lambda: self.go(self.stack.currentIndex() + 1)); self.timer.start()
+        if self.stack.count() <= 1:      # a single card: no arrows, dots, pause button or rotation
+            self.paused = True; self.timer.stop()
+            for w in [self.l, self.r, self.pp] + self.dots:
+                w.hide()
         self.go(0)
 
     def resizeEvent(self, e):
@@ -1602,6 +1613,13 @@ def smoke(win, out_dir, phase):
         at(12500, lambda: win.open_library("fireout-shine"))
         at(14000, lambda: (shot("library.png"), L("default_install_done", win.svc.state.get("default_install_done"))))
         at(15000, lambda: win.close())
+    elif phase == "featonly":
+        at(1000, lambda: (win.resize(1440, 900), win.go("store")))
+        at(7000, lambda: (L("featured cards", win.pages["store"].featured.stack.count(), "arrows visible", win.pages["store"].featured.l.isVisible()), shot("home_featured_only.png")))
+        at(16500, lambda: (L("after 9s index", win.pages["store"].featured.stack.currentIndex()), shot("home_featured_only_later.png")))
+        at(17000, lambda: win.open_product("fireout-shine"))
+        at(18500, lambda: shot("store_page_v116.png"))
+        at(19000, lambda: win.close())
     elif phase == "definstall":
         at(1000, lambda: (win.resize(1440, 900), win.go("store")))
         at(12000, lambda: (L("status", win.svc.status("fireout-shine")), win.pages["store"].featured.go(0), shot("default_install_progress.png")))
