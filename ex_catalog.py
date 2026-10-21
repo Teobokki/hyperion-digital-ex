@@ -43,13 +43,13 @@ CATALOG = [
         id="fireout-shine", name="\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3", repo="fireout-shine", category=GAMES,
         genre="Racing \u00b7 Police chase \u00b7 Open world",
         exe="FIREOUT SHINE.exe", folder="FIREOUT SHINE",
-        portable=["FIREOUT SHINE.exe", "FIREOUT-SHINE-Portable.exe"], version="1.0.0", release="2026",
+        portable=["FIREOUT SHINE.exe", "FIREOUT-SHINE-Portable.exe"], version="1.0.1", release="2026",
         publisher="EX Inc./HYPERION DIGITAL", developer="EX Inc./HYPERION DIGITAL",
         tagline="Open-world neon Tokyo and Hikari Beach: race, escape the police and live the night as ANA and DANIEL.",
-        about=("\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3 (FIREOUT SHINE) 1.0.0 is an open-world driving game set in "
+        about=("\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3 (FIREOUT SHINE) 1.0.1 is an open-world driving game set in "
                "an original neon Tokyo and the seaside Hikari Beach. Play as ANA and DANIEL, switch between them at any "
-               "time, take any car with F, enter street races and activities, and outrun the police as your wanted stars "
-               "climb. Customise your ride at FRGARAGE, go home to Ana and Daniel's house to sleep, save and change "
+               "time, take any car with F, enter street races and activities, and GET WANTED: outrun the police as your wanted "
+               "stars climb. Customise your ride at FRGARAGE, go home to Ana and Daniel's house to sleep, save and change "
                "outfits, and use the EX IX G9 phone to call a JP Taxi. "
                "Publisher: EX Inc./HYPERION DIGITAL. \u00a92026 EX Inc./HYPERION DIGITAL \u00a92026."),
         features=[
@@ -58,7 +58,7 @@ CATALOG = [
             "Take any car with F; street races against AI rivals, a time trial, a drift zone and speed cameras",
             "FRGARAGE: choose your car (including the DEBAUCHE sedan), paint it and set a custom number plate",
             "Weapon wheel (Tab): fists, baseball bat, pickaxe, taser, pistol, SMG and shotgun",
-            "Wanted stars (1-5) and police chases: escape to lose them, or get BUSTED",
+            "\u6307\u540d\u624b\u914d\u3055\u308c\u308b GET WANTED: wanted stars (1-5) and police chases. Escape to lose them, or get BUSTED",
             "Ana and Daniel's house: sleep, save, take a shower and change outfits in the wardrobe",
             "EX IX G9 phone with JP Taxi and Emergency Services, map waypoints and a day/night cycle",
         ]),

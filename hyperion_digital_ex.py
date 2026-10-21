@@ -43,6 +43,35 @@ def pix(path):
     return _PIX[path]
 
 
+def hero_pix(aid, w, h):
+    """Wide hero art. Square key art (cover.jpg, e.g. FIREOUT SHINE) is drawn whole at full height on the right over a
+    blurred fill of itself, so the logo is never cropped; other apps use their hero.jpg cropped to fill."""
+    cv = art(aid, "cover.jpg")
+    if not os.path.exists(cv):
+        return cover_pix(pix(art(aid, "hero.jpg")), w, h)
+    out = cover_pix(pix(art(aid, "hero_bg.jpg")), w, h)
+    c = pix(cv)
+    if not c.isNull():
+        s = min(h, w); sc = c.scaled(s, s, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        qp = QPainter(out); qp.drawPixmap(max(0, w - s - int(w * 0.04)), (h - s) // 2, sc); qp.end()
+    return out
+
+
+def capsule_pix(aid, w, h, radius=0):
+    """Card art. Square key art (cover.jpg) is fitted whole and centred over a blurred fill of itself (never cropped)."""
+    cv = art(aid, "cover.jpg")
+    if not os.path.exists(cv):
+        return cover_pix(pix(art(aid, "capsule.jpg")), w, h, radius)
+    c = pix(cv)
+    if not c.isNull():
+        bg = cover_pix(pix(art(aid, "hero_bg.jpg")), w, h); s = min(w, h)
+        sc = c.scaled(s, s, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        qp = QPainter(bg); qp.drawPixmap((w - s) // 2, (h - s) // 2, sc); qp.end()
+    if not radius:
+        return bg
+    return cover_pix(bg, w, h, radius)
+
+
 def cover_pix(p, w, h, radius=0):
     """scale/crop pixmap to fill w x h"""
     if p.isNull():
@@ -288,7 +317,7 @@ class Hero(QWidget):
         w, h = self.width(), self.height()
         path = QPainterPath(); path.addRoundedRect(QRectF(0, 0, w, h), 10, 10); qp.setClipPath(path)
         def draw(aid, op):
-            qp.setOpacity(op); qp.drawPixmap(0, 0, cover_pix(pix(art(aid, "hero.jpg")), w, h))
+            qp.setOpacity(op); qp.drawPixmap(0, 0, hero_pix(aid, w, h))
         if self.prev is not None and self.t < 1:
             draw(self.ids[self.prev], 1.0)
         draw(self.ids[self.i], self.t if self.prev is not None else 1.0)
@@ -389,7 +418,7 @@ class DreamVineCard(QFrame):
         qp = QPainter(self); qp.setRenderHint(QPainter.Antialiasing); qp.setRenderHint(QPainter.SmoothPixmapTransform)
         w, h = self.width(), self.height()
         path = QPainterPath(); path.addRoundedRect(QRectF(0, 0, w, h), 10, 10); qp.setClipPath(path)
-        qp.drawPixmap(0, 0, cover_pix(self.img, w, h))
+        qp.drawPixmap(0, 0, hero_pix(self.aid, w, h))
         g = QLinearGradient(0, 0, w * 0.8, 0); g.setColorAt(0, QColor(8, 12, 18, 235)); g.setColorAt(0.6, QColor(8, 12, 18, 140)); g.setColorAt(1, QColor(8, 12, 18, 0))
         qp.fillRect(0, 0, w, h, g)
         qp.setClipping(False)
@@ -398,7 +427,7 @@ class DreamVineCard(QFrame):
 
 
 class FeaturedCarousel(QWidget):
-    """Featured & Recommended: card 1 = promo banner (whole, uncropped), cards 2-3 = DREAM VINE, PIKNOTT CELESTIKA. Arrows + dots, 8 s auto-rotate (no hover pause); only the pause/play toggle stops it."""
+    """Featured & Recommended: card 1 = FIREOUT SHINE, then DREAM VINE, PIKNOTT CELESTIKA, then the promo banner (whole, uncropped). Arrows + dots, 8 s auto-rotate (no hover pause); only the pause/play toggle stops it."""
 
     def __init__(self, ui, banner):
         super().__init__()
@@ -406,9 +435,10 @@ class FeaturedCarousel(QWidget):
         self.dv = self.games[0]
         for g in self.games:
             g.clicked.connect(ui.open_product)
-        self.stack = QStackedWidget(); self.stack.addWidget(banner)
-        for g in self.games:
+        self.stack = QStackedWidget()
+        for g in self.games:            # card 1 = FIREOUT SHINE, then DREAM VINE, PIKNOTT CELESTIKA, then the promo banner
             self.stack.addWidget(g)
+        self.stack.addWidget(banner)
         self.stack.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         v = QVBoxLayout(self); v.setContentsMargins(0, 0, 0, 0); v.setSpacing(8); v.addWidget(self.stack)
         row = QHBoxLayout(); row.setSpacing(8); row.addStretch(1)
@@ -566,9 +596,6 @@ class WishlistPage(QWidget):
         self.top = []
         for a in UPCOMING:
             self.top.append(soon_panel(ui, a["id"], outer)); outer.addSpacing(10)
-        if "fireout-shine" in ui.svc.catalog:      # released 2026: featured with Install / Play / Update
-            fc = DreamVineCard(ui, "fireout-shine"); fc.setFixedHeight(380); fc.clicked.connect(ui.open_product)
-            outer.addWidget(fc); self.top.append(fc); outer.addSpacing(10)
         self.v = QVBoxLayout(); self.v.setSpacing(12); outer.addLayout(self.v); outer.addStretch(1)
         self._shown = None
 
@@ -585,7 +612,7 @@ class WishlistPage(QWidget):
             soon = aid in SOON; a = SOON[aid] if soon else self.ui.svc.catalog[aid]
             row = QFrame(); row.setObjectName("card"); row.setCursor(Qt.PointingHandCursor)
             h = QHBoxLayout(row); h.setContentsMargins(0, 0, 14, 0); h.setSpacing(14)
-            im = QLabel(); im.setPixmap(fit_pix(soon_cover(aid), 232, 131, 7) if soon else cover_pix(pix(art(aid, "capsule.jpg")), 232, 131, 7)); h.addWidget(im)
+            im = QLabel(); im.setPixmap(fit_pix(soon_cover(aid), 232, 131, 7) if soon else capsule_pix(aid, 232, 131, 7)); h.addWidget(im)
             col = QVBoxLayout(); col.setSpacing(4)
             t = lbl(a["name"]); t.setStyleSheet("font-weight:800;font-size:16px;background:transparent"); col.addWidget(t)
             g = lbl(a["category"] + "  \u00b7  " + a["genre"], "small"); g.setStyleSheet("background:transparent"); col.addWidget(g)
@@ -607,7 +634,7 @@ class Card(QFrame):
         self.ui, self.aid = ui, aid; a = ui.svc.catalog[aid]
         self.setObjectName("card"); self.setCursor(Qt.PointingHandCursor); self.setFixedWidth(w)
         v = QVBoxLayout(self); v.setContentsMargins(0, 0, 0, 10); v.setSpacing(6)
-        img = QLabel(); img.setPixmap(cover_pix(pix(art(aid, "capsule.jpg")), w - 2, int((w - 2) * 0.5625), 7)); v.addWidget(img)
+        img = QLabel(); img.setPixmap(capsule_pix(aid, w - 2, int((w - 2) * 0.5625), 7)); v.addWidget(img)
         row = QHBoxLayout(); row.setContentsMargins(12, 2, 12, 0)
         ic = QLabel(); ic.setPixmap(pix(art(aid, "icon.png")).scaled(34, 34, Qt.KeepAspectRatio, Qt.SmoothTransformation)); row.addWidget(ic)
         col = QVBoxLayout(); col.setSpacing(0)
@@ -678,6 +705,7 @@ class StorePage(QWidget):
         self.sections = {}
         for cat, title in ((GAMES, "GAMES"), (APPS, "APPS & TOOLS")):
             ids = [a["id"] for a in ui.svc.catalog.values() if a["category"] == cat] + [a["id"] for a in UPCOMING if a["category"] == cat]
+            ids.sort(key=lambda x: x != "fireout-shine")      # FIREOUT SHINE is always the first card
             hl = lbl("%s  ·  %d" % (title, len(ids)), "h2"); self.sections[cat] = hl
             hdr = QHBoxLayout(); hdr.addWidget(hl); hdr.addStretch(1)
             v.addSpacing(10); v.addLayout(hdr)
@@ -720,7 +748,7 @@ class SearchPage(QWidget):
         for a in hits:
             row = QFrame(); row.setObjectName("card"); row.setCursor(Qt.PointingHandCursor)
             h = QHBoxLayout(row); h.setContentsMargins(0, 0, 14, 0)
-            im = QLabel(); im.setPixmap(cover_pix(pix(art(a["id"], "capsule.jpg")), 232, 108, 7)); h.addWidget(im)
+            im = QLabel(); im.setPixmap(capsule_pix(a["id"], 232, 108, 7)); h.addWidget(im)
             col = QVBoxLayout(); t = lbl(a["name"]); t.setStyleSheet("font-weight:800;font-size:16px;background:transparent"); col.addWidget(t)
             d = lbl(a["tagline"], "muted", True); d.setStyleSheet("background:transparent"); col.addWidget(d)
             g = lbl(a["category"] + "  ·  " + a["genre"], "small"); g.setStyleSheet("background:transparent"); col.addWidget(g)
@@ -767,7 +795,7 @@ class ProductPage(QWidget):
         body.addLayout(gal)
         # side
         side = QVBoxLayout(); side.setSpacing(10)
-        cap = QLabel(); cap.setPixmap(cover_pix(pix(art(aid, "capsule.jpg")), 340, 191, 6)); side.addWidget(cap)
+        cap = QLabel(); cap.setPixmap(capsule_pix(aid, 340, 191, 6)); side.addWidget(cap)
         tl = lbl(a["tagline"], None, True); tl.setStyleSheet("font-size:13px;color:#c9d6e3"); tl.setFixedWidth(340); side.addWidget(tl)
         info = QFrame(); info.setObjectName("infobox"); g = QGridLayout(info); g.setContentsMargins(12, 10, 12, 10); g.setVerticalSpacing(5)
         rows = [("CATEGORY", a["category"]), ("GENRE", a["genre"]), ("VERSION", svc.latest_version(aid)), ("DOWNLOAD SIZE", svc.size_text(aid)),
@@ -893,7 +921,7 @@ class LibraryPage(QWidget):
         if not self.aid:
             return
         head = self._head; w, h = max(head.width(), 400), head.height(); a = self.ui.svc.catalog[self.aid]
-        out = cover_pix(pix(art(self.aid, "hero.jpg")), w, h)
+        out = hero_pix(self.aid, w, h)
         qp = QPainter(out); qp.setRenderHint(QPainter.Antialiasing)
         g = QLinearGradient(0, h * 0.35, 0, h); g.setColorAt(0, QColor(0, 0, 0, 0)); g.setColorAt(1, QColor(10, 14, 20, 235)); qp.fillRect(0, 0, w, h, g)
         qp.drawPixmap(28, h - 108, pix(art(self.aid, "icon.png")).scaled(80, 80, Qt.KeepAspectRatio, Qt.SmoothTransformation))
@@ -953,7 +981,7 @@ class DownloadsPage(QWidget):
             for j in active + done:
                 a = svc.catalog[j.app_id]
                 row = QFrame(); row.setObjectName("panel"); h = QHBoxLayout(row); h.setContentsMargins(14, 12, 14, 12); h.setSpacing(14)
-                im = QLabel(); im.setPixmap(cover_pix(pix(art(j.app_id, "capsule.jpg")), 178, 100, 5)); h.addWidget(im)
+                im = QLabel(); im.setPixmap(capsule_pix(j.app_id, 178, 100, 5)); h.addWidget(im)
                 col = QVBoxLayout(); t = lbl(a["name"]); t.setStyleSheet("font-weight:800;font-size:15px"); col.addWidget(t)
                 bar = QProgressBar(); bar.setRange(0, 1000); bar.setTextVisible(False); bar.setFixedHeight(10); col.addWidget(bar)
                 info = lbl("", "small", True); col.addWidget(info); h.addLayout(col, 1)
@@ -1257,7 +1285,29 @@ class Main(QMainWindow):
         self.refresh_all()
         self.update_dismissed = False; self.update_dialog = None
         QTimer.singleShot(int(os.environ.get("HDX_FIRST_CHECK_MS", "5000")), self.auto_check)
+        self._default_tries = 0; QTimer.singleShot(3000, self.default_install)
         self.update_timer = QTimer(self, interval=5 * 60 * 1000, timeout=lambda: (self.auto_check(), self.svc.refresh())); self.update_timer.start()
+
+    def default_install(self):
+        """FIREOUT SHINE comes installed by default: one background install the first time HDEX 1.1.5+ runs.
+        Done once only - if the user uninstalls it later it is never forced back."""
+        svc = self.svc; aid = "fireout-shine"
+        if svc.state.get("default_install_done") or aid not in svc.catalog:
+            return
+        try:
+            svc.scan()
+        except Exception:
+            pass
+        if svc.status(aid) != "install":          # already installed / queued / playing: nothing to do
+            svc.state["default_install_done"] = True; svc.save(); return
+        k, a = svc.install_choice(aid)
+        if not a:                                 # catalog not synced yet (offline / first launch): retry for a while
+            self._default_tries += 1
+            if self._default_tries < 40:
+                QTimer.singleShot(15000, self.default_install)
+            return
+        svc.install(aid); svc.state["default_install_done"] = True; svc.save()
+        self.refresh_all()
 
     def go(self, key):
         self.current = key
@@ -1313,8 +1363,9 @@ class Main(QMainWindow):
         self.update_footer()
 
     def refresh_all(self):
-        n = len([x for x in self.svc.wishlist() if x in SOON or x in self.svc.catalog])
+        n = len([x for x in self.svc.wishlist() if (x in SOON or x in self.svc.catalog) and x != "fireout-shine"])
         self.wl.setText("WISHLIST (%d)" % n if n else "WISHLIST"); fit(self.wl)
+        self.wl.setVisible(bool(UPCOMING) or n > 0)      # wishlist is only for unreleased games; FIREOUT SHINE is released
         for k in ("store", "product", "library", "downloads", "connect", "soon", "wishlist"):
             try:
                 self.pages[k].refresh()
@@ -1495,6 +1546,16 @@ def smoke(win, out_dir, phase):
         at(4000, chk)
         at(5500, lambda: (L("size", win.width(), win.height()), shot(os.environ.get("HDX_SMOKE_NAME", "screenshot_wishlist_v112.png"))))
         at(6000, lambda: win.close())
+    elif phase == "v115":
+        at(1000, lambda: (win.resize(1440, 900), win.go("store")))
+        at(7000, lambda: (win.pages["store"].featured.go(0), shot("hdex_home_featured.png")))
+        at(8000, lambda: win.pages["store"].scroll_to_games())
+        at(9000, lambda: shot("hdex_home_games.png"))
+        at(10000, lambda: win.open_product("fireout-shine"))
+        at(11500, lambda: (L("wishlist nav visible", win.wl.isVisible(), "status", win.svc.status("fireout-shine")), shot("hdex_store_page.png")))
+        at(12500, lambda: win.open_library("fireout-shine"))
+        at(14000, lambda: (shot("library.png"), L("default_install_done", win.svc.state.get("default_install_done"))))
+        at(15000, lambda: win.close())
     elif phase == "wishlist":
         at(4000, lambda: (win.svc.toggle_wishlist("fireout-shine", True), win.open_product("fireout-shine")))
         at(5500, lambda: shot("screenshot_fireout_shine.png"))
