@@ -402,7 +402,7 @@ class FeaturedCarousel(QWidget):
 
     def __init__(self, ui, banner):
         super().__init__()
-        self.banner = banner; self.games = [DreamVineCard(ui, aid) for aid in ("dream-vine", "piknott-celestika")]
+        self.banner = banner; self.games = [DreamVineCard(ui, aid) for aid in ("fireout-shine", "dream-vine", "piknott-celestika")]
         self.dv = self.games[0]
         for g in self.games:
             g.clicked.connect(ui.open_product)
@@ -566,13 +566,16 @@ class WishlistPage(QWidget):
         self.top = []
         for a in UPCOMING:
             self.top.append(soon_panel(ui, a["id"], outer)); outer.addSpacing(10)
+        if "fireout-shine" in ui.svc.catalog:      # released 2026: featured with Install / Play / Update
+            fc = DreamVineCard(ui, "fireout-shine"); fc.setFixedHeight(380); fc.clicked.connect(ui.open_product)
+            outer.addWidget(fc); self.top.append(fc); outer.addSpacing(10)
         self.v = QVBoxLayout(); self.v.setSpacing(12); outer.addLayout(self.v); outer.addStretch(1)
         self._shown = None
 
     def refresh(self):
         for w in self.top:
             w.refresh()
-        wl = [x for x in self.ui.svc.wishlist() if (x in SOON or x in self.ui.svc.catalog) and x not in [a["id"] for a in UPCOMING]]
+        wl = [x for x in self.ui.svc.wishlist() if (x in SOON or x in self.ui.svc.catalog) and x not in [a["id"] for a in UPCOMING] and x != "fireout-shine"]
         if wl == self._shown:
             return
         self._shown = wl; clear_layout(self.v)

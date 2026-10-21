@@ -40,6 +40,29 @@ CATALOG = [
             "Keyboard + mouse and basic gamepad support",
         ]),
     dict(
+        id="fireout-shine", name="\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3", repo="fireout-shine", category=GAMES,
+        genre="Racing \u00b7 Police chase \u00b7 Open world",
+        exe="FIREOUT SHINE.exe", folder="FIREOUT SHINE",
+        portable=["FIREOUT SHINE.exe", "FIREOUT-SHINE-Portable.exe"], version="1.0.0", release="2026",
+        publisher="EX Inc./HYPERION DIGITAL", developer="EX Inc./HYPERION DIGITAL",
+        tagline="Open-world neon Tokyo and Hikari Beach: race, escape the police and live the night as ANA and DANIEL.",
+        about=("\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3 (FIREOUT SHINE) 1.0.0 is an open-world driving game set in "
+               "an original neon Tokyo and the seaside Hikari Beach. Play as ANA and DANIEL, switch between them at any "
+               "time, take any car with F, enter street races and activities, and outrun the police as your wanted stars "
+               "climb. Customise your ride at FRGARAGE, go home to Ana and Daniel's house to sleep, save and change "
+               "outfits, and use the EX IX G9 phone to call a JP Taxi. "
+               "Publisher: EX Inc./HYPERION DIGITAL. \u00a92026 EX Inc./HYPERION DIGITAL \u00a92026."),
+        features=[
+            "Open-world neon Tokyo plus Hikari Beach: scramble crossing, sign-lined streets, an elevated expressway and glass skyscrapers",
+            "Play as ANA and DANIEL and switch between them at any time (Q)",
+            "Take any car with F; street races against AI rivals, a time trial, a drift zone and speed cameras",
+            "FRGARAGE: choose your car (including the DEBAUCHE sedan), paint it and set a custom number plate",
+            "Weapon wheel (Tab): fists, baseball bat, pickaxe, taser, pistol, SMG and shotgun",
+            "Wanted stars (1-5) and police chases: escape to lose them, or get BUSTED",
+            "Ana and Daniel's house: sleep, save, take a shower and change outfits in the wardrobe",
+            "EX IX G9 phone with JP Taxi and Emergency Services, map waypoints and a day/night cycle",
+        ]),
+    dict(
         id="hyperia", name="HYPERIA", repo="hyperia", category=APPS, genre="Desktop shell",
         exe="HYPERIA.exe", folder="HYPERIA", portable=[], version="1.1.23",
         tagline="A creative desktop shell for Windows: wallpaper, taskbar, Start menu and windows inside the shell.",
@@ -107,15 +130,8 @@ CATALOG = [
                   "Left/Right arrow keys change slides", "Built-in update check"]),
 ]
 
-# upcoming games: shown in the store with their status tag (e.g. COMING IN 2027) and can be wishlisted; never installed, scanned or update-checked
-UPCOMING = [
-    dict(
-        id="fireout-shine", name="\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3", category=GAMES, genre="Racing \u00b7 Police chase",
-        publisher="EX Inc./HYPERION DIGITAL", developer="EX Inc./HYPERION DIGITAL", status="COMING IN 2027", release="2027",
-        cover="fireout_shine_cover_user.jpg",
-        tagline="Street racing and police chases through neon-lit city streets.",
-        about="An upcoming street-racing game from EX Inc./HYPERION DIGITAL. Race through neon-lit city streets and get away from the police. More details will be announced later."),
-]
+# upcoming games: shown in the store with a status tag and can be wishlisted; never installed, scanned or update-checked (none right now)
+UPCOMING = []
 
 # release asset sizes (bytes) at the time HYPERION DIGITAL EX 1.0.0 shipped; live sizes come from GitHub.
 KNOWN_SIZES = {
@@ -125,5 +141,6 @@ KNOWN_SIZES = {
     "EX.CREATOR.STUDIO.Setup.1.3.0.exe": 69162520, "EX.CREATOR.STUDIO.zip": 102129520,
     "EX.NETWORK.Setup.1.2.1.exe": 10069445, "EX_NETWORK.zip": 10861118,
     "EX.SUDO.TERMINAL.Setup.1.1.2.exe": 11926787, "EX_SUDO_TERMINAL.zip": 13609861,
+    "FIREOUT-SHINE-Setup-1.0.0.exe": 136641159, "FIREOUT-SHINE-1.0.0-Windows-x64.zip": 163100936,
     "DREAM.VINE.LAUNCHER.Setup.1.0.2.exe": 13957793, "DREAM.VINE.LAUNCHER.1.0.2.Windows.x64.zip": 17697430,
 }
