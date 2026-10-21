@@ -1102,6 +1102,31 @@ def set_startup(on):
             pass
 
 
+class GameUpdateDialog(QDialog):
+    """'Update available' popup for installed games/apps with a newer release: Update (one click) or Later."""
+
+    def __init__(self, main, ups):
+        super().__init__(main)
+        self.main = main; svc = main.svc
+        self.setWindowTitle("Update available"); self.setModal(False); self.setFixedWidth(560)
+        self.setStyleSheet("QDialog{background:%s;border:1px solid %s}" % (PANEL, LINE))
+        v = QVBoxLayout(self); v.setContentsMargins(26, 24, 26, 22); v.setSpacing(12)
+        k = lbl("UPDATE AVAILABLE", "h2"); k.setStyleSheet("color:%s;font-size:12px;font-weight:800;letter-spacing:2px" % ORANGE); v.addWidget(k)
+        for aid in ups:
+            a = svc.catalog[aid]; row = QHBoxLayout(); row.setSpacing(14)
+            ic = QLabel(); ic.setPixmap(pix(art(aid, "icon.png")).scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)); row.addWidget(ic, 0, Qt.AlignTop)
+            col = QVBoxLayout(); col.setSpacing(2)
+            t = lbl("%s v%s" % (a["name"], svc.latest_version(aid)), None, True); t.setStyleSheet("font-size:19px;font-weight:900"); col.addWidget(t)
+            old = ", ".join(v_ or "?" for _k, _e, v_ in svc.outdated_copies(aid)) or (svc.installed.get(aid) or {}).get("version", "?")
+            col.addWidget(lbl("You have v%s. EX CONNECT downloads and installs the update in the background." % old, "muted", True))
+            row.addLayout(col, 1); v.addLayout(row)
+        br = QHBoxLayout(); br.addStretch(1)
+        later = QPushButton("Later"); later.setObjectName("ghost"); later.setCursor(Qt.PointingHandCursor); later.clicked.connect(self.close); br.addWidget(later)
+        up = QPushButton("\u2B06  Update" if len(ups) == 1 else "\u2B06  Update all"); up.setObjectName("primary"); up.setProperty("mode", "update"); up.setCursor(Qt.PointingHandCursor)
+        up.clicked.connect(lambda: ([svc.install(x, update=True) for x in ups], self.close(), main.refresh_all()))
+        br.addWidget(up); v.addLayout(br)
+
+
 class UpdateDialog(QDialog):
     """'Update available' prompt for HYPERION DIGITAL EX itself: Update now (resumable download, SHA-256 check,
     silent Setup, relaunch) or Later (no more prompts this session)."""
@@ -1345,6 +1370,7 @@ class Main(QMainWindow):
             self.refresh_light(); return
         if ev == "catalog":
             self.update_self_badge(); self.update_gu_badge()
+            self.maybe_game_update_popup()
         if ev == "gu_done":
             self.gu_busy = False; self.gu_timer.stop(); self.update_gu_badge(); self.refresh_all(); self.show_gu_panel(); return
         if ev == "selfcheck":
@@ -1403,6 +1429,16 @@ class Main(QMainWindow):
 
     # ----- self update -----
     # ----- GAME UPDATES (instant check of every library app) -----
+    def maybe_game_update_popup(self):
+        """Pop up 'Update available' once per session for each installed game/app that has a newer version."""
+        seen = getattr(self, "_gup_seen", set()); self._gup_seen = seen
+        ups = [x for x in self.updates_list() if (x, self.svc.latest_version(x)) not in seen and not self.svc.job_for(x)]
+        if not ups or (getattr(self, "gup_dialog", None) and self.gup_dialog.isVisible()):
+            return
+        for x in ups:
+            seen.add((x, self.svc.latest_version(x)))
+        self.gup_dialog = GameUpdateDialog(self, ups); self.gup_dialog.show(); self.gup_dialog.raise_()
+
     def updates_list(self):
         return [aid for aid in self.svc.catalog if self.svc.status(aid) == "update"]
 
