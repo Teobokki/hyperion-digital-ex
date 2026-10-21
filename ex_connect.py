@@ -133,7 +133,7 @@ class ExConnect:
         self.state = self._load(self.state_path, {})
         self.state.setdefault("settings", {"library": os.path.join(self.dir, "library"), "method": "setup", "startup": False})
         self.state.setdefault("playtime", {}); self.state.setdefault("last_played", {}); self.state.setdefault("jobs", [])
-        self.state.setdefault("ex_installs", {}); self.state.setdefault("wishlist", [])
+        self.state.setdefault("ex_installs", {}); self.state.pop("wishlist", None)   # old saved wishlist data is ignored and dropped
         self.catalog = {a["id"]: dict(a) for a in CATALOG}
         self.cache = self._load(os.path.join(self.dir, "catalog_cache.json"), {})
         for aid, c in self.cache.get("apps", {}).items():
@@ -611,22 +611,6 @@ class ExConnect:
             self.scan(); self.notify("installed", aid)
         threading.Thread(target=run, daemon=True).start()
 
-    # ---------- wishlist (saved in the state file) ----------
-    def wishlist(self):
-        return list(self.state.get("wishlist", []))
-
-    def on_wishlist(self, aid):
-        return aid in self.state.get("wishlist", [])
-
-    def toggle_wishlist(self, aid, on=None):
-        wl = self.state.setdefault("wishlist", [])
-        on = (aid not in wl) if on is None else on
-        if on and aid not in wl:
-            wl.append(aid)
-        elif not on and aid in wl:
-            wl.remove(aid)
-        self.save()
-        return on
 
     def connected_count(self):
         return len(self.installed)

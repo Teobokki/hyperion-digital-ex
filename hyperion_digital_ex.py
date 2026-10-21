@@ -495,7 +495,7 @@ class FeaturedCarousel(QWidget):
             g.refresh()
 
 
-# ---------------------------------------------------------------- upcoming games + wishlist
+# ---------------------------------------------------------------- upcoming games
 def fit_pix(p, w, h, radius=0, bg=None):
     """scale pixmap to fit inside w x h (letterboxed, nothing cropped)"""
     out = QPixmap(w, h); out.fill(Qt.transparent)
@@ -518,21 +518,6 @@ def soon_tag(aid):
     return t
 
 
-class WishButton(QPushButton):
-    def __init__(self, ui, aid):
-        super().__init__()
-        self.ui, self.aid = ui, aid; self.setObjectName("ghost"); self.setCursor(Qt.PointingHandCursor)
-        self.clicked.connect(self.toggle); self.refresh()
-
-    def toggle(self):
-        self.ui.svc.toggle_wishlist(self.aid); self.ui.refresh_all()
-
-    def refresh(self):
-        on = self.ui.svc.on_wishlist(self.aid)
-        self.setText("On Wishlist \u2713" if on else "\u2661  Add to Wishlist")
-        self.setStyleSheet("QPushButton{color:%s;font-weight:700}" % ("#9be57c" if on else FG))
-
-
 class SoonCard(QFrame):
     """Store card for an upcoming (not installable) game."""
     clicked = Signal(str)
@@ -547,39 +532,34 @@ class SoonCard(QFrame):
         t = lbl(a["name"]); t.setStyleSheet("font-weight:800;font-size:14px;background:transparent"); col.addWidget(t)
         g = lbl(a["genre"], "small"); g.setStyleSheet("background:transparent"); col.addWidget(g)
         v.addLayout(col)
-        row = QHBoxLayout(); row.setContentsMargins(12, 0, 12, 0); row.addWidget(soon_tag(aid)); row.addStretch(1)
-        self.wish = WishButton(ui, aid); row.addWidget(self.wish); v.addLayout(row)
+        row = QHBoxLayout(); row.setContentsMargins(12, 0, 12, 0); row.addWidget(soon_tag(aid)); row.addStretch(1); v.addLayout(row)
 
     def refresh(self):
-        self.wish.refresh()
+        pass
 
     def mousePressEvent(self, e):
         self.clicked.emit(self.aid)
 
 
 class SoonPage(QWidget):
-    """Store page for an upcoming game: cover (uncropped), name, status tag, publisher, description, wishlist toggle."""
+    """Store page for an upcoming game: cover (uncropped), name, status tag, publisher, description."""
     def __init__(self, ui):
         super().__init__()
-        self.ui = ui; self.aid = None; self.wish = None
+        self.ui = ui; self.aid = None
         self.inner = QWidget(); self.v = QVBoxLayout(self.inner); self.v.setContentsMargins(36, 20, 36, 30); self.v.setSpacing(14)
         lay = QVBoxLayout(self); lay.setContentsMargins(0, 0, 0, 0); lay.addWidget(scroll(self.inner))
 
     def show_app(self, aid):
         self.aid = aid; clear_layout(self.v)
         back = QPushButton("\u2039  Store"); back.setObjectName("ghost"); back.setFixedWidth(110); back.clicked.connect(lambda: self.ui.go("store")); self.v.addWidget(back)
-        self.wish = soon_panel(self.ui, aid, self.v); self.v.addStretch(1)
+        soon_panel(self.ui, aid, self.v); self.v.addStretch(1)
 
     def refresh(self):
-        if self.wish:
-            try:
-                self.wish.refresh()
-            except RuntimeError:
-                pass
+        pass
 
 
 def soon_panel(ui, aid, v):
-        """Store-page layout for an upcoming game (full uncropped cover + details + wishlist toggle); returns the WishButton."""
+        """Store-page layout for an upcoming game (full uncropped cover + details)."""
         a = SOON[aid]
         row = QHBoxLayout(); row.setSpacing(28)
         cov = QLabel(); cov.setPixmap(fit_pix(soon_cover(aid), 460, 460, 10)); row.addWidget(cov, 0, Qt.AlignTop)
@@ -590,53 +570,13 @@ def soon_panel(ui, aid, v):
         col.addWidget(lbl("Publisher: %s\nDeveloper: %s\nRelease date: %s" % (a["publisher"], a["developer"], a.get("release", "To be announced")), "muted"))
         d = lbl(a["tagline"], None, True); d.setStyleSheet("font-size:15px;color:#dbe6f0"); col.addWidget(d)
         ab = lbl(a["about"], "muted", True); ab.setMaximumWidth(640); col.addWidget(ab)
-        br = QHBoxLayout(); wish = WishButton(ui, aid); wish.setMinimumWidth(200); br.addWidget(wish)
+        br = QHBoxLayout()
         br.addWidget(lbl("Not available to download yet.", "small")); br.addStretch(1); col.addLayout(br)
         col.addStretch(1); row.addLayout(col, 1); v.addLayout(row)
-        return wish
 
 
-class WishlistPage(QWidget):
-    def __init__(self, ui):
-        super().__init__()
-        self.ui = ui
-        self.inner = QWidget(); outer = QVBoxLayout(self.inner); outer.setContentsMargins(36, 24, 36, 30); outer.setSpacing(14)
-        lay = QVBoxLayout(self); lay.setContentsMargins(0, 0, 0, 0); lay.addWidget(scroll(self.inner))
-        # featured upcoming game, always shown in its store-page layout (wishlisted or not)
-        outer.addWidget(lbl("WISHLIST", "h2"))
-        self.top = []
-        for a in UPCOMING:
-            self.top.append(soon_panel(ui, a["id"], outer)); outer.addSpacing(10)
-        self.v = QVBoxLayout(); self.v.setSpacing(12); outer.addLayout(self.v); outer.addStretch(1)
-        self._shown = None
-
-    def refresh(self):
-        for w in self.top:
-            w.refresh()
-        wl = [x for x in self.ui.svc.wishlist() if (x in SOON or x in self.ui.svc.catalog) and x not in [a["id"] for a in UPCOMING] and x != "fireout-shine"]
-        if wl == self._shown:
-            return
-        self._shown = wl; clear_layout(self.v)
-        if wl:
-            self.v.addWidget(lbl("ALSO ON YOUR WISHLIST  \u00b7  %d" % len(wl), "h2"))
-        for aid in wl:
-            soon = aid in SOON; a = SOON[aid] if soon else self.ui.svc.catalog[aid]
-            row = QFrame(); row.setObjectName("card"); row.setCursor(Qt.PointingHandCursor)
-            h = QHBoxLayout(row); h.setContentsMargins(0, 0, 14, 0); h.setSpacing(14)
-            im = QLabel(); im.setPixmap(fit_pix(soon_cover(aid), 232, 131, 7) if soon else capsule_pix(aid, 232, 131, 7)); h.addWidget(im)
-            col = QVBoxLayout(); col.setSpacing(4)
-            t = lbl(a["name"]); t.setStyleSheet("font-weight:800;font-size:16px;background:transparent"); col.addWidget(t)
-            g = lbl(a["category"] + "  \u00b7  " + a["genre"], "small"); g.setStyleSheet("background:transparent"); col.addWidget(g)
-            if soon:
-                tr = QHBoxLayout(); tr.addWidget(soon_tag(aid)); tr.addStretch(1); col.addLayout(tr)
-            h.addLayout(col, 1)
-            rm = QPushButton("Remove"); rm.setObjectName("ghost"); rm.setCursor(Qt.PointingHandCursor)
-            rm.clicked.connect(lambda _=False, aid=aid: (self.ui.svc.toggle_wishlist(aid, False), self.ui.refresh_all())); h.addWidget(rm)
-            row.mousePressEvent = lambda e, aid=aid: self.ui.open_product(aid)
-            self.v.addWidget(row)
 
 
-# ---------------------------------------------------------------- store card
 class Card(QFrame):
     clicked = Signal(str)
 
@@ -1114,6 +1054,241 @@ def set_startup(on):
             pass
 
 
+# ---------------------------------------------------------------- EX PROFILE
+def known_downloads():
+    """The user's Downloads folder (Windows Known Folder, falling back to %USERPROFILE%\\Downloads)."""
+    if sys.platform == "win32":
+        try:
+            import ctypes, uuid
+            from ctypes import wintypes
+            class GUID(ctypes.Structure):
+                _fields_ = [("Data1", wintypes.DWORD), ("Data2", wintypes.WORD), ("Data3", wintypes.WORD), ("Data4", ctypes.c_ubyte * 8)]
+            u = uuid.UUID("{374DE290-123F-4565-9164-39C4925E467B}"); g = GUID(); ctypes.memmove(ctypes.byref(g), u.bytes_le, 16)
+            p = ctypes.c_wchar_p()
+            if ctypes.windll.shell32.SHGetKnownFolderPath(ctypes.byref(g), 0, None, ctypes.byref(p)) == 0 and p.value:
+                return p.value
+        except Exception:
+            pass
+        up = os.environ.get("USERPROFILE")
+        if up:
+            return os.path.join(up, "Downloads")
+    return xc.downloads_folder()
+
+
+class Profile:
+    """EX PROFILE data: profile.json + avatar.png in HDEX's app-data folder (survives the original image being moved)."""
+    MAXBIO = 200
+
+    def __init__(self, svc):
+        self.dir = os.path.join(svc.dir, "profile"); os.makedirs(self.dir, exist_ok=True)
+        self.path = os.path.join(self.dir, "profile.json"); self.avatar_path = os.path.join(self.dir, "avatar.png")
+        try:
+            with open(self.path, encoding="utf-8") as f:
+                self.data = json.load(f)
+        except Exception:
+            self.data = {}
+        if not isinstance(self.data, dict):
+            self.data = {}
+        self.data.setdefault("name", os.environ.get("USERNAME") or os.environ.get("USER") or "Player")
+        self.data.setdefault("bio", "")
+        self.data.setdefault("member_since", time.strftime("%Y-%m-%d"))
+        self.data.setdefault("saved", False)
+        if not os.path.exists(self.path):
+            self.save()
+
+    def save(self):
+        tmp = self.path + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(self.data, f, indent=1, ensure_ascii=False)
+        os.replace(tmp, self.path)
+
+    def has_avatar(self):
+        return os.path.exists(self.avatar_path)
+
+    def avatar(self, size):
+        p = QPixmap(self.avatar_path) if self.has_avatar() else QPixmap()
+        if p.isNull():
+            p = default_avatar(self.data.get("name", "?"))
+        return circle_pix(p, size)
+
+
+def default_avatar(name, s=256):
+    out = QPixmap(s, s); out.fill(Qt.transparent)
+    qp = QPainter(out); qp.setRenderHint(QPainter.Antialiasing)
+    g = QLinearGradient(0, 0, s, s); g.setColorAt(0, QColor("#1f6fd1")); g.setColorAt(1, QColor("#6a2bd9")); qp.fillRect(0, 0, s, s, g)
+    f = QFont("Segoe UI", int(s * 0.36)); f.setWeight(QFont.Black); qp.setFont(f); qp.setPen(QColor("#ffffff"))
+    ini = "".join(w[0] for w in (name or "?").split()[:2]).upper() or "?"
+    qp.drawText(QRectF(0, 0, s, s), Qt.AlignCenter, ini); qp.end()
+    return out
+
+
+def circle_pix(p, size):
+    s = p.scaled(size, size, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
+    s = s.copy((s.width() - size) // 2, (s.height() - size) // 2, size, size)
+    out = QPixmap(size, size); out.fill(Qt.transparent)
+    qp = QPainter(out); qp.setRenderHint(QPainter.Antialiasing)
+    path = QPainterPath(); path.addEllipse(QRectF(0, 0, size, size)); qp.setClipPath(path); qp.drawPixmap(0, 0, s)
+    qp.setClipping(False); qp.setPen(QPen(QColor(ACCENT), max(2, size // 40))); qp.setBrush(Qt.NoBrush)
+    qp.drawEllipse(QRectF(1, 1, size - 2, size - 2)); qp.end()
+    return out
+
+
+def load_square_image(path, size=256, max_bytes=60 * 1024 * 1024):
+    """Load an image file safely (size cap, decode check, huge images scaled while reading), centre-crop square, resize."""
+    from PySide6.QtGui import QImageReader, QImage
+    if not os.path.isfile(path):
+        raise ValueError("The file could not be found.")
+    if os.path.getsize(path) > max_bytes:
+        raise ValueError("That image is too large (over 60 MB).")
+    r = QImageReader(path); r.setAutoTransform(True)
+    sz = r.size()
+    if not sz.isValid() or sz.width() <= 0 or sz.height() <= 0:
+        raise ValueError("That file is not a picture HYPERION DIGITAL EX can read.")
+    if max(sz.width(), sz.height()) > 4096:            # huge images: let the decoder scale them down
+        k = 4096.0 / max(sz.width(), sz.height()); r.setScaledSize(QSize(max(1, int(sz.width() * k)), max(1, int(sz.height() * k))))
+    img = r.read()
+    if img.isNull():
+        raise ValueError("That picture could not be opened (%s)." % (r.errorString() or "unknown error"))
+    s = min(img.width(), img.height())
+    img = img.copy((img.width() - s) // 2, (img.height() - s) // 2, s, s).scaled(size, size, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
+    return img.convertToFormat(QImage.Format_ARGB32)
+
+
+class EditProfileDialog(QDialog):
+    PIC_FILTER = "Pictures (*.png *.jpg *.jpeg *.webp *.gif *.bmp)"
+
+    def __init__(self, main):
+        super().__init__(main)
+        self.main = main; self.pr = main.profile; self.new_img = None
+        self.setWindowTitle("Edit EX PROFILE"); self.setModal(True); self.setFixedWidth(560)
+        self.setStyleSheet("QDialog{background:%s;border:1px solid %s} QPlainTextEdit{background:%s;border:1px solid %s;border-radius:6px;padding:6px;color:%s}" % (PANEL, LINE, PANEL2, LINE, FG))
+        v = QVBoxLayout(self); v.setContentsMargins(26, 22, 26, 20); v.setSpacing(12)
+        v.addWidget(lbl("EDIT PROFILE", "h2"))
+        top = QHBoxLayout(); top.setSpacing(18)
+        self.pic = QLabel(); self.pic.setFixedSize(128, 128); top.addWidget(self.pic, 0, Qt.AlignTop)
+        pc = QVBoxLayout(); pc.setSpacing(6)
+        self.choose = QPushButton("Choose picture"); self.choose.setObjectName("primary"); self.choose.setCursor(Qt.PointingHandCursor); self.choose.clicked.connect(self.pick)
+        pc.addWidget(self.choose)
+        self.picinfo = lbl("PNG, JPG, WEBP, GIF or BMP from your Downloads folder. It is cropped to a square.", "small", True); pc.addWidget(self.picinfo)
+        pc.addStretch(1); top.addLayout(pc, 1); v.addLayout(top)
+        v.addWidget(lbl("DISPLAY NAME", "small"))
+        self.name = QLineEdit(self.pr.data.get("name", "")); self.name.setMaxLength(32); self.name.textChanged.connect(self.validate); v.addWidget(self.name)
+        self.name_err = lbl("A display name is required.", "small"); self.name_err.setStyleSheet("color:%s" % RED); v.addWidget(self.name_err)
+        v.addWidget(lbl("BIO (OPTIONAL)", "small"))
+        from PySide6.QtWidgets import QPlainTextEdit
+        self.bio = QPlainTextEdit(self.pr.data.get("bio", "")); self.bio.setFixedHeight(90); self.bio.textChanged.connect(self.on_bio); v.addWidget(self.bio)
+        self.count = lbl("", "small"); self.count.setAlignment(Qt.AlignRight); v.addWidget(self.count)
+        br = QHBoxLayout(); br.addStretch(1)
+        cancel = QPushButton("Cancel"); cancel.setObjectName("ghost"); cancel.setCursor(Qt.PointingHandCursor); cancel.clicked.connect(self.reject); br.addWidget(cancel)
+        self.savebtn = QPushButton("SAVE"); self.savebtn.setObjectName("primary"); self.savebtn.setCursor(Qt.PointingHandCursor); self.savebtn.clicked.connect(self.do_save); br.addWidget(self.savebtn)
+        v.addLayout(br)
+        self.show_pic(); self.on_bio(); self.validate()
+
+    def show_pic(self):
+        if self.new_img is not None:
+            self.pic.setPixmap(circle_pix(QPixmap.fromImage(self.new_img), 128))
+        else:
+            self.pic.setPixmap(self.pr.avatar(128))
+
+    def pick(self):
+        path, _ = QFileDialog.getOpenFileName(self, "Choose a profile picture", known_downloads(), self.PIC_FILTER)
+        if path:
+            self.use_file(path)
+
+    def use_file(self, path):
+        try:
+            self.new_img = load_square_image(path)
+            self.picinfo.setText("Selected: %s" % os.path.basename(path)); self.picinfo.setStyleSheet("")
+        except Exception as e:
+            self.new_img = None
+            self.picinfo.setText(str(e) if isinstance(e, ValueError) else "That picture could not be opened."); self.picinfo.setStyleSheet("color:%s" % RED)
+        self.show_pic()
+
+    def on_bio(self):
+        t = self.bio.toPlainText()
+        if len(t) > Profile.MAXBIO:
+            self.bio.blockSignals(True); self.bio.setPlainText(t[:Profile.MAXBIO]); self.bio.blockSignals(False)
+            c = self.bio.textCursor(); c.movePosition(c.MoveOperation.End); self.bio.setTextCursor(c); t = t[:Profile.MAXBIO]
+        self.count.setText("%d / %d" % (len(t), Profile.MAXBIO))
+
+    def validate(self):
+        ok = bool(self.name.text().strip()); self.name_err.setVisible(not ok); self.savebtn.setEnabled(ok)
+        return ok
+
+    def do_save(self):
+        if not self.validate():
+            return
+        if self.new_img is not None:
+            tmp = self.pr.avatar_path + ".tmp.png"
+            if not self.new_img.save(tmp, "PNG"):
+                QMessageBox.warning(self, APP_NAME, "The picture could not be saved."); return
+            os.replace(tmp, self.pr.avatar_path)
+        self.pr.data["name"] = self.name.text().strip(); self.pr.data["bio"] = self.bio.toPlainText().strip()[:Profile.MAXBIO]
+        self.pr.data["saved"] = True; self.pr.save()
+        self.accept(); self.main.on_profile_saved()
+
+
+class ProfilePage(QWidget):
+    def __init__(self, ui):
+        super().__init__()
+        self.ui = ui
+        self.inner = QWidget(); self.v = QVBoxLayout(self.inner); self.v.setContentsMargins(36, 24, 36, 30); self.v.setSpacing(18)
+        lay = QVBoxLayout(self); lay.setContentsMargins(0, 0, 0, 0); lay.addWidget(scroll(self.inner))
+        self._sig = None
+
+    def refresh(self):
+        svc = self.ui.svc; pr = self.ui.profile
+        recent = sorted([(t, aid) for aid, t in svc.state.get("last_played", {}).items() if aid in svc.catalog], reverse=True)
+        rec_ids = [aid for _t, aid in recent][:4] or [aid for aid in sorted(svc.installed, key=lambda x: x != "fireout-shine") if aid in svc.catalog][:4]
+        sig = (json.dumps(pr.data, sort_keys=True), pr.has_avatar() and os.path.getmtime(pr.avatar_path), tuple(sorted(svc.installed)), tuple(rec_ids), svc.online,
+               int(sum(svc.state.get("playtime", {}).values()) // 60))
+        if sig == self._sig:
+            return
+        self._sig = sig; clear_layout(self.v)
+        head = QFrame(); head.setObjectName("card"); hl = QHBoxLayout(head); hl.setContentsMargins(28, 26, 28, 26); hl.setSpacing(28)
+        av = QLabel(); av.setPixmap(pr.avatar(176)); hl.addWidget(av, 0, Qt.AlignTop)
+        col = QVBoxLayout(); col.setSpacing(6)
+        k = lbl("EX PROFILE"); k.setStyleSheet("background:transparent;color:%s;font-weight:800;letter-spacing:2px;font-size:12px" % ACCENT); col.addWidget(k)
+        n = lbl(pr.data.get("name", "")); n.setStyleSheet("background:transparent;font-size:34px;font-weight:900"); col.addWidget(n)
+        on = svc.online
+        b = lbl("\u25CF  EX CONNECT  \u00b7  %s" % {True: "Online", False: "Offline", None: "Connecting"}[on])
+        b.setStyleSheet("background:%s;color:#0e1319;font-weight:800;font-size:11px;border-radius:10px;padding:3px 12px" % ("#6fbf2a" if on else (ORANGE if on is None else MUTED)))
+        b.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed); br = QHBoxLayout(); br.addWidget(b); br.addStretch(1); col.addLayout(br)
+        col.addWidget(lbl("Member since %s" % pr.data.get("member_since", ""), "muted"))
+        bio = pr.data.get("bio", "").strip()
+        if bio:
+            bl = lbl(bio, None, True); bl.setStyleSheet("background:transparent;font-size:14px;color:#dbe6f0"); bl.setMaximumWidth(640); col.addWidget(bl)
+        col.addStretch(1)
+        eb = QPushButton("EDIT PROFILE"); eb.setObjectName("primary"); eb.setCursor(Qt.PointingHandCursor); eb.clicked.connect(self.ui.edit_profile)
+        er = QHBoxLayout(); er.addWidget(eb); er.addStretch(1); col.addLayout(er)
+        hl.addLayout(col, 1); self.v.addWidget(head)
+        # stats
+        games = [a for a in svc.installed if a in svc.catalog and svc.catalog[a]["category"] == GAMES]
+        total = sum(svc.state.get("playtime", {}).values())
+        st = QHBoxLayout(); st.setSpacing(16)
+        for title, val in (("GAMES INSTALLED", str(len(games))), ("APPS & GAMES INSTALLED", str(len([a for a in svc.installed if a in svc.catalog]))),
+                           ("TOTAL PLAY TIME", xc.human_time(total) if total else "\u2014")):
+            c = QFrame(); c.setObjectName("card"); cl = QVBoxLayout(c); cl.setContentsMargins(20, 14, 20, 14)
+            t = lbl(title, "small"); t.setStyleSheet("background:transparent"); cl.addWidget(t)
+            vv = lbl(val); vv.setStyleSheet("background:transparent;font-size:26px;font-weight:900"); cl.addWidget(vv); st.addWidget(c)
+        st.addStretch(1); self.v.addLayout(st)
+        self.v.addWidget(lbl("RECENTLY PLAYED" if recent else "YOUR GAMES & APPS", "h2"))
+        row = QHBoxLayout(); row.setSpacing(16)
+        if not rec_ids:
+            row.addWidget(lbl("Nothing installed yet. Install a game from the store to see it here.", "muted"))
+        for aid in rec_ids:
+            a = svc.catalog[aid]; c = QFrame(); c.setObjectName("card"); c.setCursor(Qt.PointingHandCursor); c.setFixedWidth(260)
+            cl = QVBoxLayout(c); cl.setContentsMargins(0, 0, 0, 10); cl.setSpacing(4)
+            im = QLabel(); im.setPixmap(capsule_pix(aid, 258, 145, 7)); cl.addWidget(im)
+            t = lbl(a["name"]); t.setStyleSheet("background:transparent;font-weight:800;padding:0 12px"); cl.addWidget(t)
+            lp = svc.state.get("last_played", {}).get(aid)
+            s = lbl(("Last played %s" % time.strftime("%d %b %Y", time.localtime(lp))) if lp else ("Play time %s" % xc.human_time(svc.playtime(aid)) if svc.playtime(aid) else "Installed"), "small")
+            s.setStyleSheet("background:transparent;padding:0 12px"); cl.addWidget(s)
+            c.mousePressEvent = lambda e, aid=aid: self.ui.open_library(aid)
+            row.addWidget(c)
+        row.addStretch(1); self.v.addLayout(row); self.v.addStretch(1)
+
+
 class GameUpdateDialog(QDialog):
     """'Update available' popup for installed games/apps with a newer release: Update (one click) or Later."""
 
@@ -1296,19 +1471,23 @@ class Main(QMainWindow):
         self.selfupd = QPushButton(""); self.selfupd.setObjectName("update"); self.selfupd.hide(); self.selfupd.clicked.connect(self.do_self_update); th.addWidget(self.selfupd)
         self.gu = QPushButton("GAME UPDATES"); self.gu.setObjectName("nav"); self.gu.setCursor(Qt.PointingHandCursor); self.gu.setToolTip("Check all your games and apps for updates now")
         self.gu.clicked.connect(self.game_updates); th.addWidget(self.gu)
-        self.wl = QPushButton("WISHLIST"); self.wl.setObjectName("nav"); self.wl.setCursor(Qt.PointingHandCursor); self.wl.setToolTip("Games on your wishlist")
-        self.wl.clicked.connect(lambda: self.go("wishlist")); th.addWidget(self.wl)
+        self.profile = Profile(self.svc)
+        self.prof = QPushButton("EX PROFILE"); self.prof.setObjectName("nav"); self.prof.setCursor(Qt.PointingHandCursor); self.prof.setToolTip("Your EX PROFILE")
+        self.prof.clicked.connect(lambda: self.go("profile")); th.addWidget(self.prof); self.navs["profile"] = self.prof
         self.gu_busy = False; self.gu_dots = 0; self.gu_timer = QTimer(self, interval=250, timeout=self._gu_spin); self.gu_panel = None
         self.badge = QPushButton("\u25CF EX CONNECT"); self.badge.setObjectName("badge"); self.badge.setCursor(Qt.PointingHandCursor); self.badge.clicked.connect(lambda: self.go("connect")); th.addWidget(self.badge)
         gear = QPushButton("SETTINGS"); gear.setObjectName("nav"); gear.setToolTip("Settings"); gear.clicked.connect(lambda: self.go("settings")); th.addWidget(gear)
-        self.navs["settings"] = gear; self.navs["wishlist"] = self.wl
+        self.navs["settings"] = gear
+        self.avbtn = QToolButton(); self.avbtn.setCursor(Qt.PointingHandCursor); self.avbtn.setToolTip("Open EX PROFILE"); self.avbtn.setAutoRaise(True)
+        self.avbtn.setIconSize(QSize(30, 30)); self.avbtn.setStyleSheet("QToolButton{border:none;background:transparent;padding:0 2px}")
+        self.avbtn.clicked.connect(lambda: self.go("profile")); th.addWidget(self.avbtn); self.update_avatar_btn()
         for b in list(self.navs.values()) + [self.gu]:
             fit(b)
         v.addWidget(top)
         self.stack = QStackedWidget(); v.addWidget(self.stack, 1)
         self.pages = {"store": StorePage(self), "library": LibraryPage(self), "product": ProductPage(self), "downloads": DownloadsPage(self),
                       "connect": ConnectPage(self), "settings": SettingsPage(self), "search": SearchPage(self),
-                      "soon": SoonPage(self), "wishlist": WishlistPage(self)}
+                      "soon": SoonPage(self), "profile": ProfilePage(self)}
         for p in self.pages.values():
             self.stack.addWidget(p)
         # footer
@@ -1401,10 +1580,7 @@ class Main(QMainWindow):
         self.update_footer()
 
     def refresh_all(self):
-        n = len([x for x in self.svc.wishlist() if (x in SOON or x in self.svc.catalog) and x != "fireout-shine"])
-        self.wl.setText("WISHLIST (%d)" % n if n else "WISHLIST"); fit(self.wl)
-        self.wl.setVisible(bool(UPCOMING) or n > 0)      # wishlist is only for unreleased games; FIREOUT SHINE is released
-        for k in ("store", "product", "library", "downloads", "connect", "soon", "wishlist"):
+        for k in ("store", "product", "library", "downloads", "connect", "soon", "profile"):
             try:
                 self.pages[k].refresh()
             except RuntimeError:
@@ -1441,6 +1617,25 @@ class Main(QMainWindow):
 
     # ----- self update -----
     # ----- GAME UPDATES (instant check of every library app) -----
+    def update_avatar_btn(self):
+        self.avbtn.setIcon(QIcon(self.profile.avatar(60)))
+
+    def edit_profile(self):
+        self.profile_dialog = EditProfileDialog(self)
+        self.profile_dialog.open()
+
+    def on_profile_saved(self):
+        self.update_avatar_btn(); self.pages["profile"].refresh(); self.show_toast("Profile saved")
+
+    def show_toast(self, text, ms=2600):
+        t = getattr(self, "_toast", None)
+        if t is None:
+            t = self._toast = QLabel(self); t.setAlignment(Qt.AlignCenter)
+            t.setStyleSheet("background:#1d6b2c;color:#ffffff;font-weight:800;font-size:14px;border:1px solid #6fbf2a;border-radius:8px;padding:10px 22px")
+        t.setText("\u2714  " + text); t.adjustSize()
+        t.move((self.width() - t.width()) // 2, self.height() - t.height() - 56); t.show(); t.raise_()
+        QTimer.singleShot(ms, t.hide)
+
     def maybe_game_update_popup(self):
         """Pop up 'Update available' once per session for each installed game/app that has a newer version."""
         seen = getattr(self, "_gup_seen", set()); self._gup_seen = seen
@@ -1586,14 +1781,6 @@ def smoke(win, out_dir, phase):
         at(7000, lambda: win.pages["store"].banner.clicked.emit())
         at(8500, lambda: (L("scroll after click", win.pages["store"].sc.verticalScrollBar().value()), shot("screenshot_banner_click_games.png")))
         at(9500, lambda: win.close())
-    elif phase == "wishlist2":
-        def chk():
-            win.resize(1180, 720); QApplication.processEvents()
-            L("top bar @%d:" % win.width(), [(b.text(), b.width(), b.sizeHint().width()) for b in (win.gu, win.wl, win.badge, win.navs["settings"])] + [(k, b.width(), b.sizeHint().width()) for k, b in win.navs.items()], "search", win.search.width())
-            win.resize(1440, 900); QApplication.processEvents(); win.go("wishlist")
-        at(4000, chk)
-        at(5500, lambda: (L("size", win.width(), win.height()), shot(os.environ.get("HDX_SMOKE_NAME", "screenshot_wishlist_v112.png"))))
-        at(6000, lambda: win.close())
     elif phase == "v115":
         at(1000, lambda: (win.resize(1440, 900), win.go("store")))
         def popup_shot():
@@ -1609,7 +1796,7 @@ def smoke(win, out_dir, phase):
         at(8000, lambda: win.pages["store"].scroll_to_games())
         at(9000, lambda: shot("home_games.png"))
         at(10000, lambda: win.open_product("fireout-shine"))
-        at(11500, lambda: (L("wishlist nav visible", win.wl.isVisible(), "status", win.svc.status("fireout-shine")), shot("store_page.png")))
+        at(11500, lambda: (L("status", win.svc.status("fireout-shine")), shot("store_page.png")))
         at(12500, lambda: win.open_library("fireout-shine"))
         at(14000, lambda: (shot("library.png"), L("default_install_done", win.svc.state.get("default_install_done"))))
         at(15000, lambda: win.close())
@@ -1620,6 +1807,38 @@ def smoke(win, out_dir, phase):
         at(17000, lambda: win.open_product("fireout-shine"))
         at(18500, lambda: shot("store_page_v116.png"))
         at(19000, lambda: win.close())
+    elif phase == "nowish":
+        at(1000, lambda: (win.resize(1440, 900), win.go("store")))
+        at(6500, lambda: shot("home_featured_only.png"))
+        at(7000, lambda: win.open_product("fireout-shine"))
+        at(8500, lambda: (L("nav", [b.text() for b in win.findChildren(QPushButton) if b.isVisible() and b.objectName() == "nav"]), shot("no_wishlist.png")))
+        at(9000, lambda: win.close())
+    elif phase == "profile":
+        dl = known_downloads(); L("downloads", dl)
+        def comp(name, d):
+            base = win.grab()
+            if d is not None and d.isVisible():
+                qp = QPainter(base); dp = d.grab(); qp.fillRect(base.rect(), QColor(0, 0, 0, 110))
+                qp.drawPixmap((base.width() - dp.width()) // 2, (base.height() - dp.height()) // 2, dp); qp.end()
+            base.save(os.path.join(out_dir, name)); L("shot", name)
+        at(1000, lambda: (win.resize(1440, 900), win.go("profile")))
+        at(6000, lambda: shot("ex_profile_empty.png"))
+        at(6500, win.edit_profile)
+        def filedlg():
+            fd = QFileDialog(win.profile_dialog, "Choose a profile picture", dl, EditProfileDialog.PIC_FILTER); fd.setOption(QFileDialog.DontUseNativeDialog, True)
+            fd.resize(900, 560); fd.show(); win._fd = fd; L("file dialog dir", fd.directory().absolutePath())
+        at(7000, filedlg)
+        at(8500, lambda: (comp("ex_profile_filedialog.png", win._fd), win._fd.close()))
+        def bad():
+            d = win.profile_dialog
+            for f in ("not_a_picture.png", "huge_photo.jpg"):
+                d.use_file(os.path.join(dl, f)); L("try", f, "->", d.picinfo.text(), "img", d.new_img is not None and d.new_img.size().toTuple())
+            d.use_file(os.path.join(dl, "my_avatar.png")); d.bio.setPlainText(""); L("picked", d.picinfo.text())
+        at(9000, bad)
+        at(10000, lambda: comp("ex_profile_edit.png", win.profile_dialog))
+        at(10500, lambda: win.profile_dialog.do_save())
+        at(11300, lambda: (L("saved", win.profile.data, os.path.exists(win.profile.avatar_path)), shot("ex_profile_saved.png")))
+        at(12000, lambda: win.close())
     elif phase == "definstall":
         at(1000, lambda: (win.resize(1440, 900), win.go("store")))
         at(12000, lambda: (L("status", win.svc.status("fireout-shine")), win.pages["store"].featured.go(0), shot("default_install_progress.png")))
@@ -1630,12 +1849,6 @@ def smoke(win, out_dir, phase):
             win.refresh_all(); win.pages["store"].featured.go(0)
             QTimer.singleShot(1500, lambda: (shot("default_install_done.png"), win.close()))
         at(13000, lambda: (setattr(win, "_t0", time.time()), waitplay()))
-    elif phase == "wishlist":
-        at(4000, lambda: (win.svc.toggle_wishlist("fireout-shine", True), win.open_product("fireout-shine")))
-        at(5500, lambda: shot("screenshot_fireout_shine.png"))
-        at(6000, lambda: win.go("wishlist"))
-        at(7000, lambda: shot("screenshot_wishlist.png"))
-        at(7500, lambda: win.close())
     elif phase == "featured":
         def both():
             f = win.pages["store"].featured; ims = []

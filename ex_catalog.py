@@ -130,7 +130,7 @@ CATALOG = [
                   "Left/Right arrow keys change slides", "Built-in update check"]),
 ]
 
-# upcoming games: shown in the store with a status tag and can be wishlisted; never installed, scanned or update-checked (none right now)
+# upcoming games: shown in the store with a status tag; never installed, scanned or update-checked (none right now)
 UPCOMING = []
 
 # release asset sizes (bytes) at the time HYPERION DIGITAL EX 1.0.0 shipped; live sizes come from GitHub.
