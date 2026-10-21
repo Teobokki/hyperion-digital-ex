@@ -866,6 +866,7 @@ class LibraryPage(QWidget):
         self.list.blockSignals(True); self.list.clear()
         for cat, title in ((GAMES, "GAMES"), (APPS, "APPS & TOOLS")):
             ids = [a["id"] for a in self.ui.svc.catalog.values() if a["category"] == cat and q in a["name"].lower()]
+            ids.sort(key=lambda x: x != "fireout-shine")
             hdr = QListWidgetItem("%s  (%d)" % (title, len(ids))); hdr.setFlags(Qt.NoItemFlags); f = hdr.font(); f.setBold(True); f.setPointSize(8); hdr.setFont(f)
             hdr.setForeground(QColor("#6f8396")); self.list.addItem(hdr)
             for aid in ids:
@@ -1584,14 +1585,33 @@ def smoke(win, out_dir, phase):
         at(6000, lambda: win.close())
     elif phase == "v115":
         at(1000, lambda: (win.resize(1440, 900), win.go("store")))
-        at(7000, lambda: (win.pages["store"].featured.go(0), shot("hdex_home_featured.png")))
+        def popup_shot():
+            d = getattr(win, "gup_dialog", None); L("game update popup", bool(d and d.isVisible()), win.updates_list())
+            base = win.grab()
+            if d and d.isVisible():
+                qp = QPainter(base); dp = d.grab(); qp.fillRect(base.rect(), QColor(0, 0, 0, 110))
+                qp.drawPixmap((base.width() - dp.width()) // 2, (base.height() - dp.height()) // 2, dp); qp.end()
+            base.save(os.path.join(out_dir, "update_popup.png")); L("shot", "update_popup.png")
+            if d: d.close()
+        at(6000, popup_shot)
+        at(7000, lambda: (win.pages["store"].featured.go(0), shot("home_featured.png")))
         at(8000, lambda: win.pages["store"].scroll_to_games())
-        at(9000, lambda: shot("hdex_home_games.png"))
+        at(9000, lambda: shot("home_games.png"))
         at(10000, lambda: win.open_product("fireout-shine"))
-        at(11500, lambda: (L("wishlist nav visible", win.wl.isVisible(), "status", win.svc.status("fireout-shine")), shot("hdex_store_page.png")))
+        at(11500, lambda: (L("wishlist nav visible", win.wl.isVisible(), "status", win.svc.status("fireout-shine")), shot("store_page.png")))
         at(12500, lambda: win.open_library("fireout-shine"))
         at(14000, lambda: (shot("library.png"), L("default_install_done", win.svc.state.get("default_install_done"))))
         at(15000, lambda: win.close())
+    elif phase == "definstall":
+        at(1000, lambda: (win.resize(1440, 900), win.go("store")))
+        at(12000, lambda: (L("status", win.svc.status("fireout-shine")), win.pages["store"].featured.go(0), shot("default_install_progress.png")))
+        def waitplay():
+            st = win.svc.status("fireout-shine"); L("status", st)
+            if st not in ("play", "error") and time.time() - win._t0 < 400:
+                return QTimer.singleShot(3000, waitplay)
+            win.refresh_all(); win.pages["store"].featured.go(0)
+            QTimer.singleShot(1500, lambda: (shot("default_install_done.png"), win.close()))
+        at(13000, lambda: (setattr(win, "_t0", time.time()), waitplay()))
     elif phase == "wishlist":
         at(4000, lambda: (win.svc.toggle_wishlist("fireout-shine", True), win.open_product("fireout-shine")))
         at(5500, lambda: shot("screenshot_fireout_shine.png"))

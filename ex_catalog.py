@@ -41,7 +41,7 @@ CATALOG = [
         ]),
     dict(
         id="fireout-shine", name="\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3", repo="fireout-shine", category=GAMES,
-        genre="Racing \u00b7 Police chase \u00b7 Open world",
+        genre="Racing \u00b7 \u6307\u540d\u624b\u914d\u3055\u308c\u308b GET WANTED \u00b7 Open world",
         exe="FIREOUT SHINE.exe", folder="FIREOUT SHINE",
         portable=["FIREOUT SHINE.exe", "FIREOUT-SHINE-Portable.exe"], version="1.0.1", release="2026",
         publisher="EX Inc./HYPERION DIGITAL", developer="EX Inc./HYPERION DIGITAL",
@@ -141,6 +141,6 @@ KNOWN_SIZES = {
     "EX.CREATOR.STUDIO.Setup.1.3.0.exe": 69162520, "EX.CREATOR.STUDIO.zip": 102129520,
     "EX.NETWORK.Setup.1.2.1.exe": 10069445, "EX_NETWORK.zip": 10861118,
     "EX.SUDO.TERMINAL.Setup.1.1.2.exe": 11926787, "EX_SUDO_TERMINAL.zip": 13609861,
-    "FIREOUT-SHINE-Setup-1.0.0.exe": 136641159, "FIREOUT-SHINE-1.0.0-Windows-x64.zip": 163100936,
+    "FIREOUT-SHINE-Setup-1.0.1.exe": 137226943, "FIREOUT-SHINE-1.0.1-Windows-x64.zip": 163677077, "FIREOUT-SHINE-Portable.exe": 163032983,
     "DREAM.VINE.LAUNCHER.Setup.1.0.2.exe": 13957793, "DREAM.VINE.LAUNCHER.1.0.2.Windows.x64.zip": 17697430,
 }
