@@ -63,6 +63,27 @@ CATALOG = [
             "EX IX G9 phone with JP Taxi and Emergency Services, map waypoints and a day/night cycle",
         ]),
     dict(
+        id="ex-sports-sfc27", name="EX SPORTS\u2122 SFC 27 STANDARD EDITION", repo="ex-sports-sfc27", category=GAMES,
+        genre="Sports \u00b7 Football \u00b7 Online",
+        exe="EX SPORTS SFC 27.exe", folder="EX SPORTS SFC 27",
+        portable=["EX SPORTS SFC 27.exe", "EX-SPORTS-SFC27-Portable.exe"], version="1.0.0", release="2026",
+        publisher="EX Inc.", developer="EX Inc.",
+        tagline="7-a-side football at the SFC 27 stadium: quick matches against the AI, or online with friends using a join code.",
+        about=("EX SPORTS\u2122 SFC 27 STANDARD EDITION is 7-a-side football at the EX SPORTS SFC 27 stadium. The pitch is full "
+               "size with standard markings, goals with nets, stands packed with a crowd, and floodlights. Play a QUICK MATCH "
+               "against the AI, or go ONLINE: host a session, share your SFC27-XXXX-XXXX join code and play with friends, with "
+               "the AI filling the empty spots. Matches are UNLIMITED by default: the clock counts up and you end the match "
+               "whenever you like. Every club and player is fictional. Online play needs no admin rights and no firewall setup. "
+               "Publisher: EX Inc. \u00a92026 EX Inc./HYPERION DIGITAL \u00a92026."),
+        features=[
+            "QUICK MATCH VS AI: pass, shoot, tackle and sprint with kickoffs, goals, a scoreboard and a match clock",
+            "ONLINE with friends via SFC27-XXXX-XXXX join codes: ALL OF US VS AI or SPLIT TEAMS, with AI fill, kick and ping",
+            "UNLIMITED matches by default (END MATCH any time), or timed 4, 8, 12 and 90 minute games",
+            "TEAMS: fictional clubs, an all-yellow kit and your own player look and name",
+            "Full-size stadium: standard pitch markings, nets, four stands with a crowd and plain floodlights",
+            "Per-user install, no admin rights; built-in update check",
+        ]),
+    dict(
         id="hyperia", name="HYPERIA", repo="hyperia", category=APPS, genre="Desktop shell",
         exe="HYPERIA.exe", folder="HYPERIA", portable=[], version="1.1.23",
         tagline="A creative desktop shell for Windows: wallpaper, taskbar, Start menu and windows inside the shell.",
@@ -142,5 +163,6 @@ KNOWN_SIZES = {
     "EX.NETWORK.Setup.1.2.1.exe": 10069445, "EX_NETWORK.zip": 10861118,
     "EX.SUDO.TERMINAL.Setup.1.1.2.exe": 11926787, "EX_SUDO_TERMINAL.zip": 13609861,
     "FIREOUT-SHINE-Setup-1.0.1.exe": 137226943, "FIREOUT-SHINE-1.0.1-Windows-x64.zip": 163677077, "FIREOUT-SHINE-Portable.exe": 163032983,
+    "EX-SPORTS-SFC27-Setup-1.0.0.exe": 30014857, "EX-SPORTS-SFC27-1.0.0-Windows-x64.zip": 44052043, "EX-SPORTS-SFC27-Portable.exe": 43955016,
     "DREAM.VINE.LAUNCHER.Setup.1.0.2.exe": 13957793, "DREAM.VINE.LAUNCHER.1.0.2.Windows.x64.zip": 17697430,
 }

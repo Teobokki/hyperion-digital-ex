@@ -750,7 +750,7 @@ class ProductPage(QWidget):
         tl = lbl(a["tagline"], None, True); tl.setStyleSheet("font-size:13px;color:#c9d6e3"); tl.setFixedWidth(340); side.addWidget(tl)
         info = QFrame(); info.setObjectName("infobox"); g = QGridLayout(info); g.setContentsMargins(12, 10, 12, 10); g.setVerticalSpacing(5)
         rows = [("CATEGORY", a["category"]), ("GENRE", a["genre"]), ("VERSION", svc.latest_version(aid)), ("DOWNLOAD SIZE", svc.size_text(aid)),
-                ("DEVELOPER", "EX Inc."), ("PUBLISHER", PUBLISHER), ("PLATFORM", "Windows 10/11 x64"), ("SOURCE", "github.com/Teobokki/" + a["repo"])]
+                ("DEVELOPER", "EX Inc."), ("PUBLISHER", a.get("publisher", PUBLISHER)), ("PLATFORM", "Windows 10/11 x64"), ("SOURCE", "github.com/Teobokki/" + a["repo"])]
         for r, (k, val) in enumerate(rows):
             g.addWidget(lbl(k, "small"), r, 0); vv = lbl(val); vv.setStyleSheet("color:%s;font-size:12px" % ACCENT if k == "SOURCE" else "font-size:12px"); g.addWidget(vv, r, 1)
         info.setFixedWidth(340); side.addWidget(info); side.addStretch(1)
@@ -1800,6 +1800,30 @@ def smoke(win, out_dir, phase):
         at(12500, lambda: win.open_library("fireout-shine"))
         at(14000, lambda: (shot("library.png"), L("default_install_done", win.svc.state.get("default_install_done"))))
         at(15000, lambda: win.close())
+    elif phase == "sfc27":                 # 1.1.7: EX SPORTS SFC 27 listing - tile, product page, install, play, uninstall
+        aid = "ex-sports-sfc27"
+        at(1000, lambda: (win.resize(1440, 900), win.go("store")))
+        at(7000, lambda: (L("online", win.svc.online, "in catalog", aid in win.svc.catalog, "latest", win.svc.latest_version(aid),
+                            "choice", win.svc.install_choice(aid)), shot("sfc27_store_home.png")))
+        at(8000, lambda: (win.search.setText("SFC"), None))
+        at(9500, lambda: (shot("sfc27_search.png"), win.search.clear()))
+        at(10000, lambda: win.open_product(aid))
+        at(11500, lambda: (shot("sfc27_product.png"), win.svc.install(aid), L("install started")))
+        def wait_inst():
+            j = win.svc.job_for(aid)
+            if j:
+                L("waiting", vars_job(j)); QTimer.singleShot(2000, wait_inst); return
+            win.svc.scan(); L("installed:", win.svc.installed.get(aid), "status", win.svc.status(aid)); win.open_library(aid)
+            QTimer.singleShot(1500, lambda: (shot("sfc27_library.png"), L("play ->", win.svc.play(aid))))
+            QTimer.singleShot(12000, lambda: (L("running", list(win.svc.running)), shot("sfc27_playing.png")))
+            def unin():
+                for aid2, (proc, _t) in list(win.svc.running.items()):
+                    try: proc.kill()
+                    except Exception: pass
+                L("uninstall ->", win.svc.uninstall(aid))
+                QTimer.singleShot(8000, lambda: (win.svc.scan(), L("after uninstall installed:", win.svc.installed.get(aid)), win.close()))
+            QTimer.singleShot(16000, unin)
+        at(13000, wait_inst)
     elif phase == "featonly":
         at(1000, lambda: (win.resize(1440, 900), win.go("store")))
         at(7000, lambda: (L("featured cards", win.pages["store"].featured.stack.count(), "arrows visible", win.pages["store"].featured.l.isVisible()), shot("home_featured_only.png")))

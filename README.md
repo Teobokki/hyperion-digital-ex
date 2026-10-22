@@ -25,8 +25,12 @@ The EX Inc. store and library for Windows. Every EX game and app is in one store
 | ![Download in progress](docs/screenshot_download_in_progress.png) | ![EX CONNECT](docs/screenshot_ex_connect.png) |
 
 ## Catalog
-Games: DREAM VINE, PIKNOTT CELESTIKA. Apps & Tools: HYPERIA, EX CREATOR STUDIO, EX NETWORK, EX SUDO TERMINAL, FIREOUT REVOLUTION™.
+Games: ファイアアウト・シャイン (FIREOUT SHINE), EX SPORTS™ SFC 27 STANDARD EDITION, DREAM VINE, PIKNOTT CELESTIKA. Apps & Tools: HYPERIA, EX CREATOR STUDIO, EX NETWORK, EX SUDO TERMINAL, FIREOUT REVOLUTION™.
 Icons and screenshots are each app's own artwork, bundled from its source. The HYPERION DIGITAL EX icon is EX Inc.'s own artwork (`assets/icon_source_user.png`).
+
+## What's new in 1.1.7
+- New in the store: **EX SPORTS™ SFC 27 STANDARD EDITION** 1.0.0 by EX Inc. (Games · Sports · Football · Online). It's 7-a-side football against the AI, or online with friends using SFC27 join codes, with fictional clubs and unlimited matches. The listing has its own icon, cover, hero and 8 screenshots. It installs per-user from the game's Setup with no admin rights, and portable copies are detected too. Updates come through the game's own latest.json.
+- Product pages now show each title's own publisher.
 
 ## What's new in 1.0.7
 
