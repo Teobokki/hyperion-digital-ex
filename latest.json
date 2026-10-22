@@ -1,9 +1,9 @@
 {
-  "version": "1.1.7",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.7",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.7/HYPERION.DIGITAL.EX.Setup.1.1.7.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.7/HYPERION.DIGITAL.EX.Setup.1.1.7.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.7/HYPERION.DIGITAL.EX.1.1.7.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.7/HYPERION.DIGITAL.EX.Portable.exe",
-  "notes": "New in the store: EX SPORTS™ SFC 27 STANDARD EDITION 1.0.0 by EX Inc. It's 7-a-side football against the AI or online with friends using join codes, with fictional clubs and unlimited matches. Per-user install, no admin. Product pages now show each title's own publisher."
+  "version": "1.1.8",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.8",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.8/HYPERION.DIGITAL.EX.Setup.1.1.8.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.8/HYPERION.DIGITAL.EX.Setup.1.1.8.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.8/HYPERION.DIGITAL.EX.1.1.8.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.8/HYPERION.DIGITAL.EX.Portable.exe",
+  "notes": "Update fixes: the UPDATE button for FIREOUT SHINE no longer stays up after updating, because installed 1.0.5.1 is no longer read as 1.0.5. Also fixes the 'Failed to remove temporary directory (_MEI…)' warning."
 }
