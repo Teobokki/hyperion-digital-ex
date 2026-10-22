@@ -4,7 +4,7 @@ Resumable (HTTP Range) downloads that survive restarts, SHA-256 verification, si
 import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, urllib.request, urllib.error, zipfile
 from ex_catalog import CATALOG, KNOWN_SIZES
 
-APP_VERSION = "1.1.7"
+APP_VERSION = "1.1.8"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
@@ -15,7 +15,28 @@ CREATE_NO_WINDOW = 0x08000000
 
 
 def vtuple(v):
-    return tuple(int(x) for x in re.findall(r"\d+", str(v or ""))[:4]) or (0,)
+    """'1.0.5.1' -> (1, 0, 5, 1); always 4 parts so '1.0.5' == '1.0.5.0' and 1.0.5.1 > 1.0.5."""
+    t = [int(x) for x in re.findall(r"\d+", str(v or ""))[:4]]
+    return tuple(t + [0] * (4 - len(t)))
+
+
+def clean_env():
+    """Environment for child processes (games, Setups, update scripts).
+
+    A PyInstaller onefile parent exports _PYI_* / _MEIPASS2 variables. If a child PyInstaller app (or the same exe
+    relaunched after an update) inherits them, it reuses the parent's _MEI temp folder: the old code keeps running and
+    the parent shows 'Failed to remove temporary directory'. Strip them and ask the child's bootloader to start fresh."""
+    env = {k: v for k, v in os.environ.items() if not (k.upper().startswith("_PYI") or k.upper().startswith("_MEIPASS")
+                                                        or k.upper() in ("TCL_LIBRARY", "TK_LIBRARY", "QT_PLUGIN_PATH", "QML2_IMPORT_PATH"))}
+    mei = getattr(sys, "_MEIPASS", None)
+    if mei and "PATH" in env:
+        env["PATH"] = os.pathsep.join(x for x in env["PATH"].split(os.pathsep) if not os.path.normcase(x).startswith(os.path.normcase(mei)))
+    env["PYINSTALLER_RESET_ENVIRONMENT"] = "1"
+    return env
+
+
+def safe_cwd():
+    return os.environ.get("TEMP") or os.path.expanduser("~")
 
 
 def data_dir():
@@ -61,7 +82,10 @@ def file_version(path):
             return None
         ffi = ctypes.cast(p, ctypes.POINTER(ctypes.c_uint32 * 13)).contents
         ms, ls = ffi[2], ffi[3]
-        return "%d.%d.%d" % (ms >> 16, ms & 0xFFFF, ls >> 16)
+        parts = [ms >> 16, ms & 0xFFFF, ls >> 16, ls & 0xFFFF]   # all 4 parts: 1.0.5.1 must not read as 1.0.5
+        if parts[3] == 0:
+            parts = parts[:3]
+        return ".".join(str(x) for x in parts)
     except Exception:
         return None
 
@@ -531,7 +555,7 @@ class ExConnect:
         app = self.catalog[j.app_id]
         if j.kind == "installer":
             r = subprocess.run([path, "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-", "/CLOSEAPPLICATIONS"],
-                               creationflags=CREATE_NO_WINDOW if WIN else 0)
+                               creationflags=CREATE_NO_WINDOW if WIN else 0, env=clean_env(), cwd=safe_cwd(), close_fds=True)
             if r.returncode != 0:
                 raise RuntimeError("Setup exit code %d" % r.returncode)
             self.scan()
@@ -571,7 +595,7 @@ class ExConnect:
         if not inf or aid in self.running:
             return False
         exe = inf["exe"]
-        p = subprocess.Popen([exe], cwd=os.path.dirname(exe), close_fds=True)
+        p = subprocess.Popen([exe], cwd=os.path.dirname(exe), close_fds=True, env=clean_env())
         self.running[aid] = (p, time.time())
         self.state["last_played"][aid] = time.time(); self.save()
         threading.Thread(target=self._watch, args=(aid, p), daemon=True).start()
@@ -600,7 +624,8 @@ class ExConnect:
                 if inf.get("uninstall"):
                     cmd = inf["uninstall"]
                     exe = cmd.split('"')[1] if cmd.startswith('"') else cmd.split(" /")[0]
-                    subprocess.run([exe, "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART"], creationflags=CREATE_NO_WINDOW if WIN else 0)
+                    subprocess.run([exe, "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART"], creationflags=CREATE_NO_WINDOW if WIN else 0,
+                                   env=clean_env(), cwd=safe_cwd(), close_fds=True)
                     time.sleep(1.5)
                 elif inf.get("library"):
                     shutil.rmtree(inf["library"], ignore_errors=True)

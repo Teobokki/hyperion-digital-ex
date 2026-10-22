@@ -1443,7 +1443,8 @@ class UpdateDialog(QDialog):
                 f.write("@echo off\r\n" + body)
             if os.environ.get("HDX_UPDATE_DRYRUN"):
                 return self.prog.emit(1, "Dry run: verified %s, would run %s" % (name, bat))
-            subprocess.Popen(["cmd", "/c", bat], creationflags=xc.CREATE_NO_WINDOW, close_fds=True)
+            subprocess.Popen(["cmd", "/c", bat], creationflags=xc.CREATE_NO_WINDOW | 0x00000008 | 0x00000200, close_fds=True,
+                             env=xc.clean_env(), cwd=xc.safe_cwd())
             self.main.svc.save()
             os._exit(0)
         except Exception as e:
@@ -1800,6 +1801,25 @@ def smoke(win, out_dir, phase):
         at(12500, lambda: win.open_library("fireout-shine"))
         at(14000, lambda: (shot("library.png"), L("default_install_done", win.svc.state.get("default_install_done"))))
         at(15000, lambda: win.close())
+    elif phase == "fsupdate":              # 1.1.8: installed-version detection (4-part) + UPDATE applies and clears
+        aid = os.environ.get("HDX_SMOKE_APP", "fireout-shine")
+        def st(tag):
+            win.svc.scan(); inf = win.svc.installed.get(aid) or {}
+            L(tag, "installed", inf.get("version"), "source", inf.get("source"), "portables", inf.get("portables"), "latest", win.svc.latest_version(aid),
+              "status", win.svc.status(aid), "outdated", win.svc.outdated_copies(aid), "updates", win.updates_list())
+        at(6000, lambda: (st("before"), win.open_library(aid)))
+        at(7500, lambda: shot("fsupdate_before.png"))
+        def go():
+            if win.svc.status(aid) == "update":
+                L("click UPDATE"); win.svc.install(aid, update=True)
+            QTimer.singleShot(1000, wait)
+        def wait():
+            j = win.svc.job_for(aid)
+            if j:
+                L("waiting", vars_job(j)); QTimer.singleShot(3000, wait); return
+            st("after"); win.open_library(aid)
+            QTimer.singleShot(1500, lambda: (shot("fsupdate_after.png"), win.close()))
+        at(8000, go)
     elif phase == "sfc27":                 # 1.1.7: EX SPORTS SFC 27 listing - tile, product page, install, play, uninstall
         aid = "ex-sports-sfc27"
         at(1000, lambda: (win.resize(1440, 900), win.go("store")))
