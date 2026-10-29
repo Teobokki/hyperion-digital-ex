@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 1,
+ "catalog_version": 2,
  "featured": [
   "fireout-shine"
  ],
@@ -449,32 +449,32 @@
    "latest_url": "https://raw.githubusercontent.com/Teobokki/ex-creator-studio/main/latest.json",
    "art": {
     "capsule.jpg": {
-     "size": 24342,
-     "sha256": "1af213d218ccf31ab8743936b405927c861eaeb93ed23c78f3e591c35b6e8c8f"
+     "size": 35049,
+     "sha256": "57400639b70d4ad79f724b2361764b2c8c9a835acd390889594503aa0bb78883"
     },
     "hero.jpg": {
-     "size": 46518,
-     "sha256": "783afa94078cd57e0048eec9effb5054868f85964d23839eb5379ce22cd3968b"
+     "size": 77674,
+     "sha256": "921e849976c5a8e9d763a408418287eb9c7e226955dc5343d74148540208254a"
     },
     "icon.png": {
      "size": 14314,
      "sha256": "0dbe57dcfbac46ed13c1cc32a8d6552fd974c952f542e03ef1cb1c4e42f793c7"
     },
     "shot0.jpg": {
-     "size": 41121,
-     "sha256": "6c5b07d917c2f0aab8bf70b5ed52b24f112f0f3cafa8f0a6c6c9d4fe241f0101"
+     "size": 120502,
+     "sha256": "0def66c510ea9950727cd69e9f737d9f94e1b5dad69fb6f46f71c8e2566931da"
     },
     "shot1.jpg": {
-     "size": 85504,
-     "sha256": "d195b153bb380bb8f0be4f16b3c3d74ec70fffda0cdf23baecc4ab1823d6aa51"
+     "size": 138276,
+     "sha256": "945d5bb16efcbbc4764581480ce0d0ffc48950226c5e131055008e44f4c8d722"
     },
     "shot2.jpg": {
-     "size": 109861,
-     "sha256": "f56b4f9b5a8dc07de464ca7e8ce3472af45e58c7f3b89d83cae5b2a051e2fba7"
+     "size": 137031,
+     "sha256": "01b19aafb00bfb86375726fa7c1d6894f73b4d24d1b2bc1c10b3fda8b5b35e63"
     },
     "shot3.jpg": {
-     "size": 62462,
-     "sha256": "d8a6ac5ca87b9545e0e8820b1bb9fd1b900d57acf6be8da11eac7b8175e865d5"
+     "size": 120661,
+     "sha256": "fa4e68a332146be1ffc2aa3b2d111f66971ee57ee8e7966f652fb73d0a00e63f"
     }
    }
   },
@@ -626,5 +626,5 @@
   "DREAM.VINE.LAUNCHER.Setup.1.0.2.exe": 13957793,
   "DREAM.VINE.LAUNCHER.1.0.2.Windows.x64.zip": 17697430
  },
- "updated": "2026-10-29T18:34:31Z"
+ "updated": "2026-10-29T18:54:01Z"
 }
