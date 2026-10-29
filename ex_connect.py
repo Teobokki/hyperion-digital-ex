@@ -3,14 +3,16 @@ Resumable (HTTP Range) downloads that survive restarts, SHA-256 verification, si
 ©2026 EX Inc./HYPERION DIGITAL ©2026"""
 import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, urllib.request, urllib.error, zipfile
 from ex_catalog import CATALOG, KNOWN_SIZES
+import ex_remote as rm
 
-APP_VERSION = "1.1.10"
+APP_VERSION = "1.1.11"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
 SELF_REPO = "hyperion-digital-ex"
 SELF_LATEST_URL = os.environ.get("HDX_SELF_LATEST_URL") or (RAW % SELF_REPO)
 WIN = sys.platform == "win32"
+BUNDLED_ART = os.path.join(getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__))), "assets", "apps")
 CREATE_NO_WINDOW = 0x08000000
 
 
@@ -76,7 +78,15 @@ def main_sha(repo, timeout=8):
     return m.group(1).decode() if m else None
 
 
-def fetch_latest(repo, timeout=8):
+def fetch_bytes(url, limit, timeout=20):
+    if not rm.allowed_url(url):
+        raise ValueError("blocked URL")
+    req = urllib.request.Request(url, headers=dict(UA, **NOCACHE))
+    with urllib.request.urlopen(req, timeout=timeout, context=_ctx()) as r:
+        return r.read(limit)
+
+
+def fetch_latest(repo, timeout=8, path="latest.json"):
     """latest.json exactly as it is on main right now.
 
     1.1.10: raw.githubusercontent.com caches main/latest.json for 5 minutes and IGNORES query strings (a fresh '?t=' is
@@ -86,15 +96,15 @@ def fetch_latest(repo, timeout=8):
     try:
         sha = main_sha(repo, timeout)
         if sha:
-            return fetch_json("https://raw.githubusercontent.com/Teobokki/%s/%s/latest.json" % (repo, sha), timeout), "main@" + sha[:7]
+            return fetch_json("https://raw.githubusercontent.com/Teobokki/%s/%s/%s" % (repo, sha, path), timeout), "main@" + sha[:7]
     except Exception as e:
         errs.append(e)
     try:
-        return fetch_json(RAW % repo, timeout), "raw main"
+        return fetch_json("https://raw.githubusercontent.com/Teobokki/%s/main/%s" % (repo, path), timeout), "raw main"
     except Exception as e:
         errs.append(e)
     import base64
-    c = fetch_json("https://api.github.com/repos/Teobokki/%s/contents/latest.json?ref=main" % repo, timeout)
+    c = fetch_json("https://api.github.com/repos/Teobokki/%s/contents/%s?ref=main" % (repo, path), timeout)
     return json.loads(base64.b64decode(c["content"]).decode("utf-8-sig")), "api"
 
 
@@ -217,12 +227,29 @@ class ExConnect:
         self.state.setdefault("settings", {"library": os.path.join(self.dir, "library"), "method": "setup", "startup": False})
         self.state.setdefault("playtime", {}); self.state.setdefault("last_played", {}); self.state.setdefault("jobs", [])
         self.state.setdefault("ex_installs", {}); self.state.pop("wishlist", None)   # old saved wishlist data is ignored and dropped
-        self.catalog = {a["id"]: dict(a) for a in CATALOG}
         self.cache = self._load(os.path.join(self.dir, "catalog_cache.json"), {})
-        for aid, c in self.cache.get("apps", {}).items():
-            if aid in self.catalog:
-                self.catalog[aid]["latest"] = c.get("latest"); self.catalog[aid]["assets"] = c.get("assets", {})
-                self.catalog[aid]["assets_ver"] = c.get("assets_ver")     # 1.1.10: restored too (was refetched from the API on every sync)
+        # 1.1.11: the title list comes from the remote catalog.json (last good copy cached); ex_catalog.py is only the fallback
+        self.catalog = {}; self.cat_dir = rm.cache_dir(self.dir); self.catalog_error = None; self.catalog_skipped = []
+        self.cat_meta = {"schema": 1, "catalog_version": "built-in", "featured": ["fireout-shine"], "known_sizes": dict(KNOWN_SIZES)}
+        self.cat_source = "built-in"; self.catalog_sha = None; self.last_catalog_diff = ([], [])
+        titles = []
+        for a in CATALOG:
+            try:
+                titles.append(rm.validate_title(a))
+            except Exception:
+                pass
+        doc = self._load(os.path.join(self.cat_dir, "catalog.json"), None)
+        if doc:
+            try:
+                self.cat_meta, titles, self.catalog_skipped = rm.parse(doc); self.cat_source = "cached"; self.catalog_sha = doc.get("_sha")
+            except Exception:
+                pass
+        self.installed = {}; self.jobs = []
+        first = "seen_titles" not in self.state
+        self.state.setdefault("seen_titles", {})
+        self._apply_titles(titles)
+        if first:                               # nothing is NEW on the very first run
+            self.state["seen_titles"] = {aid: 0 for aid in self.catalog}
         self.online = None; self.synced_at = self.cache.get("synced_at"); self.self_latest = None
         self.check_errors = {}; self.checked_at = {}; self.sources = {}; self._sig = None; self._refreshing = threading.Lock()
         self.installed = {}; self.running = {}
@@ -260,6 +287,69 @@ class ExConnect:
         os.makedirs(d, exist_ok=True)
         return d
 
+    # ---------- remote store catalog (1.1.11) ----------
+    def _apply_titles(self, titles):
+        """swap in a new title list; keeps live latest.json / asset data; returns (new ids, changed ids)"""
+        old = self.catalog; new = {}
+        for t in titles:
+            d = dict(t); o = old.get(t["id"]) or {}; c = self.cache.get("apps", {}).get(t["id"], {})
+            for k in ("latest", "assets", "assets_ver"):
+                d[k] = o.get(k) if o.get(k) is not None else c.get(k, {} if k == "assets" else None)
+            new[t["id"]] = d
+        for aid, o in old.items():              # a title dropped from the catalog stays while it is installed or downloading
+            if aid not in new and (aid in self.installed or self.job_for(aid)):
+                new[aid] = o
+        added = [a for a in new if a not in old]
+        changed = [a for a in new if a in old and rm.fingerprint(new[a]) != rm.fingerprint(old[a])]
+        seen = self.state["seen_titles"]
+        for a in new:
+            seen.setdefault(a, time.time())
+        self.catalog = new
+        return added, changed
+
+    def is_new(self, aid):
+        t = self.state.get("seen_titles", {}).get(aid, 0)
+        return bool(t) and time.time() - t < 14 * 86400
+
+    def featured(self):
+        return [a for a in self.cat_meta.get("featured", []) if a in self.catalog] or list(self.catalog)[:1]
+
+    def sync_catalog(self):
+        """read catalog.json at main's commit SHA, validate, fetch changed art, apply. Returns (new ids, changed ids)."""
+        sha = main_sha(rm.REPO)
+        if not sha:
+            raise ValueError("no main branch")
+        doc = fetch_json("https://raw.githubusercontent.com/%s/%s/%s/%s" % (rm.OWNER, rm.REPO, sha, rm.PATH))
+        meta, titles, skipped = rm.parse(doc)
+        art_changed, errs = rm.sync_art(self.dir, titles, sha, fetch_bytes, BUNDLED_ART)
+        added, changed = self._apply_titles(titles)
+        changed = sorted(set(changed) | (set(art_changed) - set(added)))
+        self.cat_meta, self.catalog_skipped, self.cat_source, self.catalog_sha = meta, skipped, "live main@" + sha[:7], sha
+        self.catalog_art_errors = errs; self.catalog_error = None
+        doc["_sha"] = sha
+        tmp = os.path.join(self.cat_dir, "catalog.json.tmp")
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(doc, f, ensure_ascii=False)
+        os.replace(tmp, os.path.join(self.cat_dir, "catalog.json"))
+        self.save()
+        return added, changed
+
+    def check_store(self, on_done=None):
+        """CHECK FOR STORE UPDATES: catalog.json + art only (game versions are CHECK FOR UPDATES)"""
+        def run():
+            try:
+                self.last_catalog_diff = self.sync_catalog(); self.store_check = ("ok", self.last_catalog_diff, time.time())
+            except Exception as e:
+                self.catalog_error = "%s: %s" % (type(e).__name__, str(e)[:100]); self.store_check = ("error", self.catalog_error, time.time())
+            self.notify("store_checked", "")
+            if on_done:
+                on_done()
+        threading.Thread(target=run, daemon=True).start()
+
+    def art_path(self, aid, name):
+        p = os.path.join(self.cat_dir, "art", aid, name)
+        return p if os.path.exists(p) else None
+
     # ---------- catalog sync ----------
     def refresh(self, block=False, on_done=None):
         def run():
@@ -271,7 +361,7 @@ class ExConnect:
                 nonlocal ok
                 app = self.catalog[aid]
                 try:
-                    lj, src = fetch_latest(app["repo"], timeout=8)
+                    lj, src = fetch_latest(app.get("latest_repo") or app["repo"], timeout=8, path=app.get("latest_path") or "latest.json")
                     if not lj.get("version"):
                         raise ValueError("latest.json has no version")
                     ok += 1
@@ -293,7 +383,14 @@ class ExConnect:
                 if on_done:
                     on_done()
                 return
-            for aid in self.catalog:
+            try:
+                diff = self.sync_catalog()
+                self.last_catalog_diff = diff
+                if diff[0] or diff[1]:
+                    self.notify("catalog_changed", "")
+            except Exception as e:                  # offline / bad file: keep the last good (cached) catalog
+                self.catalog_error = "%s: %s" % (type(e).__name__, str(e)[:100]); self.last_catalog_diff = ([], [])
+            for aid in list(self.catalog):
                 t = threading.Thread(target=one, args=(aid,), daemon=True); t.start(); threads.append(t)
             try:
                 self.self_latest = fetch_json(SELF_LATEST_URL)
@@ -304,7 +401,7 @@ class ExConnect:
             self.online = ok > 0
             if ok:
                 self.synced_at = time.time()
-                apps = {aid: {"latest": a.get("latest"), "assets": a.get("assets", {}), "assets_ver": a.get("assets_ver")} for aid, a in self.catalog.items()}
+                apps = {aid: {"latest": a.get("latest"), "assets": a.get("assets", {}), "assets_ver": a.get("assets_ver")} for aid, a in list(self.catalog.items())}
                 try:
                     with open(os.path.join(self.dir, "catalog_cache.json"), "w", encoding="utf-8") as f:
                         json.dump({"apps": apps, "synced_at": self.synced_at}, f)
@@ -340,14 +437,14 @@ class ExConnect:
             url = lj.get("full_url")
         if not url and not lj:  # offline fallback: well-known asset names
             url = None
-        if not url:
+        if not url or not rm.allowed_url(url):       # 1.1.11: downloads only from github.com/Teobokki
             return None
         name = urllib.request.unquote(url.rsplit("/", 1)[-1])
         fresh = a.get("assets_ver") == ver       # 1.1.10: asset lists of an OLDER release are never used to reject a new file
         meta = (a.get("assets") or {}).get(name, {}) if fresh else {}
         if fresh and a.get("assets") and name not in a["assets"]:
             return None  # e.g. latest.json lists a zip the release doesn't carry
-        return {"url": url, "name": name, "size": meta.get("size") or KNOWN_SIZES.get(name, 0), "sha256": meta.get("sha256"), "version": ver}
+        return {"url": url, "name": name, "size": meta.get("size") or self.cat_meta.get("known_sizes", {}).get(name) or KNOWN_SIZES.get(name, 0), "sha256": meta.get("sha256"), "version": ver}
 
     def install_choice(self, aid):
         """(kind, asset) that EX CONNECT would use for a fresh install."""

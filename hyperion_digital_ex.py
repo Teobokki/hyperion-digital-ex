@@ -25,22 +25,41 @@ def res(*p):
     return os.path.join(getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__))), *p)
 
 
+SVC = None          # set by Main: art comes from the remote catalog's cache first, then the store's own bundle
+
+
 def art(aid, name):
-    return res("assets", "apps", aid, name)
+    """1.1.11: art downloaded from the remote catalog (cached in %LOCALAPPDATA%) wins over the built-in copy"""
+    return (SVC and SVC.art_path(aid, name)) or res("assets", "apps", aid, name)
 
 
 def shots(aid):
+    names = set()
+    t = SVC.catalog.get(aid) if SVC else None
+    if t and t.get("art"):
+        names = {n for n in t["art"] if n.startswith("shot")}
     d = res("assets", "apps", aid)
-    return sorted([os.path.join(d, f) for f in os.listdir(d) if f.startswith("shot")], key=lambda p: int(p.rsplit("shot", 1)[1].split(".")[0]))
+    if not names and os.path.isdir(d):
+        names = {f for f in os.listdir(d) if f.startswith("shot")}
+    def k(n):
+        try:
+            return int(n[4:].split(".")[0])
+        except ValueError:
+            return 999
+    return [art(aid, n) for n in sorted(names, key=k)] or [art(aid, "capsule.jpg")]
 
 
 _PIX = {}
 
 
 def pix(path):
-    if path not in _PIX:
-        _PIX[path] = QPixmap(path)
-    return _PIX[path]
+    try:
+        key = (path, os.path.getmtime(path))
+    except OSError:
+        key = (path, 0)
+    if key not in _PIX:
+        _PIX[key] = QPixmap(path)
+    return _PIX[key]
 
 
 def hero_pix(aid, w, h):
@@ -435,7 +454,7 @@ class FeaturedCarousel(QWidget):
 
     def __init__(self, ui, banner):
         super().__init__()
-        self.banner = banner; self.games = [DreamVineCard(ui, aid) for aid in FEATURED_IDS]
+        self.banner = banner; self.games = [DreamVineCard(ui, aid) for aid in ui.svc.featured()]
         self.dv = self.games[0]
         for g in self.games:
             g.clicked.connect(ui.open_product)
@@ -591,7 +610,10 @@ class Card(QFrame):
         col = QVBoxLayout(); col.setSpacing(0)
         t = lbl(a["name"]); t.setStyleSheet("font-weight:800;font-size:14px;background:transparent"); col.addWidget(t)
         g = lbl(a["genre"], "small"); g.setStyleSheet("background:transparent"); col.addWidget(g)
-        row.addLayout(col, 1); v.addLayout(row)
+        row.addLayout(col, 1)
+        if ui.svc.is_new(aid):
+            nb = lbl("NEW"); nb.setStyleSheet("background:%s;color:#0e1319;font-weight:900;font-size:11px;border-radius:4px;padding:2px 8px" % GREEN); row.addWidget(nb, 0, Qt.AlignTop)
+        v.addLayout(row)
         self.status = lbl("", "small"); self.status.setContentsMargins(12, 0, 12, 0); v.addWidget(self.status)
         self.refresh()
 
@@ -656,7 +678,7 @@ class StorePage(QWidget):
         self.sections = {}
         for cat, title in ((GAMES, "GAMES"), (APPS, "APPS & TOOLS")):
             ids = [a["id"] for a in ui.svc.catalog.values() if a["category"] == cat] + [a["id"] for a in UPCOMING if a["category"] == cat]
-            ids.sort(key=lambda x: x != "fireout-shine")      # FIREOUT SHINE is always the first card
+            ids.sort(key=lambda x: x not in ui.svc.featured())      # featured titles (FIREOUT SHINE) come first
             hl = lbl("%s  ·  %d" % (title, len(ids)), "h2"); self.sections[cat] = hl
             hdr = QHBoxLayout(); hdr.addWidget(hl); hdr.addStretch(1)
             v.addSpacing(10); v.addLayout(hdr)
@@ -826,7 +848,7 @@ class LibraryPage(QWidget):
             for aid in ids:
                 a = self.ui.svc.catalog[aid]; st = self.ui.svc.status(aid)
                 suffix = {"playing": "  \u2013 Playing", "update": "  \u2B06 UPDATE", "downloading": "  \u2013 Downloading", "paused": "  \u2013 Paused", "installing": "  \u2013 Installing", "queued": "  \u2013 Queued"}.get(st, "")
-                it = QListWidgetItem(QIcon(art(aid, "icon.png")), a["name"] + suffix); it.setData(Qt.UserRole, aid)
+                it = QListWidgetItem(QIcon(art(aid, "icon.png")), a["name"] + ("  \u2022 NEW" if self.ui.svc.is_new(aid) else "") + suffix); it.setData(Qt.UserRole, aid)
                 if st in ("play", "playing", "update"):
                     it.setForeground(QColor({"playing": "#9be57c", "update": ORANGE}.get(st, FG)))
                 else:
@@ -966,13 +988,17 @@ class UpdatesPage(QWidget):
     def refresh(self):
         svc = self.ui.svc; ups = svc.updates()
         sig = (tuple((a, svc.latest_version(a), (svc.installed.get(a) or {}).get("version"), svc.status(a)) for a in svc.catalog),
-               tuple(sorted(svc.check_errors.items())), getattr(svc, "last_check", 0), self.ui.gu_busy)
+               tuple(sorted(svc.check_errors.items())), getattr(svc, "last_check", 0), self.ui.gu_busy, svc.cat_source, getattr(self.ui, "catalog_msg", None), self.ui.store_busy)
         if sig == self.sig:
             return
         self.sig = sig; clear_layout(self.v)
         head = QHBoxLayout(); head.addWidget(lbl("UPDATES", "h2")); head.addStretch(1)
         ck = QPushButton("CHECKING\u2026" if self.ui.gu_busy else "\u21BB  CHECK FOR UPDATES"); ck.setObjectName("ghost"); ck.setEnabled(not self.ui.gu_busy)
         ck.clicked.connect(self.ui.game_updates); head.addWidget(ck)
+        sb = self.ui.store_busy
+        cs = QPushButton("CHECKING STORE\u2026" if sb else "CHECK FOR STORE UPDATES"); cs.setObjectName("ghost"); cs.setEnabled(not sb)
+        cs.setToolTip("Fetch the store catalog (titles, descriptions, art) fresh - new games and apps appear without updating the store")
+        cs.clicked.connect(self.ui.check_store); head.addWidget(cs)
         if ups:
             ua = QPushButton("\u2B06  UPDATE ALL (%d)" % len(ups)); ua.setObjectName("primary"); ua.setProperty("mode", "update")
             ua.clicked.connect(lambda: ([svc.install(x, update=True) for x in svc.updates() if not svc.job_for(x)], self.ui.refresh_all())); head.addWidget(ua)
@@ -982,6 +1008,13 @@ class UpdatesPage(QWidget):
         if svc.online is False:
             st = "Offline: could not reach GitHub. Installed versions are still read from this PC."
         self.v.addWidget(lbl(st, "muted", True))
+        cm = getattr(self.ui, "catalog_msg", None)
+        cat = "Store catalog: %s  \u00b7  version %s  \u00b7  %d titles" % (svc.cat_source, svc.cat_meta.get("catalog_version"), len(svc.catalog))
+        if svc.catalog_error:
+            cat += "  \u00b7  could not refresh (%s), using the last saved catalog" % svc.catalog_error
+        cl = lbl(cat, "small", True); self.v.addWidget(cl)
+        if cm and time.time() - cm[1] < 600:
+            ok = lbl("\u2714  " + cm[0], None, True); ok.setStyleSheet("color:#9be57c;font-weight:800"); self.v.addWidget(ok)
         for aid, err in sorted(svc.check_errors.items()):
             w = lbl("\u26A0  Could not check %s (%s). It is NOT shown as up to date." % (svc.catalog[aid]["name"], err), "small", True)
             w.setStyleSheet("color:%s" % ORANGE); self.v.addWidget(w)
@@ -1514,12 +1547,17 @@ class UpdateDialog(QDialog):
             self.failed.emit("Could not start the update: %s" % e)
 
 
+PAGE_CLASSES = {"store": StorePage, "library": LibraryPage, "product": ProductPage, "downloads": DownloadsPage, "connect": ConnectPage,
+                "settings": SettingsPage, "search": SearchPage, "soon": SoonPage, "profile": ProfilePage, "updates": UpdatesPage}
+
+
 # ---------------------------------------------------------------- main window
 class Main(QMainWindow):
     def __init__(self):
         super().__init__()
         self.bridge = Bridge(); self.bridge.event.connect(self.on_event)
-        self.svc = xc.ExConnect(notify=lambda ev, aid: self.bridge.event.emit(ev, aid))
+        global SVC
+        self.svc = SVC = xc.ExConnect(notify=lambda ev, aid: self.bridge.event.emit(ev, aid))
         self.setWindowTitle(APP_NAME); self.setWindowIcon(QIcon(res("assets", "icon.ico"))); self.resize(1440, 900); self.setMinimumSize(1180, 720)
         root = QWidget(); root.setObjectName("root"); self.setCentralWidget(root)
         v = QVBoxLayout(root); v.setContentsMargins(0, 0, 0, 0); v.setSpacing(0)
@@ -1538,7 +1576,7 @@ class Main(QMainWindow):
         self.profile = Profile(self.svc)
         self.prof = QPushButton("EX PROFILE"); self.prof.setObjectName("nav"); self.prof.setCursor(Qt.PointingHandCursor); self.prof.setToolTip("Your EX PROFILE")
         self.prof.clicked.connect(lambda: self.go("profile")); th.addWidget(self.prof); self.navs["profile"] = self.prof
-        self.gu_busy = False; self.gu_dots = 0; self.gu_timer = QTimer(self, interval=250, timeout=self._gu_spin); self.gu_panel = None
+        self.gu_busy = False; self.store_busy = False; self.gu_dots = 0; self.gu_timer = QTimer(self, interval=250, timeout=self._gu_spin); self.gu_panel = None
         self.badge = QPushButton("\u25CF EX CONNECT"); self.badge.setObjectName("badge"); self.badge.setCursor(Qt.PointingHandCursor); self.badge.clicked.connect(lambda: self.go("connect")); th.addWidget(self.badge)
         gear = QPushButton("SETTINGS"); gear.setObjectName("nav"); gear.setToolTip("Settings"); gear.clicked.connect(lambda: self.go("settings")); th.addWidget(gear)
         self.navs["settings"] = gear
@@ -1549,9 +1587,7 @@ class Main(QMainWindow):
             fit(b)
         v.addWidget(top)
         self.stack = QStackedWidget(); v.addWidget(self.stack, 1)
-        self.pages = {"store": StorePage(self), "library": LibraryPage(self), "product": ProductPage(self), "downloads": DownloadsPage(self),
-                      "connect": ConnectPage(self), "settings": SettingsPage(self), "search": SearchPage(self),
-                      "soon": SoonPage(self), "profile": ProfilePage(self), "updates": UpdatesPage(self)}
+        self.pages = {k: c(self) for k, c in PAGE_CLASSES.items()}
         for p in self.pages.values():
             self.stack.addWidget(p)
         # footer
@@ -1571,6 +1607,61 @@ class Main(QMainWindow):
         self.update_timer = QTimer(self, interval=10 * 60 * 1000, timeout=lambda: (self.auto_check(), self.svc.refresh())); self.update_timer.start()
         self.local_timer = QTimer(self, interval=15 * 1000, timeout=self.local_rescan); self.local_timer.start()
         self._last_focus_check = time.time()
+
+    def check_store(self):
+        if self.store_busy:
+            return
+        self.store_busy = True; self.pages["updates"].refresh(); self.svc.check_store()
+
+    def on_store_checked(self):
+        self.store_busy = False
+        st = getattr(self.svc, "store_check", None) or ("error", "?", 0)
+        if st[0] == "error":
+            msg = "Could not check the store (%s). Using the last saved catalog." % st[1]
+        else:
+            new, changed = st[1]
+            if new or changed:
+                self.rebuild_pages()
+                parts = []
+                if new:
+                    parts.append("%d new title%s (%s)" % (len(new), "" if len(new) == 1 else "s", ", ".join(self.svc.catalog[x]["name"] for x in new if x in self.svc.catalog)))
+                if changed:
+                    parts.append("%d updated listing%s" % (len(changed), "" if len(changed) == 1 else "s"))
+                msg = "Store updated: " + ", ".join(parts)
+            else:
+                msg = "Store is up to date"
+        self.catalog_msg = (msg, time.time()); self.show_toast(msg, 5000); self.pages["updates"].refresh()
+
+    def rebuild_pages(self):
+        """1.1.11: the remote catalog changed - rebuild every page that lists titles, live, keeping where the user is"""
+        cur = getattr(self, "current", "store"); prod = self.pages["product"].aid; lib = self.pages["library"].aid
+        q = self.search.text()
+        for k, c in PAGE_CLASSES.items():
+            if k == "settings":
+                continue
+            old = self.pages[k]; i = self.stack.indexOf(old); new = c(self)
+            self.stack.insertWidget(i, new); self.stack.removeWidget(old); old.deleteLater(); self.pages[k] = new
+        if prod in self.svc.catalog:
+            self.pages["product"].show_app(prod)
+        elif cur == "product":
+            cur = "store"
+        if lib in self.svc.catalog:
+            self.pages["library"].select(lib)
+        self.go(cur)
+        if cur == "search" and q:
+            self.pages["search"].set_query(q)
+        self.update_gu_badge()
+
+    def on_catalog_changed(self):
+        new, changed = self.svc.last_catalog_diff
+        self.rebuild_pages()
+        names = lambda ids: ", ".join(self.svc.catalog[x]["name"] for x in ids if x in self.svc.catalog)
+        msg = "Store updated"
+        if new:
+            msg += "  \u00b7  NEW: " + names(new)
+        if changed:
+            msg += "  \u00b7  updated: %d title%s" % (len(changed), "" if len(changed) == 1 else "s")
+        self.catalog_msg = (msg, time.time()); self.show_toast(msg, 5000)
 
     def local_rescan(self):
         try:
@@ -1643,6 +1734,10 @@ class Main(QMainWindow):
                 return
             self._last_prog = now
             self.refresh_light(); return
+        if ev == "catalog_changed":
+            self.on_catalog_changed(); return
+        if ev == "store_checked":
+            self.on_store_checked(); return
         if ev == "catalog":
             self.update_self_badge(); self.update_gu_badge()
             self.maybe_game_update_popup()
@@ -1887,6 +1982,28 @@ def smoke(win, out_dir, phase):
         at(12500, lambda: win.open_library("fireout-shine"))
         at(14000, lambda: (shot("library.png"), L("default_install_done", win.svc.state.get("default_install_done"))))
         at(15000, lambda: win.close())
+    elif phase == "storecheck":            # 1.1.11: CHECK FOR STORE UPDATES picks up a pushed catalog.json change live
+        flag = os.environ.get("HDX_SMOKE_FLAG", "")
+        def info(tag):
+            svc = win.svc
+            L(tag, "source", svc.cat_source, "version", svc.cat_meta.get("catalog_version"), "titles", len(svc.catalog), sorted(svc.catalog),
+              "new", [a for a in svc.catalog if svc.is_new(a)], "anulment tagline", svc.catalog.get("the-anulment", {}).get("tagline", "")[:90],
+              "store cards", len(win.pages["store"].cards), "error", svc.catalog_error)
+        at(9000, lambda: (info("start"), win.go("updates")))
+        at(10000, lambda: shot("store_before.png"))
+        def wait_flag():
+            if flag and not os.path.exists(flag):
+                QTimer.singleShot(1000, wait_flag); return
+            L("flag seen - pressing CHECK FOR STORE UPDATES"); win.go("updates"); win.check_store(); QTimer.singleShot(500, wait_done)
+        def wait_done():
+            if win.store_busy:
+                QTimer.singleShot(500, wait_done); return
+            L("result:", win.catalog_msg[0]); info("after"); shot("updates_after_storecheck.png")
+            steps = [lambda: win.go("store"), lambda: shot("store_after.png"), lambda: win.go("library"), lambda: shot("library_after.png"),
+                     lambda: win.open_product("the-anulment"), lambda: shot("product_after.png"), win.close]
+            for k, f in enumerate(steps):
+                QTimer.singleShot(800 * (k + 1), f)
+        at(11000, wait_flag)
     elif phase == "updates":               # 1.1.10: UPDATES page, outside change detection, UPDATE from the page
         aid = os.environ.get("HDX_SMOKE_APP", "the-anulment"); t0 = time.time()
         def st(tag):

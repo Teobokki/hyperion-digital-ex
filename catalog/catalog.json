@@ -1,0 +1,630 @@
+{
+ "schema": 1,
+ "catalog_version": 1,
+ "featured": [
+  "fireout-shine"
+ ],
+ "titles": [
+  {
+   "id": "dream-vine",
+   "row": "GAMES",
+   "name": "DREAM VINE",
+   "repo": "dream-vine",
+   "genre": "Sandbox · Survival · Creative",
+   "tagline": "An original block-building sandbox. Explore endless worlds, mine, craft, build and survive the night.",
+   "description": "DREAM VINE is an original block-building sandbox game by EX Inc. Explore endless procedurally generated worlds, mine, craft and build, survive the night, or fly around freely in Creative. All code, textures, names, mobs and logos are original, and everything is generated procedurally.",
+   "features": [
+    "Infinite chunked worlds from a seed: beaches, water, hills and mountains, forests, caves, ores and bedrock",
+    "Survival (health, hunger, fall damage, tool tiers) and Creative (all blocks, instant break, flying)",
+    "9-slot hotbar, 27-slot inventory and crafting: tools from wood to diamond, glass, bricks, Dream Vine blocks",
+    "Day/night cycle with sunsets, sun, moon, clouds and fog",
+    "Mobs: Mossbuck (passive grazer) and Gloomer (hostile at night, glowing eyes)",
+    "Text chat with commands: /gamemode, /time, /tp, /seed, /build, /undo and more",
+    "VINE BUILD (Creative): describe any building and Vine AI builds it in front of you, fully offline"
+   ],
+   "reg": "{7D1E5A92-3C4B-4F6E-A8D1-2B9C0E7F4A63}_is1",
+   "exe": "DREAM VINE.exe",
+   "folder": "DREAM VINE",
+   "portable": [
+    "DREAM VINE.exe",
+    "DREAM.VINE.Portable.exe"
+   ],
+   "version": "1.4.0",
+   "app_id": "{7D1E5A92-3C4B-4F6E-A8D1-2B9C0E7F4A63}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/dream-vine/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 72603,
+     "sha256": "e257e689788f7b89bae2b4a50b44061b5f97db6536696fcef75c593648090063"
+    },
+    "hero.jpg": {
+     "size": 120721,
+     "sha256": "b5b7a0678ae52e561d7b198b922363f85857c5423e726b2f1fbe94a2463c37a1"
+    },
+    "icon.png": {
+     "size": 146643,
+     "sha256": "a1d7fe9cd3d7934aaf8bcc65027a389a87be8f763b6e5a2fc55c3566f094543c"
+    },
+    "shot0.jpg": {
+     "size": 190741,
+     "sha256": "b513eb5ad986420743286bc31133ede4d5d0f78c93e6594db0f86c08405270b5"
+    },
+    "shot1.jpg": {
+     "size": 302329,
+     "sha256": "6aa839dd785d1fed3648a2df7844fae16ed989204bbda65bfa202d0fccbb4338"
+    },
+    "shot2.jpg": {
+     "size": 259565,
+     "sha256": "e04062103580045c184ea57276ec953f4d48f313bbb95baf97143d3253c2def6"
+    },
+    "shot3.jpg": {
+     "size": 81882,
+     "sha256": "be502a7e05a5ae5e0599a97f23fd16c4b00440631df7d977624c5eb4afd2fa53"
+    },
+    "shot4.jpg": {
+     "size": 91412,
+     "sha256": "c8a88bdf4b8e29ce77264315582b161568624ee352c01dcdd81aa36ebc415f3a"
+    },
+    "shot5.jpg": {
+     "size": 258146,
+     "sha256": "6f714af23912b3ba082684dcee2ae3a1f7be54a90369a726ed38dad9401e80a2"
+    }
+   }
+  },
+  {
+   "id": "piknott-celestika",
+   "row": "GAMES",
+   "name": "PIKNOTT CELESTIKA",
+   "repo": "piknott-celestika",
+   "genre": "RPG · Monster catching · Cel-shaded",
+   "tagline": "A fully cel-shaded monster-catching RPG. Catch 13 PIKNOTT across the Celestika region.",
+   "description": "Explore the Celestika region as a boy in a red hoodie, sneak through tall grass, throw PIKCEL balls to catch wild PIKNOTT, and battle them with your team using an action-order battle system with Normal / Strong / Agile move styles. Custom toon shaders with ink outlines give the whole world a hand-drawn look.",
+   "features": [
+    "Catch 13 PIKNOTT with three kinds of PIKCEL balls",
+    "Action-order battles with Normal, Strong and Agile move styles",
+    "Sneak through tall grass while crouching to stay hidden",
+    "Team screen, CELESTIKA DOK and a region map",
+    "Rest and heal at camp fires; progress is saved automatically",
+    "Keyboard + mouse and basic gamepad support"
+   ],
+   "reg": "{B4C2E7A1-5D3F-4A9B-9E61-7C0D2F8A3B54}_is1",
+   "exe": "PIKNOTT CELESTIKA.exe",
+   "folder": "PIKNOTT CELESTIKA",
+   "portable": [
+    "PIKNOTT CELESTIKA.exe",
+    "PIKNOTT.CELESTIKA.Portable.exe"
+   ],
+   "version": "1.0.1",
+   "app_id": "{B4C2E7A1-5D3F-4A9B-9E61-7C0D2F8A3B54}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/piknott-celestika/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 50448,
+     "sha256": "1ad72953140b5b80e1fba68f85ebc3057dd0b4865439db2e13f356bf58400b7f"
+    },
+    "hero.jpg": {
+     "size": 123088,
+     "sha256": "1e65f16dd67acc41668c0b21c5612cd67deafa7758bf916fc56655690ecdf67d"
+    },
+    "icon.png": {
+     "size": 160595,
+     "sha256": "deeb90f488304a7d55eb1af17f4b9ca0d20316caae8344d4132a50840283ed36"
+    },
+    "shot0.jpg": {
+     "size": 427382,
+     "sha256": "44707d6d66984da453094ee78745b91c4b34d8c291e080e16e26656026547f1f"
+    },
+    "shot1.jpg": {
+     "size": 173743,
+     "sha256": "ad9e449c6351d025aa71785b996f17e0dfe39419aa5e437cca8dc99439dd2d6e"
+    },
+    "shot2.jpg": {
+     "size": 165755,
+     "sha256": "b9f6e0956de95641fbbcd10f1f6e3cf06a28745652def32ffad73fb54c4942ca"
+    },
+    "shot3.jpg": {
+     "size": 175605,
+     "sha256": "04b9a4ec2d252acf6040dd21e0ee15c5eb0501e87c997ab8a58ba8630ec7f27a"
+    },
+    "shot4.jpg": {
+     "size": 74860,
+     "sha256": "a43887a8c7c195110d04a5c9ad7f9f0da43c7d3304a08b1875c33a4b5c2a30bf"
+    },
+    "shot5.jpg": {
+     "size": 135682,
+     "sha256": "3cbdd89d3b018fdbb8dcc2ae0056179b3187365c7d211fc7fa9f54b519e75618"
+    },
+    "shot6.jpg": {
+     "size": 112822,
+     "sha256": "63dd1d19a68d7244c7bf3337332bca9ae5e2727c33866810a07bc00eca0a5ca4"
+    }
+   }
+  },
+  {
+   "id": "fireout-shine",
+   "row": "GAMES",
+   "name": "ファイアアウト・シャイン",
+   "repo": "fireout-shine",
+   "genre": "Racing · 指名手配される GET WANTED · Open world",
+   "tagline": "Open-world neon Tokyo and Hikari Beach: race, escape the police and live the night as ANA and DANIEL.",
+   "description": "ファイアアウト・シャイン (FIREOUT SHINE) is an open-world driving game set in an original neon Tokyo and the seaside Hikari Beach. Play as ANA and DANIEL, switch between them at any time, take any car with F, enter street races and activities, and GET WANTED: outrun the police as your wanted stars climb. Customise your ride at FRGARAGE, go home to Ana and Daniel's house to sleep, save and change outfits, and use the EX IX G9 phone to call a JP Taxi. Publisher: EX Inc./HYPERION DIGITAL. ©2026 EX Inc./HYPERION DIGITAL ©2026.",
+   "features": [
+    "Open-world neon Tokyo plus Hikari Beach: scramble crossing, sign-lined streets, an elevated expressway and glass skyscrapers",
+    "Play as ANA and DANIEL and switch between them at any time (Q)",
+    "Take any car with F; street races against AI rivals, a time trial, a drift zone and speed cameras",
+    "FRGARAGE: choose your car (including the DEBAUCHE sedan), paint it and set a custom number plate",
+    "Weapon wheel (Tab): fists, baseball bat, pickaxe, taser, pistol, SMG and shotgun",
+    "指名手配される GET WANTED: wanted stars (1-5) and police chases. Escape to lose them, or get BUSTED",
+    "Ana and Daniel's house: sleep, save, take a shower and change outfits in the wardrobe",
+    "EX IX G9 phone with JP Taxi and Emergency Services, map waypoints and a day/night cycle"
+   ],
+   "publisher": "EX Inc./HYPERION DIGITAL",
+   "developer": "EX Inc./HYPERION DIGITAL",
+   "release": "2026",
+   "reg": "{7E3A91C4-2B6D-4F18-A5C9-3D8E1F0B6A72}_is1",
+   "exe": "FIREOUT SHINE.exe",
+   "folder": "FIREOUT SHINE",
+   "portable": [
+    "FIREOUT SHINE.exe",
+    "FIREOUT-SHINE-Portable.exe"
+   ],
+   "version": "1.0.5.2",
+   "app_id": "{7E3A91C4-2B6D-4F18-A5C9-3D8E1F0B6A72}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/fireout-shine/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 81890,
+     "sha256": "2bd62978b06e8d8cdc1c812a5d3b890af113e4276bc9847f6e16a2d0b2e4773c"
+    },
+    "cover.jpg": {
+     "size": 877440,
+     "sha256": "8fdf4662507672ccecfc08ec4a0cd4e7a6514ee16658f213e76da2ba95241825"
+    },
+    "hero.jpg": {
+     "size": 212015,
+     "sha256": "08e1a886327fbfe4b794d986060add72c78c7213aad56fe7eb677c03adeffd6d"
+    },
+    "hero_bg.jpg": {
+     "size": 43646,
+     "sha256": "5e2fca4e81df223d296e7864687cd1dc47fd1df8118a7c43f48a00ff25939bfa"
+    },
+    "icon.png": {
+     "size": 139947,
+     "sha256": "da71e2e45a7a0f35c7522b65a2eb49de28ab449c335a804a912f5109309f29b5"
+    },
+    "shot0.jpg": {
+     "size": 272043,
+     "sha256": "684b6c46c74931def7e7878b1db12b096650f30298c28bec2f412e34ec16b22a"
+    },
+    "shot1.jpg": {
+     "size": 127972,
+     "sha256": "042c2820e661bd0616ff9907bf31f1c0a18b48992c8921bade38d0b0efb968d4"
+    },
+    "shot2.jpg": {
+     "size": 229097,
+     "sha256": "bd14f6db7f89fb70488a44735846061e1818651abf706264dffc8c41cb4599cf"
+    },
+    "shot3.jpg": {
+     "size": 204789,
+     "sha256": "7a7354e7651fdf659a63d978a4b795596aa4a80e98b5e77e8616aa490dda9451"
+    },
+    "shot4.jpg": {
+     "size": 177518,
+     "sha256": "c8601c7ee556ad786d978cfa795a999951a4076ed9e08e11dd8360eb4a5c2173"
+    },
+    "shot5.jpg": {
+     "size": 131216,
+     "sha256": "b7ea75a1e6ab77aef55ba491ea0e8aa0a350bd2247d92864c5ee6c32e5f69073"
+    },
+    "shot6.jpg": {
+     "size": 209568,
+     "sha256": "0e38867d9ecd509f33d76859365cee62b38d8cadec167e15d17d005e638e75c1"
+    },
+    "shot7.jpg": {
+     "size": 207649,
+     "sha256": "fe2adb675a761a50322b9b2d8378234f766329420091d4ab9613efd3e83d926d"
+    }
+   }
+  },
+  {
+   "id": "ex-sports-sfc27",
+   "row": "GAMES",
+   "name": "EX SPORTS™ SFC 27 STANDARD EDITION",
+   "repo": "ex-sports-sfc27",
+   "genre": "Sports · Football · Online",
+   "tagline": "7-a-side football at the SFC 27 stadium: quick matches against the AI, or online with friends using a join code.",
+   "description": "EX SPORTS™ SFC 27 STANDARD EDITION is 7-a-side football at the EX SPORTS SFC 27 stadium. The pitch is full size with standard markings, goals with nets, stands packed with a crowd, and floodlights. Play a QUICK MATCH against the AI, or go ONLINE: host a session, share your SFC27-XXXX-XXXX join code and play with friends, with the AI filling the empty spots. Matches are UNLIMITED by default: the clock counts up and you end the match whenever you like. Every club and player is fictional. Online play needs no admin rights and no firewall setup. Publisher: EX Inc. ©2026 EX Inc./HYPERION DIGITAL ©2026.",
+   "features": [
+    "QUICK MATCH VS AI: pass, shoot, tackle and sprint with kickoffs, goals, a scoreboard and a match clock",
+    "ONLINE with friends via SFC27-XXXX-XXXX join codes: ALL OF US VS AI or SPLIT TEAMS, with AI fill, kick and ping",
+    "UNLIMITED matches by default (END MATCH any time), or timed 4, 8, 12 and 90 minute games",
+    "TEAMS: fictional clubs, an all-yellow kit and your own player look and name",
+    "Full-size stadium: standard pitch markings, nets, four stands with a crowd and plain floodlights",
+    "Per-user install, no admin rights; built-in update check"
+   ],
+   "publisher": "EX Inc.",
+   "developer": "EX Inc.",
+   "release": "2026",
+   "reg": "{B3C5E2A1-7D4F-4E61-9A27-5F0C8D2E1B27}_is1",
+   "exe": "EX SPORTS SFC 27.exe",
+   "folder": "EX SPORTS SFC 27",
+   "portable": [
+    "EX SPORTS SFC 27.exe",
+    "EX-SPORTS-SFC27-Portable.exe"
+   ],
+   "version": "1.0.0.5",
+   "app_id": "{B3C5E2A1-7D4F-4E61-9A27-5F0C8D2E1B27}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/ex-sports-sfc27/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 49665,
+     "sha256": "f473f419687cb9398def09674501c9e0a7ced22e96967764d3865215c7ec0af1"
+    },
+    "cover.jpg": {
+     "size": 485586,
+     "sha256": "268b4f9fa38b308722b6c45a83ab9f4e5ff34db040b511d79603d76ff80839d8"
+    },
+    "hero.jpg": {
+     "size": 135518,
+     "sha256": "178ba0c84f19675f04254602a8d7efea82e394e16b495027a9e2d7894bf4465a"
+    },
+    "hero_bg.jpg": {
+     "size": 53493,
+     "sha256": "c742c616a61dd9d67c028acfbe4261ff6b077fe0df8ed1e817e0b58b96e70766"
+    },
+    "icon.png": {
+     "size": 132753,
+     "sha256": "1fea9cfd8ff3bb80fde8ce7a3c66c3a8c490468bed83d77b585c185e47add176"
+    },
+    "shot0.jpg": {
+     "size": 151438,
+     "sha256": "6d9435043275ab185488cb744f3742b67852c8467f7887e38cb22cfe93a410ca"
+    },
+    "shot1.jpg": {
+     "size": 138735,
+     "sha256": "691ea2be5a1ff0e4b588337277076efd83fe1b4752d713aa8ecf68f525b8c38c"
+    },
+    "shot2.jpg": {
+     "size": 140923,
+     "sha256": "be60e9794cb68dc1b3c71c2c66d39afaadeea7dbe26a3431b1d8845dc7ee6368"
+    },
+    "shot3.jpg": {
+     "size": 153795,
+     "sha256": "f245ab62a534c948e6b55eeb6bff46d010458567ac2b84aa36914fa690d034f1"
+    },
+    "shot4.jpg": {
+     "size": 101088,
+     "sha256": "df7306fb327169deb133d95c29f491fcfec05a97bf40005c4ee489e189a7d11d"
+    },
+    "shot5.jpg": {
+     "size": 109356,
+     "sha256": "3379d5a616dbc91943d070a5c7f3b699bb5f76eccc702347c63385b9293e441b"
+    },
+    "shot6.jpg": {
+     "size": 138851,
+     "sha256": "73cb134a99fe1616982a310ed27c394a97d1086585e958836805e71cb5d6dff5"
+    },
+    "shot7.jpg": {
+     "size": 165114,
+     "sha256": "87ca9f212704cc5621f395f1a4ff4e1a4567e688965b2d929c06bceba0a9baae"
+    }
+   }
+  },
+  {
+   "id": "the-anulment",
+   "row": "GAMES",
+   "name": "THE ANULMENT",
+   "repo": "the-anulment",
+   "genre": "Story · Open world · Investigation",
+   "tagline": "Rainy night in Valdora: the vote is annulled, CLN is arrested, and MIYOYAZU sets out to find the truth.",
+   "description": "THE ANULMENT (Chapter 1: The Annulled Vote) is a story game set at night in the fictional country of Valdora. The Constitutional Court has annulled the first round of the presidential election and charged its winner, CLN. You play MIYOYAZU, an ordinary blogger in a grey hoodie: join the peaceful protest at the court, photograph and recover evidence, interview the prosecutors' aide and publish the truth. Take any vehicle with F, and stay calm when POLIȚIA VALDOREI pursue you. Type English with T and MIYOYAZU says it in an offline Romanian voice. All characters, parties, countries and events in this game are fictional. Publisher: EX Inc./HYPERION DIGITAL. ©2026 EX Inc./HYPERION DIGITAL ©2026.",
+   "features": [
+    "Rainy night-time Valdora with wet streets and letterbox cutscenes",
+    "Peaceful protest at the Constitutional Court: placards, candles and the chant CLN PREȘEDINTE! / TURUL DOI ÎNAPOI!",
+    "Fictional police (POLIȚIA VALDOREI): shield line, questioning, a pressure meter and pursuits that box you in",
+    "Traffic with fictional brands: take any vehicle non-violently with F",
+    "T chat: type English, MIYOYAZU speaks it with the offline Romanian Piper voice (bubble + subtitles)",
+    "EX IX G10 phone: CAMERA with SELMOTES, MESSAGES, NEWS, MAP, EVIDENCE, RECORDER and SETTINGS",
+    "Evidence board, interview and the PUBLISH THE TRUTH ending; minimap, full map and save/load",
+    "Per-user install, no admin rights; built-in update check"
+   ],
+   "publisher": "EX Inc./HYPERION DIGITAL",
+   "developer": "EX Inc./HYPERION DIGITAL",
+   "release": "2026",
+   "reg": "{B4D27E19-6A3C-4F85-9E1D-52A7C0F3D861}_is1",
+   "exe": "THE ANULMENT.exe",
+   "folder": "THE ANULMENT",
+   "portable": [
+    "THE ANULMENT.exe",
+    "THE-ANULMENT-Portable.exe"
+   ],
+   "version": "1.0.0.4",
+   "app_id": "{B4D27E19-6A3C-4F85-9E1D-52A7C0F3D861}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/the-anulment/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 40913,
+     "sha256": "9d80088d7c43c520790c39615585fb254bb7ebd6a34935e0a68e53572b37bb3f"
+    },
+    "cover.jpg": {
+     "size": 509973,
+     "sha256": "415b493cf9a82174ef4ec1d38d19d2021b308925c043ff60bd52b727516924dd"
+    },
+    "hero.jpg": {
+     "size": 118774,
+     "sha256": "819089e474d932e39131791ccb5919b964e55401edeb8a97201f326ea715c888"
+    },
+    "hero_bg.jpg": {
+     "size": 39965,
+     "sha256": "cb787a859ba556ce7e5992cbf81ae6835980a52231bcd9211b5b7f9ba025f867"
+    },
+    "icon.png": {
+     "size": 110391,
+     "sha256": "7e695fb67915598bfdec7a3f5bcba6b3ccfd35bdcf5c5642ff7555615e4a7988"
+    },
+    "shot0.jpg": {
+     "size": 186822,
+     "sha256": "a3c594e688cb7740181179e49a5665e28f147d1a65cb4e1a2d80f3000314845a"
+    },
+    "shot1.jpg": {
+     "size": 198062,
+     "sha256": "a0ab1f8c6bdc6451b9a6b77935ec2c233dcb5ab79ab6ef8a91a272bc7dedc20a"
+    },
+    "shot2.jpg": {
+     "size": 184529,
+     "sha256": "21a3073251beca050337e926402e5fb820d2331b4265cae5700288eba8c945b2"
+    },
+    "shot3.jpg": {
+     "size": 162246,
+     "sha256": "4cf38ac64ae20bc38f065d6de29595ee088328dc0a88775258db2b139b3901ac"
+    }
+   }
+  },
+  {
+   "id": "hyperia",
+   "row": "APPS",
+   "name": "HYPERIA",
+   "repo": "hyperia",
+   "genre": "Desktop shell",
+   "tagline": "A creative desktop shell for Windows: wallpaper, taskbar, Start menu and windows inside the shell.",
+   "description": "HYPERIA is a creative desktop shell from EX Inc. that runs on Windows: wallpaper, taskbar, Start menu, desktop icons and windows that open inside the shell. It is an app, not an operating system. Web apps open the real websites in a HYPERIA web window (uses the Microsoft Edge WebView2 Runtime).",
+   "features": [
+    "Built in: HYPERIA Store, Notebook, Files, Terminal (PowerShell), Settings, Clock",
+    "Games inside the shell: Pong and Fireout 1997, an original retro top-down racer",
+    "Web windows: EX SAFARIA LITE browser and shortcuts to popular sites",
+    "F11 fullscreen; Esc closes the Start menu"
+   ],
+   "reg": "{B2C3D4E5-F6A7-8901-BCDE-HYPERIA00001}}_is1",
+   "exe": "HYPERIA.exe",
+   "folder": "HYPERIA",
+   "portable": [],
+   "version": "1.1.23",
+   "app_id": "{B2C3D4E5-F6A7-8901-BCDE-HYPERIA00001}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/hyperia/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 15106,
+     "sha256": "1948d26c8e46d858cb920f14bf9f47f5eace762be8f8633ae66f0441ff340b8c"
+    },
+    "hero.jpg": {
+     "size": 36873,
+     "sha256": "8ce41a9fb7e95a142a1b0f9ab362a10a282dbdd13b04fa3bc028c8bea468ded9"
+    },
+    "icon.png": {
+     "size": 49289,
+     "sha256": "3b70c02667881883b1212a9063380b344914fe34dcb5e11af8778b85a1ec9b78"
+    },
+    "shot0.jpg": {
+     "size": 87445,
+     "sha256": "3b2159d2f24ac96fe36799a0a6ce386045e1c96400b591b861bffb6a78105edf"
+    },
+    "shot1.jpg": {
+     "size": 54683,
+     "sha256": "461123da78c09b3a55019923c33f7f48cca5298534d365fc50a0bc2443e5c083"
+    }
+   }
+  },
+  {
+   "id": "ex-creator-studio",
+   "row": "APPS",
+   "name": "EX CREATOR STUDIO",
+   "repo": "ex-creator-studio",
+   "genre": "Creative · Lip-sync · Video",
+   "tagline": "One board. Any character. Type a line and watch it talk, then download it as an MP4.",
+   "description": "Upload any character or art to the REX BOARD and type what it should say. EX CREATOR STUDIO speaks it with an offline Windows voice and lip-syncs the character's mouth to it, then renders the result as an MP4. EX STUDIO adds a built-in screen recorder.",
+   "features": [
+    "Auto character detection for anime/cartoon faces and real faces, with mouth location",
+    "Set mouth manually by clicking or dragging a box, so any character can talk",
+    "Offline SAPI5 text-to-speech with your installed Windows voices and a speed setting",
+    "Pin screenshots onto the board, drag and resize them",
+    "Download renders an H.264/AAC MP4 to your Downloads folder",
+    "EX STUDIO screen recorder"
+   ],
+   "reg": "{C3E7A1D4-5B2F-4E8A-9C61-0A1B2C3D4E5F}_is1",
+   "exe": "EX CREATOR STUDIO.exe",
+   "folder": "EX CREATOR STUDIO",
+   "portable": [],
+   "version": "1.3.0",
+   "app_id": "{C3E7A1D4-5B2F-4E8A-9C61-0A1B2C3D4E5F}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/ex-creator-studio/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 24342,
+     "sha256": "1af213d218ccf31ab8743936b405927c861eaeb93ed23c78f3e591c35b6e8c8f"
+    },
+    "hero.jpg": {
+     "size": 46518,
+     "sha256": "783afa94078cd57e0048eec9effb5054868f85964d23839eb5379ce22cd3968b"
+    },
+    "icon.png": {
+     "size": 14314,
+     "sha256": "0dbe57dcfbac46ed13c1cc32a8d6552fd974c952f542e03ef1cb1c4e42f793c7"
+    },
+    "shot0.jpg": {
+     "size": 41121,
+     "sha256": "6c5b07d917c2f0aab8bf70b5ed52b24f112f0f3cafa8f0a6c6c9d4fe241f0101"
+    },
+    "shot1.jpg": {
+     "size": 85504,
+     "sha256": "d195b153bb380bb8f0be4f16b3c3d74ec70fffda0cdf23baecc4ab1823d6aa51"
+    },
+    "shot2.jpg": {
+     "size": 109861,
+     "sha256": "f56b4f9b5a8dc07de464ca7e8ce3472af45e58c7f3b89d83cae5b2a051e2fba7"
+    },
+    "shot3.jpg": {
+     "size": 62462,
+     "sha256": "d8a6ac5ca87b9545e0e8820b1bb9fd1b900d57acf6be8da11eac7b8175e865d5"
+    }
+   }
+  },
+  {
+   "id": "ex-network",
+   "row": "APPS",
+   "name": "EX NETWORK",
+   "repo": "ex-network",
+   "genre": "Utility · Network",
+   "tagline": "Keeps your WiFi connection stable: fewer drop-outs, auto-reconnect and one-click repairs.",
+   "description": "A small Windows app that helps keep your WiFi connection stable. It does not make your internet faster; it cuts down on drop-outs and lag spikes caused by Windows power saving, reconnects automatically when the link dies, and gives you one-click versions of the usual network repair commands.",
+   "features": [
+    "Live status: SSID, signal, receive/transmit rate, band and channel",
+    "Stabilize: turns off WiFi adapter power saving (restores your settings when turned off)",
+    "Auto-reconnect watchdog after 3 failed pings",
+    "Repair: flush DNS, release/renew, optional Winsock reset",
+    "Ping test with average/min/max latency and packet loss"
+   ],
+   "reg": "{6F3A2C1E-9B7D-4E21-A5C8-0E1F2A3B4C5D}_is1",
+   "exe": "EX NETWORK.exe",
+   "folder": "EX NETWORK",
+   "portable": [],
+   "version": "1.2.1",
+   "app_id": "{6F3A2C1E-9B7D-4E21-A5C8-0E1F2A3B4C5D}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/ex-network/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 19157,
+     "sha256": "a1bae8169bb813d0d6e527f0ac5c98675bf10c5166c68a3336aae5e1bd7bbc5e"
+    },
+    "hero.jpg": {
+     "size": 47473,
+     "sha256": "b3d526f21cc8a50a2496b5e2b8156621b418832737d4841d8183ddac66772516"
+    },
+    "icon.png": {
+     "size": 17616,
+     "sha256": "21113511b65d4f91da0a12f8ab6f771ba67d3663f68c97fd0f4971935f5a0d3e"
+    },
+    "shot0.jpg": {
+     "size": 44125,
+     "sha256": "811bc0fe3fc1ef716010c189c812a486f5f3fd0de4e3013935ae42cb0119c571"
+    }
+   }
+  },
+  {
+   "id": "ex-sudo-terminal",
+   "row": "APPS",
+   "name": "EX SUDO TERMINAL",
+   "repo": "ex-sudo-terminal",
+   "genre": "Utility · Terminal",
+   "tagline": "A GUI terminal for PowerShell with a persistent ConPTY session and one-click Run as admin.",
+   "description": "EX SUDO TERMINAL is a Windows GUI terminal for PowerShell. It runs a persistent ConPTY PowerShell session (so cd and variables stick), streams output live, and can relaunch itself as administrator when you need elevated rights.",
+   "features": [
+    "Persistent ConPTY PowerShell session; interactive tools run inside the window",
+    "Monospace output and an input line with history (Up/Down), Enter to run, Ctrl+C to stop",
+    "Run as admin relaunches the app elevated",
+    "One-click Install Grok CLI button (runs only when you click it)"
+   ],
+   "reg": "{A1B2C3D4-E5F6-7890-ABCD-EXSUDO000001}}_is1",
+   "exe": "EX SUDO TERMINAL.exe",
+   "folder": "EX SUDO TERMINAL",
+   "portable": [],
+   "version": "1.1.2",
+   "app_id": "{A1B2C3D4-E5F6-7890-ABCD-EXSUDO000001}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/ex-sudo-terminal/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 8770,
+     "sha256": "26edf436a2c08943ad4bd37c2af07df9bb8ec8f9d08aabaeb375993e724960c5"
+    },
+    "hero.jpg": {
+     "size": 26755,
+     "sha256": "25251e9dd29cb7fe2ac6149cf48c8621ded6f787f999cb86cbb6228a3d79ffd9"
+    },
+    "icon.png": {
+     "size": 17265,
+     "sha256": "cb19da0bd95c33c9f6686b0cd728888d7c42fcbb6745d073c97a11dfab9b3b47"
+    },
+    "shot0.jpg": {
+     "size": 20669,
+     "sha256": "3a3adea0b470812138c44a2688a0223ce7daa252c550382ba2516f1a57e34b9e"
+    }
+   }
+  },
+  {
+   "id": "fireout-revolution",
+   "row": "APPS",
+   "name": "FIREOUT REVOLUTION™",
+   "repo": "fireout-revolution",
+   "genre": "Viewer · Slides",
+   "tagline": "Live viewer for FIREOUT REVOLUTION Slides.pdf from your Downloads folder.",
+   "description": "FIREOUT REVOLUTION™ is a live viewer for FIREOUT REVOLUTION Slides.pdf in your Downloads folder. It fits each slide to the window and refreshes live when the PDF changes.",
+   "features": [
+    "Fit-to-window slide view",
+    "Live refresh when the PDF changes",
+    "Left/Right arrow keys change slides",
+    "Built-in update check"
+   ],
+   "reg": "{7F1E0A2B-5C3D-4E6F-9A8B-F1REOUTREV01}}_is1",
+   "exe": "FIREOUT REVOLUTION.exe",
+   "folder": "FIREOUT REVOLUTION",
+   "portable": [],
+   "version": "1.0.3",
+   "app_id": "{7F1E0A2B-5C3D-4E6F-9A8B-F1REOUTREV01}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/fireout-revolution/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 24517,
+     "sha256": "5993dd505d0773eb04b73e95f0344b0164cdaa32f615cf5274afd433fd53ac01"
+    },
+    "hero.jpg": {
+     "size": 55165,
+     "sha256": "2619716f1955c844d0bde73b90e324c2a56abf03e69afb9d69b65b4890fc0235"
+    },
+    "icon.png": {
+     "size": 2742,
+     "sha256": "07a2b1478f5622274b3d43ca27281a3100a8e0d42c334f8b4515e8ec13971e2a"
+    },
+    "shot0.jpg": {
+     "size": 13064,
+     "sha256": "d0df8beacf947a532df877827e55c959ede0e6fd9a857818cd9f125252efffd5"
+    }
+   }
+  }
+ ],
+ "known_sizes": {
+  "DREAM.VINE.Setup.1.3.2.exe": 58799178,
+  "DREAM.VINE.1.3.2.Windows.x64.zip": 81397329,
+  "PIKNOTT.CELESTIKA.Setup.1.0.0.exe": 30078007,
+  "FIREOUT.REVOLUTION.Setup.1.0.3.exe": 36570264,
+  "FIREOUT.REVOLUTION.zip": 52791095,
+  "HYPERIA.Setup.1.1.23.exe": 15319842,
+  "HYPERIA.zip": 16477249,
+  "EX.CREATOR.STUDIO.Setup.1.3.0.exe": 69162520,
+  "EX.CREATOR.STUDIO.zip": 102129520,
+  "EX.NETWORK.Setup.1.2.1.exe": 10069445,
+  "EX_NETWORK.zip": 10861118,
+  "EX.SUDO.TERMINAL.Setup.1.1.2.exe": 11926787,
+  "EX_SUDO_TERMINAL.zip": 13609861,
+  "FIREOUT-SHINE-Setup-1.0.1.exe": 137226943,
+  "FIREOUT-SHINE-1.0.1-Windows-x64.zip": 163677077,
+  "FIREOUT-SHINE-Portable.exe": 163032983,
+  "EX-SPORTS-SFC27-Setup-1.0.0.exe": 30014857,
+  "EX-SPORTS-SFC27-1.0.0-Windows-x64.zip": 44052043,
+  "EX-SPORTS-SFC27-Portable.exe": 43955016,
+  "THE-ANULMENT-Setup-1.0.0.exe": 158224328,
+  "THE-ANULMENT-1.0.0-Windows-x64.zip": 184610333,
+  "THE-ANULMENT-Portable.exe": 184200266,
+  "DREAM.VINE.LAUNCHER.Setup.1.0.2.exe": 13957793,
+  "DREAM.VINE.LAUNCHER.1.0.2.Windows.x64.zip": 17697430
+ },
+ "updated": "2026-10-29T18:34:31Z"
+}

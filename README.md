@@ -28,6 +28,34 @@ The EX Inc. store and library for Windows. Every EX game and app is in one store
 Games: THE ANULMENT, ファイアアウト・シャイン (FIREOUT SHINE), EX SPORTS™ SFC 27 STANDARD EDITION, DREAM VINE, PIKNOTT CELESTIKA. Apps & Tools: HYPERIA, EX CREATOR STUDIO, EX NETWORK, EX SUDO TERMINAL, FIREOUT REVOLUTION™.
 Icons and screenshots are each app's own artwork, bundled from its source. The HYPERION DIGITAL EX icon is EX Inc.'s own artwork (`assets/icon_source_user.png`).
 
+## Adding or changing a store title (no store rebuild)
+The store's title list is **remote**: `catalog/catalog.json` on `main` plus the art in `assets/apps/<id>/`. HYPERION DIGITAL EX 1.1.11+ reads them at main's current commit, so the change shows up live. That happens on startup, on window focus, every 10 minutes, on **CHECK FOR UPDATES** and on **CHECK FOR STORE UPDATES**. Users don't need a new store release or a restart.
+
+1. Put the art in `assets/apps/<id>/`: `icon.png`, `capsule.jpg`, `hero.jpg`, `shot0.jpg`, `shot1.jpg`, … Square key art can also use `cover.jpg` + `hero_bg.jpg`. Names are lowercase `[a-z0-9_]` and `.png`/`.jpg`, and each file is up to 15 MB.
+2. Add or edit the entry in `catalog/catalog.json` → `titles`:
+   - `id`: lowercase, e.g. `my-game`. `name`. `row`: `GAMES` or `APPS`.
+   - `genre`, `tagline`, `description`, `features` (list).
+   - `publisher`, `developer`, `release`.
+   - `repo`: the game's GitHub repo under Teobokki.
+   - `latest_url`: `https://raw.githubusercontent.com/Teobokki/<repo>/main/latest.json`.
+   - `app_id` and `reg`: the Inno Setup uninstall key, i.e. the AppId + `_is1`. `AppId={{X}` gives `{X}_is1`; `AppId={{X}}` gives `{X}}_is1`.
+   - `exe`, `folder` (the `%LOCALAPPDATA%\Programs\<folder>` name) and `portable` (Downloads exe names).
+   - `version`: shown only while offline.
+   - Optional: `featured` (ids shown in Featured & Recommended), `known_sizes`, `catalog_version` (bump it on each change).
+3. Run `python tools/make_catalog.py`. It fills in each art file's `size` + `sha256` and validates the file with the store's own rules. Entries it would skip are printed as WARNING.
+4. Commit and push `catalog/catalog.json` and `assets/apps/<id>/` to `main`. That's it.
+
+The rules the store applies:
+- Every entry is validated. A bad entry is skipped and never crashes the store.
+- Unknown fields are ignored (`schema` 1; newer schemas are read too).
+- Art is downloaded only when its size/sha256 changed, and it is cached in `%LOCALAPPDATA%\HYPERION DIGITAL EX\catalog\`.
+- Downloads are allowed only from `github.com/Teobokki`.
+- When it is offline, the store uses the last saved catalog. On the very first run it uses the built-in one (`ex_catalog.py`).
+- New titles get a **NEW** badge for 14 days.
+
+## What's new in 1.1.11
+The store catalog is remote (see above). New **CHECK FOR STORE UPDATES** button in UPDATES, next to CHECK FOR UPDATES: it fetches the catalog and art fresh, refreshes the Store and Library live, and says "Store updated: 1 new title" or "Store is up to date".
+
 ## What's new in 1.1.10
 
 Game updates are detected again: latest.json read live at main's commit, installed versions from each title's AppId key + exe version, checks on startup / focus / CHECK FOR UPDATES / every 10 min, local rescan every 15 s, new UPDATES page, single instance.
