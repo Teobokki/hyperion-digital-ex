@@ -4,7 +4,7 @@ Resumable (HTTP Range) downloads that survive restarts, SHA-256 verification, si
 import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, urllib.request, urllib.error, zipfile
 from ex_catalog import CATALOG, KNOWN_SIZES
 
-APP_VERSION = "1.1.9"
+APP_VERSION = "1.1.10"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
@@ -57,12 +57,45 @@ def _ctx():
         return None
 
 
+NOCACHE = {"Cache-Control": "no-cache, no-store, max-age=0", "Pragma": "no-cache", "Expires": "0"}
+
+
 def fetch_json(url, timeout=12):
-    if url.startswith("https://raw.githubusercontent.com/"):  # cache-bust the raw CDN
-        url += ("&" if "?" in url else "?") + "t=%d" % int(time.time() * 1000)
-    req = urllib.request.Request(url, headers=dict(UA, **{"Cache-Control": "no-cache", "Pragma": "no-cache"}))
+    url += ("&" if "?" in url else "?") + "t=%d" % int(time.time() * 1000)     # cache-buster
+    req = urllib.request.Request(url, headers=dict(UA, **NOCACHE))
     with urllib.request.urlopen(req, timeout=timeout, context=_ctx()) as r:
-        return json.loads(r.read(2_000_000).decode("utf-8"))
+        return json.loads(r.read(2_000_000).decode("utf-8-sig"))
+
+
+def main_sha(repo, timeout=8):
+    """Commit SHA of main, read from git's smart-HTTP ref list on github.com (not CDN-cached, no API rate limit)."""
+    req = urllib.request.Request("https://github.com/Teobokki/%s.git/info/refs?service=git-upload-pack" % repo,
+                                 headers=dict(NOCACHE, **{"User-Agent": "git/2.45 " + UA["User-Agent"]}))
+    with urllib.request.urlopen(req, timeout=timeout, context=_ctx()) as r:
+        m = re.search(rb"([0-9a-f]{40}) refs/heads/main\b", r.read(400_000))
+    return m.group(1).decode() if m else None
+
+
+def fetch_latest(repo, timeout=8):
+    """latest.json exactly as it is on main right now.
+
+    1.1.10: raw.githubusercontent.com caches main/latest.json for 5 minutes and IGNORES query strings (a fresh '?t=' is
+    still an x-cache HIT), so the old cache-buster did nothing. Reading it at main's current commit SHA gives a URL that
+    has never been cached. Falls back to main (busted, no-cache) and then to the API copy."""
+    errs = []
+    try:
+        sha = main_sha(repo, timeout)
+        if sha:
+            return fetch_json("https://raw.githubusercontent.com/Teobokki/%s/%s/latest.json" % (repo, sha), timeout), "main@" + sha[:7]
+    except Exception as e:
+        errs.append(e)
+    try:
+        return fetch_json(RAW % repo, timeout), "raw main"
+    except Exception as e:
+        errs.append(e)
+    import base64
+    c = fetch_json("https://api.github.com/repos/Teobokki/%s/contents/latest.json?ref=main" % repo, timeout)
+    return json.loads(base64.b64decode(c["content"]).decode("utf-8-sig")), "api"
 
 
 def file_version(path):
@@ -125,6 +158,32 @@ def uninstall_entries():
     return out
 
 
+def reg_entry(key):
+    """HKCU (then HKLM) ...\\Uninstall\\<AppId>_is1 for one title: its DisplayVersion / InstallLocation."""
+    if not WIN or not key:
+        return None
+    import winreg
+    for root, view in ((winreg.HKEY_CURRENT_USER, 0), (winreg.HKEY_LOCAL_MACHINE, winreg.KEY_WOW64_64KEY), (winreg.HKEY_LOCAL_MACHINE, winreg.KEY_WOW64_32KEY)):
+        try:
+            sk = winreg.OpenKey(root, "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + key, 0, winreg.KEY_READ | view)
+        except OSError:
+            continue
+        e = {"key": key}
+        for n in ("DisplayName", "DisplayVersion", "InstallLocation", "UninstallString", "QuietUninstallString", "DisplayIcon"):
+            try:
+                e[n] = str(winreg.QueryValueEx(sk, n)[0])
+            except OSError:
+                pass
+        return e
+    return None
+
+
+def newest(*vs):
+    """highest of the given version strings (all 4 parts compared numerically); None if none is known."""
+    vs = [str(v) for v in vs if v and str(v) != "?" and re.search(r"\d", str(v))]
+    return max(vs, key=vtuple) if vs else None
+
+
 def _norm(s):
     return re.sub(r"[^A-Z0-9]", "", (s or "").upper().replace("\u2122", ""))
 
@@ -163,7 +222,9 @@ class ExConnect:
         for aid, c in self.cache.get("apps", {}).items():
             if aid in self.catalog:
                 self.catalog[aid]["latest"] = c.get("latest"); self.catalog[aid]["assets"] = c.get("assets", {})
+                self.catalog[aid]["assets_ver"] = c.get("assets_ver")     # 1.1.10: restored too (was refetched from the API on every sync)
         self.online = None; self.synced_at = self.cache.get("synced_at"); self.self_latest = None
+        self.check_errors = {}; self.checked_at = {}; self.sources = {}; self._sig = None; self._refreshing = threading.Lock()
         self.installed = {}; self.running = {}
         self.jobs = [Job(**j) for j in self.state["jobs"] if j.get("state") not in ("done", "cancelled") and j.get("app_id") in self.catalog]
         for j in self.jobs:
@@ -210,20 +271,17 @@ class ExConnect:
                 nonlocal ok
                 app = self.catalog[aid]
                 try:
-                    lj = fetch_json(RAW % app["repo"], timeout=8)
+                    lj, src = fetch_latest(app["repo"], timeout=8)
+                    if not lj.get("version"):
+                        raise ValueError("latest.json has no version")
                     ok += 1
-                except Exception:
-                    try:  # fall back to the GitHub API copy of latest.json
-                        import base64
-                        c = fetch_json("https://api.github.com/repos/Teobokki/%s/contents/latest.json" % app["repo"], timeout=8)
-                        lj = json.loads(base64.b64decode(c["content"]).decode("utf-8")); ok += 1
-                    except Exception:
-                        return
+                except Exception as e:      # 1.1.10: remembered and shown - no silent 'up to date' from stale data
+                    self.check_errors[aid] = "%s: %s" % (type(e).__name__, str(e)[:80]); return
+                self.check_errors.pop(aid, None); self.checked_at[aid] = time.time(); self.sources[aid] = src
                 app["latest"] = lj
                 ver = str(lj.get("version", app["version"]))
-                cached = self.cache.get("apps", {}).get(aid, {})
-                if cached.get("assets_ver") == ver and cached.get("assets"):
-                    app["assets"] = cached["assets"]; return
+                if app.get("assets_ver") == ver and app.get("assets"):
+                    return
                 try:
                     rel = fetch_json(API % (app["repo"], ver))
                     app["assets"] = {a["name"]: {"size": a.get("size", 0), "sha256": (a.get("digest") or "").replace("sha256:", "") or None}
@@ -231,6 +289,10 @@ class ExConnect:
                     app["assets_ver"] = ver
                 except Exception:
                     pass
+            if not self._refreshing.acquire(blocking=False):      # one sync at a time
+                if on_done:
+                    on_done()
+                return
             for aid in self.catalog:
                 t = threading.Thread(target=one, args=(aid,), daemon=True); t.start(); threads.append(t)
             try:
@@ -249,8 +311,9 @@ class ExConnect:
                 except Exception:
                     pass
                 self.cache = {"apps": apps, "synced_at": self.synced_at}
+            self._refreshing.release()
             self.scan()
-            self.last_check_secs = time.time() - t_start
+            self.last_check = time.time(); self.last_check_secs = time.time() - t_start
             self.notify("catalog", "")
             if on_done:
                 on_done()
@@ -280,8 +343,9 @@ class ExConnect:
         if not url:
             return None
         name = urllib.request.unquote(url.rsplit("/", 1)[-1])
-        meta = (a.get("assets") or {}).get(name, {})
-        if (a.get("assets") and name not in a["assets"]):
+        fresh = a.get("assets_ver") == ver       # 1.1.10: asset lists of an OLDER release are never used to reject a new file
+        meta = (a.get("assets") or {}).get(name, {}) if fresh else {}
+        if fresh and a.get("assets") and name not in a["assets"]:
             return None  # e.g. latest.json lists a zip the release doesn't carry
         return {"url": url, "name": name, "size": meta.get("size") or KNOWN_SIZES.get(name, 0), "sha256": meta.get("sha256"), "version": ver}
 
@@ -305,21 +369,25 @@ class ExConnect:
         found = {}
         for aid, app in self.catalog.items():
             exe = app["exe"]; info = None
-            # 1. Inno Setup install registered in Apps & features
-            for e in entries:
-                if _norm(e["DisplayName"]).startswith(_norm(app["name"])) or _norm(e["DisplayName"]).startswith(_norm(app["folder"])):
-                    loc = e.get("InstallLocation", "").strip('"')
-                    p = os.path.join(loc, exe) if loc else ""
-                    if p and os.path.exists(p):
-                        info = {"exe": p, "version": file_version(p) or e.get("DisplayVersion"), "source": "Setup install",
-                                "uninstall": e.get("QuietUninstallString") or e.get("UninstallString")}
-                        break
-            # 2. default per-user install folder
+            # 1. the title's own Inno Setup key: HKCU\...\Uninstall\<AppId>_is1 (DisplayVersion + InstallLocation),
+            #    then any Apps & features entry whose name matches (installs made by older Setups)
+            own = reg_entry(app.get("reg"))
+            names = [_norm(x) for x in (app["name"], app["folder"]) if _norm(x)]     # (a katakana-only name normalises to '' and matched every entry)
+            cands = ([own] if own else []) + [e for e in entries if any(_norm(e["DisplayName"]).startswith(n) for n in names)]
+            for e in cands:
+                loc = e.get("InstallLocation", "").strip('"')
+                p = os.path.join(loc, exe) if loc else ""
+                if p and os.path.exists(p):
+                    info = {"exe": p, "version": newest(file_version(p), e.get("DisplayVersion")), "source": "Setup install",
+                            "reg_version": e.get("DisplayVersion"), "file_version": file_version(p),
+                            "uninstall": e.get("QuietUninstallString") or e.get("UninstallString")}
+                    break
+            # 2. default per-user install folder (%LOCALAPPDATA%\Programs\<folder>)
             if not info and local:
                 p = os.path.join(local, "Programs", app["folder"], exe)
                 if os.path.exists(p):
                     un = os.path.join(local, "Programs", app["folder"], "unins000.exe")
-                    info = {"exe": p, "version": file_version(p), "source": "Setup install",
+                    info = {"exe": p, "version": file_version(p), "source": "Setup install", "file_version": file_version(p),
                             "uninstall": ('"%s"' % un) if os.path.exists(un) else None}
             # 3. EX CONNECT library (zip installs)
             if not info:
@@ -339,9 +407,28 @@ class ExConnect:
             if info:
                 info["version"] = info.get("version") or self.state["ex_installs"].get(info["exe"]) or "?"
                 info["portables"] = portables
+                try:
+                    info["mtime"] = os.path.getmtime(info["exe"])
+                except OSError:
+                    pass
                 found[aid] = info
         self.installed = found
         return found
+
+    def signature(self):
+        """what is installed right now (paths, versions, exe times) - changes when a game updates itself outside the store"""
+        return tuple(sorted((aid, i.get("exe"), i.get("version"), i.get("mtime"), tuple((pc["exe"], pc["version"]) for pc in i.get("portables", [])))
+                            for aid, i in self.installed.items()))
+
+    def rescan_changed(self):
+        """cheap local re-check (registry + exe versions, no network); True if anything installed changed"""
+        old = self._sig if self._sig is not None else self.signature()
+        self.scan(); self._sig = self.signature()
+        return self._sig != old
+
+    def updates(self):
+        """every installed title with a newer release (shown even while it is running)"""
+        return [aid for aid in self.catalog if self.outdated_copies(aid)]
 
     def status(self, aid):
         """install | play | update | playing | queued | downloading | paused | verifying | installing | error"""
@@ -554,10 +641,16 @@ class ExConnect:
     def _install_file(self, j, path):
         app = self.catalog[j.app_id]
         if j.kind == "installer":
-            r = subprocess.run([path, "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-", "/CLOSEAPPLICATIONS"],
-                               creationflags=CREATE_NO_WINDOW if WIN else 0, env=clean_env(), cwd=safe_cwd(), close_fds=True)
-            if r.returncode != 0:
-                raise RuntimeError("Setup exit code %d" % r.returncode)
+            # 1.1.10: per-user Setup (PrivilegesRequired=lowest), started DETACHED from the store with a clean environment and
+            # RunAsInvoker, so it never asks for admin/UAC and is not tied to the store's process or _MEI folder
+            env = clean_env(); env["__COMPAT_LAYER"] = "RunAsInvoker"
+            flags = (0x00000008 | 0x00000200) if WIN else 0        # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
+            pr = subprocess.Popen([path, "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-", "/CLOSEAPPLICATIONS"],
+                                  creationflags=flags, env=env, cwd=safe_cwd(), close_fds=True,
+                                  stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            rc = pr.wait()
+            if rc != 0:
+                raise RuntimeError("Setup exit code %d" % rc)
             self.scan()
             inf = self.installed.get(j.app_id)
             if inf:

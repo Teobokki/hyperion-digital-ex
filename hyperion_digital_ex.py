@@ -749,7 +749,10 @@ class ProductPage(QWidget):
         cap = QLabel(); cap.setPixmap(capsule_pix(aid, 340, 191, 6)); side.addWidget(cap)
         tl = lbl(a["tagline"], None, True); tl.setStyleSheet("font-size:13px;color:#c9d6e3"); tl.setFixedWidth(340); side.addWidget(tl)
         info = QFrame(); info.setObjectName("infobox"); g = QGridLayout(info); g.setContentsMargins(12, 10, 12, 10); g.setVerticalSpacing(5)
-        rows = [("CATEGORY", a["category"]), ("GENRE", a["genre"]), ("VERSION", svc.latest_version(aid)), ("DOWNLOAD SIZE", svc.size_text(aid)),
+        inst = (svc.installed.get(aid) or {}).get("version")
+        rows = [("CATEGORY", a["category"]), ("GENRE", a["genre"]), ("LATEST VERSION", svc.latest_version(aid)),
+                ("INSTALLED", (inst + ("  \u2B06 UPDATE" if svc.outdated_copies(aid) else "  \u2714 up to date")) if inst else "Not installed"),
+                ("DOWNLOAD SIZE", svc.size_text(aid)),
                 ("DEVELOPER", "EX Inc."), ("PUBLISHER", a.get("publisher", PUBLISHER)), ("PLATFORM", "Windows 10/11 x64"), ("SOURCE", "github.com/Teobokki/" + a["repo"])]
         for r, (k, val) in enumerate(rows):
             g.addWidget(lbl(k, "small"), r, 0); vv = lbl(val); vv.setStyleSheet("color:%s;font-size:12px" % ACCENT if k == "SOURCE" else "font-size:12px"); g.addWidget(vv, r, 1)
@@ -822,10 +825,10 @@ class LibraryPage(QWidget):
             hdr.setForeground(QColor("#6f8396")); self.list.addItem(hdr)
             for aid in ids:
                 a = self.ui.svc.catalog[aid]; st = self.ui.svc.status(aid)
-                suffix = {"playing": "  \u2013 Playing", "update": "  \u2013 Update", "downloading": "  \u2013 Downloading", "paused": "  \u2013 Paused", "installing": "  \u2013 Installing", "queued": "  \u2013 Queued"}.get(st, "")
+                suffix = {"playing": "  \u2013 Playing", "update": "  \u2B06 UPDATE", "downloading": "  \u2013 Downloading", "paused": "  \u2013 Paused", "installing": "  \u2013 Installing", "queued": "  \u2013 Queued"}.get(st, "")
                 it = QListWidgetItem(QIcon(art(aid, "icon.png")), a["name"] + suffix); it.setData(Qt.UserRole, aid)
                 if st in ("play", "playing", "update"):
-                    it.setForeground(QColor(FG if st != "playing" else "#9be57c"))
+                    it.setForeground(QColor({"playing": "#9be57c", "update": ORANGE}.get(st, FG)))
                 else:
                     it.setForeground(QColor("#6f8396"))
                 self.list.addItem(it)
@@ -949,6 +952,66 @@ class DownloadsPage(QWidget):
             info.setText(job_text(j) if j.state != "done" else "Installed v%s  ·  %s" % (j.version, getattr(j, "verified", "verified")))
             if ab:
                 ab.refresh(); ab.bar.hide(); ab.info.hide(); ab.uninst.hide()
+
+
+class UpdatesPage(QWidget):
+    """1.1.10: UPDATES - every installed game/app with a newer release, installed vs latest, UPDATE / Update all,
+    CHECK FOR UPDATES, when it was checked and any title that could not be checked."""
+    def __init__(self, ui):
+        super().__init__()
+        self.ui = ui
+        inner = QWidget(); self.v = QVBoxLayout(inner); self.v.setContentsMargins(36, 24, 36, 30); self.v.setSpacing(12)
+        lay = QVBoxLayout(self); lay.setContentsMargins(0, 0, 0, 0); lay.addWidget(scroll(inner)); self.sig = None
+
+    def refresh(self):
+        svc = self.ui.svc; ups = svc.updates()
+        sig = (tuple((a, svc.latest_version(a), (svc.installed.get(a) or {}).get("version"), svc.status(a)) for a in svc.catalog),
+               tuple(sorted(svc.check_errors.items())), getattr(svc, "last_check", 0), self.ui.gu_busy)
+        if sig == self.sig:
+            return
+        self.sig = sig; clear_layout(self.v)
+        head = QHBoxLayout(); head.addWidget(lbl("UPDATES", "h2")); head.addStretch(1)
+        ck = QPushButton("CHECKING\u2026" if self.ui.gu_busy else "\u21BB  CHECK FOR UPDATES"); ck.setObjectName("ghost"); ck.setEnabled(not self.ui.gu_busy)
+        ck.clicked.connect(self.ui.game_updates); head.addWidget(ck)
+        if ups:
+            ua = QPushButton("\u2B06  UPDATE ALL (%d)" % len(ups)); ua.setObjectName("primary"); ua.setProperty("mode", "update")
+            ua.clicked.connect(lambda: ([svc.install(x, update=True) for x in svc.updates() if not svc.job_for(x)], self.ui.refresh_all())); head.addWidget(ua)
+        self.v.addLayout(head)
+        lc = getattr(svc, "last_check", 0)
+        st = ("Last checked %s  \u00b7  latest.json read live from each game's GitHub repo" % time.strftime("%H:%M:%S", time.localtime(lc))) if lc else "Checking\u2026"
+        if svc.online is False:
+            st = "Offline: could not reach GitHub. Installed versions are still read from this PC."
+        self.v.addWidget(lbl(st, "muted", True))
+        for aid, err in sorted(svc.check_errors.items()):
+            w = lbl("\u26A0  Could not check %s (%s). It is NOT shown as up to date." % (svc.catalog[aid]["name"], err), "small", True)
+            w.setStyleSheet("color:%s" % ORANGE); self.v.addWidget(w)
+        t = lbl(("%d update%s available" % (len(ups), "" if len(ups) == 1 else "s")) if ups else "\u2714  Everything installed is up to date")
+        t.setStyleSheet("font-size:15px;font-weight:800;color:%s" % (ORANGE if ups else "#9be57c")); self.v.addWidget(t)
+        others = [a for a in svc.catalog if a in svc.installed and a not in ups]
+        for aid in ups + others:
+            a = svc.catalog[aid]; inf = svc.installed.get(aid) or {}
+            row = QFrame(); row.setObjectName("panel"); h = QHBoxLayout(row); h.setContentsMargins(14, 10, 14, 10); h.setSpacing(14)
+            im = QLabel(); im.setPixmap(capsule_pix(aid, 142, 80, 5)); h.addWidget(im)
+            col = QVBoxLayout(); col.setSpacing(2); n = lbl(a["name"]); n.setStyleSheet("font-weight:800;font-size:15px"); col.addWidget(n)
+            old = ", ".join("%s %s" % ("Portable" if k == "portable" else "Installed", v_ or "?") for k, _e, v_ in svc.outdated_copies(aid))
+            vl = lbl("%s  \u2192  Latest %s" % (old or ("Installed " + str(inf.get("version", "?"))), svc.latest_version(aid)), "small")
+            if aid in ups:
+                vl.setStyleSheet("color:%s;font-weight:700" % ORANGE)
+            col.addWidget(vl)
+            if svc.status(aid) == "playing" and aid in ups:
+                col.addWidget(lbl("Running now - the update closes it, installs and you can start it again.", "small", True))
+            h.addLayout(col, 1)
+            if aid in ups:
+                ab = ActionBar(self.ui, aid, big=False, uninstall=False); ab.setFixedWidth(330)
+                if svc.status(aid) == "playing":
+                    b = QPushButton("\u2B06  UPDATE TO %s" % svc.latest_version(aid)); b.setObjectName("primary"); b.setProperty("mode", "update")
+                    b.clicked.connect(lambda _=False, x=aid: (svc.install(x, update=True), self.ui.refresh_all())); h.addWidget(b)
+                else:
+                    h.addWidget(ab)
+            else:
+                ok = lbl("\u2714 Up to date", "small"); ok.setStyleSheet("color:#9be57c;font-weight:700"); h.addWidget(ok)
+            self.v.addWidget(row)
+        self.v.addStretch(1)
 
 
 class ConnectPage(QWidget):
@@ -1470,8 +1533,8 @@ class Main(QMainWindow):
         th.addStretch(1)
         self.search = QLineEdit(); self.search.setPlaceholderText("Search the store"); self.search.setMinimumWidth(90); self.search.setMaximumWidth(150); self.search.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed); self.search.textChanged.connect(self.on_search); th.addWidget(self.search)
         self.selfupd = QPushButton(""); self.selfupd.setObjectName("update"); self.selfupd.hide(); self.selfupd.clicked.connect(self.do_self_update); th.addWidget(self.selfupd)
-        self.gu = QPushButton("GAME UPDATES"); self.gu.setObjectName("nav"); self.gu.setCursor(Qt.PointingHandCursor); self.gu.setToolTip("Check all your games and apps for updates now")
-        self.gu.clicked.connect(self.game_updates); th.addWidget(self.gu)
+        self.gu = QPushButton("UPDATES"); self.gu.setObjectName("nav"); self.gu.setCursor(Qt.PointingHandCursor); self.gu.setToolTip("Updates for your games and apps (checks now)")
+        self.gu.clicked.connect(lambda: (self.go("updates"), self.game_updates())); th.addWidget(self.gu)
         self.profile = Profile(self.svc)
         self.prof = QPushButton("EX PROFILE"); self.prof.setObjectName("nav"); self.prof.setCursor(Qt.PointingHandCursor); self.prof.setToolTip("Your EX PROFILE")
         self.prof.clicked.connect(lambda: self.go("profile")); th.addWidget(self.prof); self.navs["profile"] = self.prof
@@ -1488,7 +1551,7 @@ class Main(QMainWindow):
         self.stack = QStackedWidget(); v.addWidget(self.stack, 1)
         self.pages = {"store": StorePage(self), "library": LibraryPage(self), "product": ProductPage(self), "downloads": DownloadsPage(self),
                       "connect": ConnectPage(self), "settings": SettingsPage(self), "search": SearchPage(self),
-                      "soon": SoonPage(self), "profile": ProfilePage(self)}
+                      "soon": SoonPage(self), "profile": ProfilePage(self), "updates": UpdatesPage(self)}
         for p in self.pages.values():
             self.stack.addWidget(p)
         # footer
@@ -1503,7 +1566,26 @@ class Main(QMainWindow):
         self.update_dismissed = False; self.update_dialog = None
         QTimer.singleShot(int(os.environ.get("HDX_FIRST_CHECK_MS", "5000")), self.auto_check)
         self._default_tries = 0; QTimer.singleShot(3000, self.default_install)
-        self.update_timer = QTimer(self, interval=5 * 60 * 1000, timeout=lambda: (self.auto_check(), self.svc.refresh())); self.update_timer.start()
+        # 1.1.10: checks on startup (above), on window focus, with CHECK FOR UPDATES, and every 10 minutes; installed
+        # versions are re-read from the registry / exe files every 15 s, so a game that updated itself shows up at once
+        self.update_timer = QTimer(self, interval=10 * 60 * 1000, timeout=lambda: (self.auto_check(), self.svc.refresh())); self.update_timer.start()
+        self.local_timer = QTimer(self, interval=15 * 1000, timeout=self.local_rescan); self.local_timer.start()
+        self._last_focus_check = time.time()
+
+    def local_rescan(self):
+        try:
+            if self.svc.rescan_changed():
+                self.update_gu_badge(); self.refresh_all(); self.maybe_game_update_popup()
+        except Exception:
+            pass
+
+    def changeEvent(self, e):
+        super().changeEvent(e)
+        from PySide6.QtCore import QEvent
+        if e.type() == QEvent.ActivationChange and self.isActiveWindow():
+            self.local_rescan()
+            if time.time() - self._last_focus_check > 60:          # on focus: fresh latest.json (at most once a minute)
+                self._last_focus_check = time.time(); self.svc.refresh()
 
     def default_install(self):
         """FIREOUT SHINE comes installed by default: one background install the first time HDEX 1.1.5+ runs.
@@ -1534,6 +1616,7 @@ class Main(QMainWindow):
         for k, b in self.navs.items():
             on = k == key or (key in ("product", "soon") and k == "store")
             b.setProperty("active", "true" if on else "false"); b.style().unpolish(b); b.style().polish(b)
+        self.gu.setProperty("active", "true" if key == "updates" else "false"); self.gu.style().unpolish(self.gu); self.gu.style().polish(self.gu)
         if key == "library" and not self.pages["library"].aid:
             first = next(iter(self.svc.installed), None) or next(iter(self.svc.catalog))
             self.pages["library"].select(first)
@@ -1564,7 +1647,10 @@ class Main(QMainWindow):
             self.update_self_badge(); self.update_gu_badge()
             self.maybe_game_update_popup()
         if ev == "gu_done":
-            self.gu_busy = False; self.gu_timer.stop(); self.update_gu_badge(); self.refresh_all(); self.show_gu_panel(); return
+            self.gu_busy = False; self.gu_timer.stop(); self.update_gu_badge(); self.refresh_all()
+            if self.stack.currentWidget() is not self.pages["updates"]:
+                self.show_gu_panel()
+            return
         if ev == "selfcheck":
             self.on_self_checked(); return
         if ev == "error":
@@ -1581,7 +1667,7 @@ class Main(QMainWindow):
         self.update_footer()
 
     def refresh_all(self):
-        for k in ("store", "product", "library", "downloads", "connect", "soon", "profile"):
+        for k in ("store", "product", "library", "downloads", "connect", "soon", "profile", "updates"):
             try:
                 self.pages[k].refresh()
             except RuntimeError:
@@ -1648,13 +1734,13 @@ class Main(QMainWindow):
         self.gup_dialog = GameUpdateDialog(self, ups); self.gup_dialog.show(); self.gup_dialog.raise_()
 
     def updates_list(self):
-        return [aid for aid in self.svc.catalog if self.svc.status(aid) == "update"]
+        return self.svc.updates()
 
     def update_gu_badge(self):
         if self.gu_busy:
             return
         n = len(self.updates_list())
-        self.gu.setText("GAME UPDATES (%d)" % n if n else "GAME UPDATES"); fit(self.gu)
+        self.gu.setText("UPDATES (%d)" % n if n else "UPDATES"); fit(self.gu)
         self.gu.setStyleSheet("QPushButton{color:%s}" % ORANGE if n else "")
 
     def _gu_spin(self):
@@ -1666,7 +1752,7 @@ class Main(QMainWindow):
             return
         if self.gu_panel and self.gu_panel.isVisible():
             self.gu_panel.close()
-        self.gu_busy = True; self._gu_spin(); self.gu_timer.start()
+        self.gu_busy = True; self._gu_spin(); self.gu_timer.start(); self.pages["updates"].refresh()
         self.svc.refresh(on_done=lambda: self.bridge.event.emit("gu_done", ""))
 
     def show_gu_panel(self):
@@ -1801,6 +1887,29 @@ def smoke(win, out_dir, phase):
         at(12500, lambda: win.open_library("fireout-shine"))
         at(14000, lambda: (shot("library.png"), L("default_install_done", win.svc.state.get("default_install_done"))))
         at(15000, lambda: win.close())
+    elif phase == "updates":               # 1.1.10: UPDATES page, outside change detection, UPDATE from the page
+        aid = os.environ.get("HDX_SMOKE_APP", "the-anulment"); t0 = time.time()
+        def st(tag):
+            inf = win.svc.installed.get(aid) or {}
+            L(tag, aid, "installed", inf.get("version"), "reg", inf.get("reg_version"), "file", inf.get("file_version"), "latest", win.svc.latest_version(aid),
+              "src", win.svc.sources.get(aid), "status", win.svc.status(aid), "updates", win.svc.updates(), "errors", win.svc.check_errors)
+        at(6000, lambda: (win.go("updates"), st("start")))
+        at(7500, lambda: shot("updates_start.png"))
+        def poll():
+            if aid in win.svc.updates():
+                st("detected outside change after %.0f s" % (time.time() - t0)); win.go("updates")
+                QTimer.singleShot(1500, lambda: (shot("updates_detected.png"), L("click UPDATE"), win.svc.install(aid, update=True), QTimer.singleShot(1000, wait)))
+                return
+            if time.time() - t0 > 150:
+                st("TIMEOUT no change seen"); win.close(); return
+            QTimer.singleShot(2000, poll)
+        def wait():
+            j = win.svc.job_for(aid)
+            if j:
+                QTimer.singleShot(2000, wait); return
+            win.local_rescan(); st("after update"); win.go("updates")
+            QTimer.singleShot(1500, lambda: (shot("updates_after.png"), win.close()))
+        at(8000, poll)
     elif phase == "fsupdate":              # 1.1.8: installed-version detection (4-part) + UPDATE applies and clears
         aid = os.environ.get("HDX_SMOKE_APP", "fireout-shine")
         def st(tag):
@@ -1964,6 +2073,24 @@ def main():
         try:
             import ctypes
             ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("EXInc.HyperionDigitalEX")
+        except Exception:
+            pass
+    # 1.1.10: one store per user - launching it again brings the running window forward (3 copies were running side by
+    # side on the user's PC, each polling GitHub, hitting its rate limit and overwriting the others' state)
+    if xc.WIN and not os.environ.get("HDX_SMOKE"):
+        try:
+            import ctypes
+            k32 = ctypes.WinDLL("kernel32", use_last_error=True); u32 = ctypes.windll.user32
+            k32.CreateMutexW.restype = ctypes.c_void_p
+            app._hdx_mutex = k32.CreateMutexW(None, False, "Local\\HYPERION-DIGITAL-EX-single")
+            if ctypes.get_last_error() == 183:                      # ERROR_ALREADY_EXISTS
+                u32.FindWindowW.restype = ctypes.c_void_p
+                h = u32.FindWindowW(None, APP_NAME)
+                if h:
+                    u32.ShowWindow(ctypes.c_void_p(h), 9); u32.SetForegroundWindow(ctypes.c_void_p(h))
+                sys.exit(0)
+        except SystemExit:
+            raise
         except Exception:
             pass
     w = Main()

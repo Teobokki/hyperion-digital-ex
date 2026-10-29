@@ -1,13 +1,15 @@
 """HYPERION DIGITAL EX - built-in catalog of EX Inc. apps and games.
+`reg` = the Inno Setup uninstall key (AppId + "_is1") each title's own installer.iss writes under HKCU.
+`version` is only the offline fallback; the live version always comes from the title's latest.json.
 ©2026 EX Inc./HYPERION DIGITAL ©2026"""
 
 GAMES, APPS = "Games", "Apps & Tools"
 
 CATALOG = [
     dict(
-        id="dream-vine", name="DREAM VINE", repo="dream-vine", category=GAMES, genre="Sandbox · Survival · Creative",
+        id="dream-vine", reg="{7D1E5A92-3C4B-4F6E-A8D1-2B9C0E7F4A63}_is1", name="DREAM VINE", repo="dream-vine", category=GAMES, genre="Sandbox · Survival · Creative",
         exe="DREAM VINE.exe", folder="DREAM VINE", portable=["DREAM VINE.exe", "DREAM.VINE.Portable.exe"],
-        version="1.3.2",
+        version="1.4.0",
         tagline="An original block-building sandbox. Explore endless worlds, mine, craft, build and survive the night.",
         about=("DREAM VINE is an original block-building sandbox game by EX Inc. Explore endless procedurally generated "
                "worlds, mine, craft and build, survive the night, or fly around freely in Creative. All code, textures, "
@@ -22,10 +24,10 @@ CATALOG = [
             "VINE BUILD (Creative): describe any building and Vine AI builds it in front of you, fully offline",
         ]),
     dict(
-        id="piknott-celestika", name="PIKNOTT CELESTIKA", repo="piknott-celestika", category=GAMES,
+        id="piknott-celestika", reg="{B4C2E7A1-5D3F-4A9B-9E61-7C0D2F8A3B54}_is1", name="PIKNOTT CELESTIKA", repo="piknott-celestika", category=GAMES,
         genre="RPG · Monster catching · Cel-shaded",
         exe="PIKNOTT CELESTIKA.exe", folder="PIKNOTT CELESTIKA",
-        portable=["PIKNOTT CELESTIKA.exe", "PIKNOTT.CELESTIKA.Portable.exe"], version="1.0.0",
+        portable=["PIKNOTT CELESTIKA.exe", "PIKNOTT.CELESTIKA.Portable.exe"], version="1.0.1",
         tagline="A fully cel-shaded monster-catching RPG. Catch 13 PIKNOTT across the Celestika region.",
         about=("Explore the Celestika region as a boy in a red hoodie, sneak through tall grass, throw PIKCEL balls to "
                "catch wild PIKNOTT, and battle them with your team using an action-order battle system with "
@@ -40,13 +42,13 @@ CATALOG = [
             "Keyboard + mouse and basic gamepad support",
         ]),
     dict(
-        id="fireout-shine", name="\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3", repo="fireout-shine", category=GAMES,
+        id="fireout-shine", reg="{7E3A91C4-2B6D-4F18-A5C9-3D8E1F0B6A72}_is1", name="\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3", repo="fireout-shine", category=GAMES,
         genre="Racing \u00b7 \u6307\u540d\u624b\u914d\u3055\u308c\u308b GET WANTED \u00b7 Open world",
         exe="FIREOUT SHINE.exe", folder="FIREOUT SHINE",
-        portable=["FIREOUT SHINE.exe", "FIREOUT-SHINE-Portable.exe"], version="1.0.1", release="2026",
+        portable=["FIREOUT SHINE.exe", "FIREOUT-SHINE-Portable.exe"], version="1.0.5.2", release="2026",
         publisher="EX Inc./HYPERION DIGITAL", developer="EX Inc./HYPERION DIGITAL",
         tagline="Open-world neon Tokyo and Hikari Beach: race, escape the police and live the night as ANA and DANIEL.",
-        about=("\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3 (FIREOUT SHINE) 1.0.1 is an open-world driving game set in "
+        about=("\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3 (FIREOUT SHINE) is an open-world driving game set in "
                "an original neon Tokyo and the seaside Hikari Beach. Play as ANA and DANIEL, switch between them at any "
                "time, take any car with F, enter street races and activities, and GET WANTED: outrun the police as your wanted "
                "stars climb. Customise your ride at FRGARAGE, go home to Ana and Daniel's house to sleep, save and change "
@@ -63,10 +65,10 @@ CATALOG = [
             "EX IX G9 phone with JP Taxi and Emergency Services, map waypoints and a day/night cycle",
         ]),
     dict(
-        id="ex-sports-sfc27", name="EX SPORTS\u2122 SFC 27 STANDARD EDITION", repo="ex-sports-sfc27", category=GAMES,
+        id="ex-sports-sfc27", reg="{B3C5E2A1-7D4F-4E61-9A27-5F0C8D2E1B27}_is1", name="EX SPORTS\u2122 SFC 27 STANDARD EDITION", repo="ex-sports-sfc27", category=GAMES,
         genre="Sports \u00b7 Football \u00b7 Online",
         exe="EX SPORTS SFC 27.exe", folder="EX SPORTS SFC 27",
-        portable=["EX SPORTS SFC 27.exe", "EX-SPORTS-SFC27-Portable.exe"], version="1.0.0", release="2026",
+        portable=["EX SPORTS SFC 27.exe", "EX-SPORTS-SFC27-Portable.exe"], version="1.0.0.5", release="2026",
         publisher="EX Inc.", developer="EX Inc.",
         tagline="7-a-side football at the SFC 27 stadium: quick matches against the AI, or online with friends using a join code.",
         about=("EX SPORTS\u2122 SFC 27 STANDARD EDITION is 7-a-side football at the EX SPORTS SFC 27 stadium. The pitch is full "
@@ -84,13 +86,13 @@ CATALOG = [
             "Per-user install, no admin rights; built-in update check",
         ]),
     dict(
-        id="the-anulment", name="THE ANULMENT", repo="the-anulment", category=GAMES,
+        id="the-anulment", reg="{B4D27E19-6A3C-4F85-9E1D-52A7C0F3D861}_is1", name="THE ANULMENT", repo="the-anulment", category=GAMES,
         genre="Story \u00b7 Open world \u00b7 Investigation",
         exe="THE ANULMENT.exe", folder="THE ANULMENT",
-        portable=["THE ANULMENT.exe", "THE-ANULMENT-Portable.exe"], version="1.0.0", release="2026",
+        portable=["THE ANULMENT.exe", "THE-ANULMENT-Portable.exe"], version="1.0.0.4", release="2026",
         publisher="EX Inc./HYPERION DIGITAL", developer="EX Inc./HYPERION DIGITAL",
         tagline="Rainy night in Valdora: the vote is annulled, CLN is arrested, and MIYOYAZU sets out to find the truth.",
-        about=("THE ANULMENT 1.0.0 (Chapter 1: The Annulled Vote) is a story game set at night in the fictional country of Valdora. "
+        about=("THE ANULMENT (Chapter 1: The Annulled Vote) is a story game set at night in the fictional country of Valdora. "
                "The Constitutional Court has annulled the first round of the presidential election and charged its winner, CLN. "
                "You play MIYOYAZU, an ordinary blogger in a grey hoodie: join the peaceful protest at the court, photograph and "
                "recover evidence, interview the prosecutors' aide and publish the truth. Take any vehicle with F, and stay calm when "
@@ -108,7 +110,7 @@ CATALOG = [
             "Per-user install, no admin rights; built-in update check",
         ]),
     dict(
-        id="hyperia", name="HYPERIA", repo="hyperia", category=APPS, genre="Desktop shell",
+        id="hyperia", reg="{B2C3D4E5-F6A7-8901-BCDE-HYPERIA00001}}_is1", name="HYPERIA", repo="hyperia", category=APPS, genre="Desktop shell",
         exe="HYPERIA.exe", folder="HYPERIA", portable=[], version="1.1.23",
         tagline="A creative desktop shell for Windows: wallpaper, taskbar, Start menu and windows inside the shell.",
         about=("HYPERIA is a creative desktop shell from EX Inc. that runs on Windows: wallpaper, taskbar, Start menu, "
@@ -121,7 +123,7 @@ CATALOG = [
             "F11 fullscreen; Esc closes the Start menu",
         ]),
     dict(
-        id="ex-creator-studio", name="EX CREATOR STUDIO", repo="ex-creator-studio", category=APPS,
+        id="ex-creator-studio", reg="{C3E7A1D4-5B2F-4E8A-9C61-0A1B2C3D4E5F}_is1", name="EX CREATOR STUDIO", repo="ex-creator-studio", category=APPS,
         genre="Creative · Lip-sync · Video",
         exe="EX CREATOR STUDIO.exe", folder="EX CREATOR STUDIO", portable=[], version="1.3.0",
         tagline="One board. Any character. Type a line and watch it talk, then download it as an MP4.",
@@ -137,7 +139,7 @@ CATALOG = [
             "EX STUDIO screen recorder",
         ]),
     dict(
-        id="ex-network", name="EX NETWORK", repo="ex-network", category=APPS, genre="Utility · Network",
+        id="ex-network", reg="{6F3A2C1E-9B7D-4E21-A5C8-0E1F2A3B4C5D}_is1", name="EX NETWORK", repo="ex-network", category=APPS, genre="Utility · Network",
         exe="EX NETWORK.exe", folder="EX NETWORK", portable=[], version="1.2.1",
         tagline="Keeps your WiFi connection stable: fewer drop-outs, auto-reconnect and one-click repairs.",
         about=("A small Windows app that helps keep your WiFi connection stable. It does not make your internet faster; "
@@ -151,7 +153,7 @@ CATALOG = [
             "Ping test with average/min/max latency and packet loss",
         ]),
     dict(
-        id="ex-sudo-terminal", name="EX SUDO TERMINAL", repo="ex-sudo-terminal", category=APPS,
+        id="ex-sudo-terminal", reg="{A1B2C3D4-E5F6-7890-ABCD-EXSUDO000001}}_is1", name="EX SUDO TERMINAL", repo="ex-sudo-terminal", category=APPS,
         genre="Utility · Terminal",
         exe="EX SUDO TERMINAL.exe", folder="EX SUDO TERMINAL", portable=[], version="1.1.2",
         tagline="A GUI terminal for PowerShell with a persistent ConPTY session and one-click Run as admin.",
@@ -165,7 +167,7 @@ CATALOG = [
             "One-click Install Grok CLI button (runs only when you click it)",
         ]),
     dict(
-        id="fireout-revolution", name="FIREOUT REVOLUTION\u2122", repo="fireout-revolution", category=APPS,
+        id="fireout-revolution", reg="{7F1E0A2B-5C3D-4E6F-9A8B-F1REOUTREV01}}_is1", name="FIREOUT REVOLUTION\u2122", repo="fireout-revolution", category=APPS,
         genre="Viewer · Slides",
         exe="FIREOUT REVOLUTION.exe", folder="FIREOUT REVOLUTION", portable=[], version="1.0.3",
         tagline="Live viewer for FIREOUT REVOLUTION Slides.pdf from your Downloads folder.",
