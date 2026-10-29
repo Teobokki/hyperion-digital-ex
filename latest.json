@@ -1,9 +1,9 @@
 {
-  "version": "1.1.8",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.8",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.8/HYPERION.DIGITAL.EX.Setup.1.1.8.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.8/HYPERION.DIGITAL.EX.Setup.1.1.8.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.8/HYPERION.DIGITAL.EX.1.1.8.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.8/HYPERION.DIGITAL.EX.Portable.exe",
-  "notes": "Update fixes: the UPDATE button for FIREOUT SHINE no longer stays up after updating, because installed 1.0.5.1 is no longer read as 1.0.5. Also fixes the 'Failed to remove temporary directory (_MEI…)' warning."
+  "version": "1.1.9",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.9",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.9/HYPERION.DIGITAL.EX.Setup.1.1.9.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.9/HYPERION.DIGITAL.EX.Setup.1.1.9.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.9/HYPERION.DIGITAL.EX.1.1.9.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.9/HYPERION.DIGITAL.EX.Portable.exe",
+  "notes": "New in the store: THE ANULMENT 1.0.0 by EX Inc./HYPERION DIGITAL. Chapter 1 of a rainy-night story game in the fictional country of Valdora, with a protest, evidence, police pursuits, the EX IX G10 phone and T chat in an offline Romanian voice. Installs per-user with no admin; updates come from the game's own latest.json."
 }
