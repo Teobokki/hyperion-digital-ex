@@ -25,8 +25,11 @@ The EX Inc. store and library for Windows. Every EX game and app is in one store
 | ![Download in progress](docs/screenshot_download_in_progress.png) | ![EX CONNECT](docs/screenshot_ex_connect.png) |
 
 ## Catalog
-Games: ファイアアウト・シャイン (FIREOUT SHINE), EX SPORTS™ SFC 27 STANDARD EDITION, DREAM VINE, PIKNOTT CELESTIKA. Apps & Tools: HYPERIA, EX CREATOR STUDIO, EX NETWORK, EX SUDO TERMINAL, FIREOUT REVOLUTION™.
+Games: THE ANULMENT, ファイアアウト・シャイン (FIREOUT SHINE), EX SPORTS™ SFC 27 STANDARD EDITION, DREAM VINE, PIKNOTT CELESTIKA. Apps & Tools: HYPERIA, EX CREATOR STUDIO, EX NETWORK, EX SUDO TERMINAL, FIREOUT REVOLUTION™.
 Icons and screenshots are each app's own artwork, bundled from its source. The HYPERION DIGITAL EX icon is EX Inc.'s own artwork (`assets/icon_source_user.png`).
+
+## What's new in 1.1.9
+- New in the store: **THE ANULMENT** 1.0.0 by EX Inc./HYPERION DIGITAL (Games · Story · Open world · Investigation). Chapter 1 of a rainy-night story game in the fictional country of Valdora: protest, evidence, police pursuits, the EX IX G10 phone and T chat with an offline Romanian voice. The listing uses the game's own start-screen artwork as its icon and art. It installs per-user from the game's Setup with no admin rights, portable copies are detected, and updates come through the game's own latest.json.
 
 ## What's new in 1.1.8
 - Fixed the UPDATE button that never cleared for games with 4-part versions. FIREOUT SHINE 1.0.5.1 was read as 1.0.5. Installed versions are now read and compared with all four parts.

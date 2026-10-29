@@ -84,6 +84,30 @@ CATALOG = [
             "Per-user install, no admin rights; built-in update check",
         ]),
     dict(
+        id="the-anulment", name="THE ANULMENT", repo="the-anulment", category=GAMES,
+        genre="Story \u00b7 Open world \u00b7 Investigation",
+        exe="THE ANULMENT.exe", folder="THE ANULMENT",
+        portable=["THE ANULMENT.exe", "THE-ANULMENT-Portable.exe"], version="1.0.0", release="2026",
+        publisher="EX Inc./HYPERION DIGITAL", developer="EX Inc./HYPERION DIGITAL",
+        tagline="Rainy night in Valdora: the vote is annulled, CLN is arrested, and MIYOYAZU sets out to find the truth.",
+        about=("THE ANULMENT 1.0.0 (Chapter 1: The Annulled Vote) is a story game set at night in the fictional country of Valdora. "
+               "The Constitutional Court has annulled the first round of the presidential election and charged its winner, CLN. "
+               "You play MIYOYAZU, an ordinary blogger in a grey hoodie: join the peaceful protest at the court, photograph and "
+               "recover evidence, interview the prosecutors' aide and publish the truth. Take any vehicle with F, and stay calm when "
+               "POLI\u021aIA VALDOREI pursue you. Type English with T and MIYOYAZU says it in an offline Romanian voice. "
+               "All characters, parties, countries and events in this game are fictional. "
+               "Publisher: EX Inc./HYPERION DIGITAL. \u00a92026 EX Inc./HYPERION DIGITAL \u00a92026."),
+        features=[
+            "Rainy night-time Valdora with wet streets and letterbox cutscenes",
+            "Peaceful protest at the Constitutional Court: placards, candles and the chant CLN PRE\u0218EDINTE! / TURUL DOI \u00ceNAPOI!",
+            "Fictional police (POLI\u021aIA VALDOREI): shield line, questioning, a pressure meter and pursuits that box you in",
+            "Traffic with fictional brands: take any vehicle non-violently with F",
+            "T chat: type English, MIYOYAZU speaks it with the offline Romanian Piper voice (bubble + subtitles)",
+            "EX IX G10 phone: CAMERA with SELMOTES, MESSAGES, NEWS, MAP, EVIDENCE, RECORDER and SETTINGS",
+            "Evidence board, interview and the PUBLISH THE TRUTH ending; minimap, full map and save/load",
+            "Per-user install, no admin rights; built-in update check",
+        ]),
+    dict(
         id="hyperia", name="HYPERIA", repo="hyperia", category=APPS, genre="Desktop shell",
         exe="HYPERIA.exe", folder="HYPERIA", portable=[], version="1.1.23",
         tagline="A creative desktop shell for Windows: wallpaper, taskbar, Start menu and windows inside the shell.",
@@ -164,5 +188,6 @@ KNOWN_SIZES = {
     "EX.SUDO.TERMINAL.Setup.1.1.2.exe": 11926787, "EX_SUDO_TERMINAL.zip": 13609861,
     "FIREOUT-SHINE-Setup-1.0.1.exe": 137226943, "FIREOUT-SHINE-1.0.1-Windows-x64.zip": 163677077, "FIREOUT-SHINE-Portable.exe": 163032983,
     "EX-SPORTS-SFC27-Setup-1.0.0.exe": 30014857, "EX-SPORTS-SFC27-1.0.0-Windows-x64.zip": 44052043, "EX-SPORTS-SFC27-Portable.exe": 43955016,
+    "THE-ANULMENT-Setup-1.0.0.exe": 158224328, "THE-ANULMENT-1.0.0-Windows-x64.zip": 184610333, "THE-ANULMENT-Portable.exe": 184200266,
     "DREAM.VINE.LAUNCHER.Setup.1.0.2.exe": 13957793, "DREAM.VINE.LAUNCHER.1.0.2.Windows.x64.zip": 17697430,
 }
