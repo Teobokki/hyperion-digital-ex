@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 2,
+ "catalog_version": 1,
  "featured": [
   "fireout-shine"
  ],
@@ -316,7 +316,7 @@
    "name": "THE ANULMENT",
    "repo": "the-anulment",
    "genre": "Story · Open world · Investigation",
-   "tagline": "[STORE TEST] Rainy night in Valdora: the vote is annulled, CLN is arrested, and MIYOYAZU sets out to find the truth.",
+   "tagline": "Rainy night in Valdora: the vote is annulled, CLN is arrested, and MIYOYAZU sets out to find the truth.",
    "description": "THE ANULMENT (Chapter 1: The Annulled Vote) is a story game set at night in the fictional country of Valdora. The Constitutional Court has annulled the first round of the presidential election and charged its winner, CLN. You play MIYOYAZU, an ordinary blogger in a grey hoodie: join the peaceful protest at the court, photograph and recover evidence, interview the prosecutors' aide and publish the truth. Take any vehicle with F, and stay calm when POLIȚIA VALDOREI pursue you. Type English with T and MIYOYAZU says it in an offline Romanian voice. All characters, parties, countries and events in this game are fictional. Publisher: EX Inc./HYPERION DIGITAL. ©2026 EX Inc./HYPERION DIGITAL ©2026.",
    "features": [
     "Rainy night-time Valdora with wet streets and letterbox cutscenes",
@@ -598,46 +598,6 @@
      "sha256": "d0df8beacf947a532df877827e55c959ede0e6fd9a857818cd9f125252efffd5"
     }
    }
-  },
-  {
-   "id": "ex-store-test",
-   "row": "APPS",
-   "name": "EX STORE TEST",
-   "repo": "hyperia",
-   "genre": "Desktop shell",
-   "tagline": "Temporary entry to test remote catalog updates.",
-   "description": "Temporary test entry.",
-   "features": [
-    "Built in: HYPERIA Store, Notebook, Files, Terminal (PowerShell), Settings, Clock",
-    "Games inside the shell: Pong and Fireout 1997, an original retro top-down racer",
-    "Web windows: EX SAFARIA LITE browser and shortcuts to popular sites",
-    "F11 fullscreen; Esc closes the Start menu"
-   ],
-   "reg": null,
-   "exe": "EX STORE TEST.exe",
-   "folder": "EX STORE TEST",
-   "portable": [],
-   "version": "1.1.23",
-   "app_id": null,
-   "latest_url": "https://raw.githubusercontent.com/Teobokki/hyperia/main/latest.json",
-   "art": {
-    "capsule.jpg": {
-     "size": 15106,
-     "sha256": "1948d26c8e46d858cb920f14bf9f47f5eace762be8f8633ae66f0441ff340b8c"
-    },
-    "hero.jpg": {
-     "size": 36873,
-     "sha256": "8ce41a9fb7e95a142a1b0f9ab362a10a282dbdd13b04fa3bc028c8bea468ded9"
-    },
-    "icon.png": {
-     "size": 49289,
-     "sha256": "3b70c02667881883b1212a9063380b344914fe34dcb5e11af8778b85a1ec9b78"
-    },
-    "shot0.jpg": {
-     "size": 87445,
-     "sha256": "3b2159d2f24ac96fe36799a0a6ce386045e1c96400b591b861bffb6a78105edf"
-    }
-   }
   }
  ],
  "known_sizes": {
@@ -666,5 +626,5 @@
   "DREAM.VINE.LAUNCHER.Setup.1.0.2.exe": 13957793,
   "DREAM.VINE.LAUNCHER.1.0.2.Windows.x64.zip": 17697430
  },
- "updated": "2026-10-29T18:38:37Z"
+ "updated": "2026-10-29T18:34:31Z"
 }
