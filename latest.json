@@ -1,9 +1,9 @@
 {
-  "version": "1.1.9",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.9",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.9/HYPERION.DIGITAL.EX.Setup.1.1.9.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.9/HYPERION.DIGITAL.EX.Setup.1.1.9.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.9/HYPERION.DIGITAL.EX.1.1.9.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.9/HYPERION.DIGITAL.EX.Portable.exe",
-  "notes": "New in the store: THE ANULMENT 1.0.0 by EX Inc./HYPERION DIGITAL. Chapter 1 of a rainy-night story game in the fictional country of Valdora, with a protest, evidence, police pursuits, the EX IX G10 phone and T chat in an offline Romanian voice. Installs per-user with no admin; updates come from the game's own latest.json."
+  "version": "1.1.10",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.10",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.10/HYPERION.DIGITAL.EX.Setup.1.1.10.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.10/HYPERION.DIGITAL.EX.Setup.1.1.10.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.10/HYPERION.DIGITAL.EX.1.1.10.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.10/HYPERION.DIGITAL.EX.Portable.exe",
+  "notes": "Game updates and changes are detected again for every title: latest.json is read live, not from a cached copy. Installed versions come from each game's own registry key and exe. The store checks on startup, on focus, with CHECK FOR UPDATES and every 10 minutes, and spots a game that updated itself within 15 s. New UPDATES page showing installed vs latest, with UPDATE / UPDATE ALL. Per-user, no admin."
 }
