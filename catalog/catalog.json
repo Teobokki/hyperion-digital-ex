@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 3,
+ "catalog_version": 4,
  "featured": [
   "fireout-shine"
  ],
@@ -429,9 +429,9 @@
    "row": "APPS",
    "name": "EX CREATOR STUDIO",
    "repo": "ex-creator-studio",
-   "genre": "Creative · Lip-sync · Art · Video",
+   "genre": "Creative · Lip-sync · Art · Animation · Video",
    "tagline": "One board. Any character. Type a line and watch it talk, then download it as an MP4.",
-   "description": "Upload any character or art to the REX BOARD and type what it should say. EX CREATOR STUDIO speaks it with an offline Windows voice and lip-syncs the character's mouth to it, then renders the result as an MP4. EX ART is a layered image editor for drawings, thumbnails and screenshots, and EX STUDIO and EX SCREEN RECORDER 2026 record your screen.",
+   "description": "Upload any character or art to the REX BOARD and type what it should say. EX CREATOR STUDIO speaks it with an offline Windows voice and lip-syncs the character's mouth to it, then renders the result as an MP4. REX ANIMATE turns stickman drawings into video, frame by frame, with editable titles, an audio track and MP4 export. EX ART is a layered image editor for drawings, thumbnails and screenshots, and EX STUDIO and EX SCREEN RECORDER 2026 record your screen.",
    "features": [
     "Auto character detection for anime/cartoon faces and real faces, with mouth location",
     "Set mouth manually by clicking or dragging a box, so any character can talk",
@@ -441,13 +441,17 @@
     "EX STUDIO screen recorder",
     "EX ART layered image editor: brushes, selections, text, shapes, blend modes, masks, filters and 80-step undo",
     "Add screenshots and images (drop, paste or capture), then move, resize and rotate them on their own layers",
-    "EX SCREEN RECORDER 2026: full screen, monitor, window or region to a YouTube-ready MP4 with system audio"
+    "EX SCREEN RECORDER 2026: full screen, monitor, window or region to a YouTube-ready MP4 with system audio",
+    "REX ANIMATE: frame-by-frame animation with a thumbnail timeline, holds, drag reorder and 6-30 fps playback",
+    "REX ANIMATE layers, smoothing brush, lasso transform, shapes and the same colour wheel as EX ART",
+    "Editable text with outline and drop shadow that can stay on a range of frames for titles and captions",
+    "Add an MP3/WAV track with a waveform, then export MP4 (H.264 + AAC) at 1080p or 720p, GIF or PNG sequence"
    ],
    "reg": "{C3E7A1D4-5B2F-4E8A-9C61-0A1B2C3D4E5F}_is1",
    "exe": "EX CREATOR STUDIO.exe",
    "folder": "EX CREATOR STUDIO",
    "portable": [],
-   "version": "1.4.0",
+   "version": "1.5.0",
    "app_id": "{C3E7A1D4-5B2F-4E8A-9C61-0A1B2C3D4E5F}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/ex-creator-studio/main/latest.json",
    "art": {
@@ -486,6 +490,14 @@
     "shot5.jpg": {
      "size": 138837,
      "sha256": "f86fccb66342d69a8753372f2fa5bca95b7e2884b5e13141d37537573151e030"
+    },
+    "shot6.jpg": {
+     "size": 142201,
+     "sha256": "e82105da235115ac225e38f0537276df49783d6c057b51a0e40665fbb2a03e36"
+    },
+    "shot7.jpg": {
+     "size": 143592,
+     "sha256": "673b4e6f32585319e199b2d31dd96fa747ec2af2f47a4a696bceb1ac66b7eeb4"
     }
    }
   },
@@ -637,5 +649,5 @@
   "DREAM.VINE.LAUNCHER.Setup.1.0.2.exe": 13957793,
   "DREAM.VINE.LAUNCHER.1.0.2.Windows.x64.zip": 17697430
  },
- "updated": "2026-10-30T15:14:17Z"
+ "updated": "2026-10-30T16:49:31Z"
 }
