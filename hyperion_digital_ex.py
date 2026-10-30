@@ -209,7 +209,7 @@ class ActionBar(QWidget):
     def refresh(self):
         st = self.svc.status(self.aid); j = self.svc.job_for(self.aid); inf = self.svc.installed.get(self.aid)
         latest = self.svc.latest_version(self.aid)
-        text = {"install": "INSTALL", "play": "PLAY", "update": "UPDATE", "playing": "PLAYING", "queued": "QUEUED",
+        text = {"install": "INSTALL", "play": self.svc.row_of(self.aid).get("launch", "PLAY"), "update": "UPDATE", "playing": "PLAYING", "queued": "QUEUED",
                 "downloading": "DOWNLOADING", "paused": "RESUME", "verifying": "VERIFYING", "installing": "INSTALLING", "error": "RETRY"}[st]
         mode = {"update": "update", "playing": "playing", "queued": "busy", "downloading": "busy", "verifying": "busy", "installing": "busy"}.get(st, "")
         if st == "update":
@@ -630,6 +630,43 @@ class Card(QFrame):
         self.clicked.emit(self.aid)
 
 
+def book_pix(aid, side, w, h, radius=6):
+    """1.1.12: portrait book art (front/back cover) drawn whole in book proportions"""
+    row = SVC.row_of(aid) if SVC else {}
+    name = row.get(side) or ("book_%s.jpg" % side)
+    p = art(aid, name)
+    if not os.path.exists(p):
+        return capsule_pix(aid, w, h, radius)
+    return cover_pix(pix(p), w, h, radius)
+
+
+class BookCard(QFrame):
+    """1.1.12: store card in book proportions (front cover, 2:3) for portrait rows such as EBOOKS"""
+    clicked = Signal(str)
+
+    def __init__(self, ui, aid, w=204):
+        super().__init__()
+        self.ui, self.aid = ui, aid; a = ui.svc.catalog[aid]
+        self.setObjectName("card"); self.setCursor(Qt.PointingHandCursor); self.setFixedWidth(w)
+        v = QVBoxLayout(self); v.setContentsMargins(0, 0, 0, 10); v.setSpacing(6)
+        img = QLabel(); img.setPixmap(book_pix(aid, "front", w - 2, int((w - 2) * 1.5), 7)); v.addWidget(img)
+        col = QVBoxLayout(); col.setContentsMargins(12, 2, 12, 0); col.setSpacing(0)
+        t = lbl(a["name"], None, True); t.setStyleSheet("font-weight:800;font-size:13px;background:transparent"); col.addWidget(t)
+        g = lbl(a["genre"], "small", True); g.setStyleSheet("background:transparent"); col.addWidget(g)
+        if ui.svc.is_new(aid):
+            nb = lbl("NEW"); nb.setStyleSheet("background:%s;color:#0e1319;font-weight:900;font-size:11px;border-radius:4px;padding:2px 8px" % GREEN)
+            nb.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed); col.addWidget(nb)
+        v.addLayout(col)
+        self.status = lbl("", "small"); self.status.setContentsMargins(12, 0, 12, 0); v.addWidget(self.status)
+        self.refresh()
+
+    def refresh(self):
+        Card.refresh(self)
+
+    def mousePressEvent(self, e):
+        self.clicked.emit(self.aid)
+
+
 class RecCard(QFrame):
     """Wide recommended card: cover art, screenshots, tagline and status."""
     clicked = Signal(str)
@@ -676,16 +713,24 @@ class StorePage(QWidget):
         self.featured = FeaturedCarousel(ui, self.banner); v.addWidget(self.featured)
         self.cards = []
         self.sections = {}
-        for cat, title in ((GAMES, "GAMES"), (APPS, "APPS & TOOLS")):
-            ids = [a["id"] for a in ui.svc.catalog.values() if a["category"] == cat] + [a["id"] for a in UPCOMING if a["category"] == cat]
+        for row in ui.svc.rows():               # 1.1.12: sections come from catalog.json "rows"
+            cat, title = row["label"], row["title"]
+            ids = [a["id"] for a in ui.svc.catalog.values() if ui.svc.row_of(a["id"])["id"] == row["id"]] + [a["id"] for a in UPCOMING if a["category"] == cat]
+            if not ids:
+                continue
             ids.sort(key=lambda x: x not in ui.svc.featured())      # featured titles (FIREOUT SHINE) come first
-            hl = lbl("%s  ·  %d" % (title, len(ids)), "h2"); self.sections[cat] = hl
-            hdr = QHBoxLayout(); hdr.addWidget(hl); hdr.addStretch(1)
+            hl = lbl("%s  ·  %d" % (title, len(ids)), "h2"); self.sections[cat] = hl; self.sections[row["id"]] = hl
+            hdr = QHBoxLayout(); hdr.addWidget(hl)
+            if row.get("subtitle"):
+                hdr.addSpacing(10); sl = lbl(row["subtitle"], "small"); hdr.addWidget(sl)
+            hdr.addStretch(1)
             v.addSpacing(10); v.addLayout(hdr)
             grid = QGridLayout(); grid.setHorizontalSpacing(16); grid.setVerticalSpacing(16)
+            per = 6 if row["card"] == "portrait" else 4
             for k, aid in enumerate(ids):
-                c = (SoonCard if aid in SOON else Card)(ui, aid); c.clicked.connect(ui.open_product); grid.addWidget(c, k // 4, k % 4, Qt.AlignLeft); self.cards.append(c)
-            grid.setColumnStretch(4, 1)
+                kind = SoonCard if aid in SOON else (BookCard if row["card"] == "portrait" else Card)
+                c = kind(ui, aid); c.clicked.connect(ui.open_product); grid.addWidget(c, k // per, k % per, Qt.AlignLeft | Qt.AlignTop); self.cards.append(c)
+            grid.setColumnStretch(per, 1)
             v.addLayout(grid)
         v.addStretch(1)
         self.sc = scroll(inner)
@@ -693,7 +738,7 @@ class StorePage(QWidget):
 
     def scroll_to_games(self):
         self.ui.go("store")
-        hl = self.sections[GAMES]
+        hl = self.sections.get(GAMES) or next(iter(self.sections.values()))
         y = hl.mapTo(self.sc.widget(), QPointF(0, 0).toPoint()).y()
         self.sc.verticalScrollBar().setValue(max(0, y - 12))
 
@@ -768,7 +813,15 @@ class ProductPage(QWidget):
         body.addLayout(gal)
         # side
         side = QVBoxLayout(); side.setSpacing(10)
-        cap = QLabel(); cap.setPixmap(capsule_pix(aid, 340, 191, 6)); side.addWidget(cap)
+        row = svc.row_of(aid)
+        if row["card"] == "portrait":             # 1.1.12: books show the front and the back cover
+            pair = QHBoxLayout(); pair.setSpacing(10)
+            for sd, cap_t in (("front", "FRONT COVER"), ("back", "BACK COVER")):
+                cc = QVBoxLayout(); cc.setSpacing(3)
+                ci = QLabel(); ci.setPixmap(book_pix(aid, sd, 165, 248, 5)); cc.addWidget(ci); cc.addWidget(lbl(cap_t, "small")); pair.addLayout(cc)
+            pair.addStretch(1); side.addLayout(pair)
+        else:
+            cap = QLabel(); cap.setPixmap(capsule_pix(aid, 340, 191, 6)); side.addWidget(cap)
         tl = lbl(a["tagline"], None, True); tl.setStyleSheet("font-size:13px;color:#c9d6e3"); tl.setFixedWidth(340); side.addWidget(tl)
         info = QFrame(); info.setObjectName("infobox"); g = QGridLayout(info); g.setContentsMargins(12, 10, 12, 10); g.setVerticalSpacing(5)
         inst = (svc.installed.get(aid) or {}).get("version")
@@ -783,13 +836,13 @@ class ProductPage(QWidget):
         self.v.addLayout(body)
         # buy box
         box = QFrame(); box.setObjectName("panel"); bl = QVBoxLayout(box); bl.setContentsMargins(20, 16, 20, 16)
-        verb = "Play" if a["category"] == GAMES else "Get"
+        verb = row.get("verb") or ("Play" if a["category"] == GAMES else "Get")
         bl.addWidget(lbl("%s %s" % (verb, a["name"]), None)); box.findChildren(QLabel)[0].setStyleSheet("font-size:18px;font-weight:800")
         self.bar = ActionBar(self.ui, aid); bl.addWidget(self.bar); box.setMaximumWidth(1160)
         self.v.addWidget(box)
         # about
         about = QFrame(); about.setObjectName("panel"); al = QVBoxLayout(about); al.setContentsMargins(20, 16, 20, 16); al.setSpacing(8)
-        al.addWidget(lbl("ABOUT THIS " + ("GAME" if a["category"] == GAMES else "APP"), "h2"))
+        al.addWidget(lbl("ABOUT THIS " + (row.get("noun") or ("GAME" if a["category"] == GAMES else "APP")), "h2"))
         d = lbl(a["about"], None, True); d.setStyleSheet("font-size:13px;color:#c9d6e3;line-height:140%"); al.addWidget(d)
         al.addSpacing(6); al.addWidget(lbl("FEATURES", "h2"))
         for f in a["features"]:
@@ -831,17 +884,43 @@ class LibraryPage(QWidget):
         h = QHBoxLayout(self); h.setContentsMargins(0, 0, 0, 0); h.setSpacing(0)
         side = QWidget(); side.setObjectName("libside"); side.setFixedWidth(270); side.setStyleSheet("#libside{background:%s}" % BG2); sv = QVBoxLayout(side); sv.setContentsMargins(10, 12, 10, 10)
         self.filter = QLineEdit(); self.filter.setPlaceholderText("Search your library"); self.filter.textChanged.connect(self.fill); sv.addWidget(self.filter)
+        self.kind = "ALL"; self.chips = {}; self.chip_box = QHBoxLayout(); self.chip_box.setSpacing(4); sv.addLayout(self.chip_box)
+        self.make_chips()
         self.list = QListWidget(); self.list.setIconSize(QSize(24, 24)); self.list.currentItemChanged.connect(self.on_pick); sv.addWidget(self.list, 1)
         h.addWidget(side)
         self.detail = QWidget(); self.dv = QVBoxLayout(self.detail); self.dv.setContentsMargins(0, 0, 0, 0); self.dv.setSpacing(0)
         h.addWidget(self.detail, 1)
         self.fill()
 
+    def make_chips(self):
+        """1.1.12: All / Games / Apps / Ebooks ... filters, one per catalog row"""
+        clear_layout(self.chip_box); self.chips = {}
+        rows = [r for r in self.ui.svc.rows() if any(self.ui.svc.row_of(a)["id"] == r["id"] for a in self.ui.svc.catalog)]
+        if self.kind != "ALL" and self.kind not in [r["id"] for r in rows]:
+            self.kind = "ALL"
+        for rid, text in [("ALL", "All")] + [(r["id"], r["label"].split(" ")[0]) for r in rows]:
+            b = QPushButton(text); b.setObjectName("chip"); b.setCheckable(True); b.setChecked(rid == self.kind); b.setCursor(Qt.PointingHandCursor)
+            b.setStyleSheet("QPushButton#chip{background:%s;border:1px solid %s;border-radius:10px;padding:3px 9px;font-size:11px;color:#c9d6e3}"
+                            "QPushButton#chip:checked{background:%s;color:#0e1319;font-weight:800}" % (PANEL, LINE, ACCENT))
+            b.clicked.connect(lambda _=False, rid=rid: self.set_kind(rid)); self.chip_box.addWidget(b); self.chips[rid] = b
+        self.chip_box.addStretch(1)
+
+    def set_kind(self, rid):
+        self.kind = rid
+        for k, b in self.chips.items():
+            b.setChecked(k == rid)
+        self.fill()
+
     def fill(self):
         q = self.filter.text().lower(); cur = self.aid
         self.list.blockSignals(True); self.list.clear()
-        for cat, title in ((GAMES, "GAMES"), (APPS, "APPS & TOOLS")):
-            ids = [a["id"] for a in self.ui.svc.catalog.values() if a["category"] == cat and q in a["name"].lower()]
+        for row in self.ui.svc.rows():
+            if self.kind not in ("ALL", row["id"]):
+                continue
+            cat, title = row["label"], row["title"]
+            ids = [a["id"] for a in self.ui.svc.catalog.values() if self.ui.svc.row_of(a["id"])["id"] == row["id"] and q in a["name"].lower()]
+            if not ids and self.kind == "ALL" and row["id"] not in ("GAMES", "APPS"):
+                continue
             ids.sort(key=lambda x: x != "fireout-shine")
             hdr = QListWidgetItem("%s  (%d)" % (title, len(ids))); hdr.setFlags(Qt.NoItemFlags); f = hdr.font(); f.setBold(True); f.setPointSize(8); hdr.setFont(f)
             hdr.setForeground(QColor("#6f8396")); self.list.addItem(hdr)
@@ -879,8 +958,10 @@ class LibraryPage(QWidget):
         self.dv.addWidget(bar)
         stats = QHBoxLayout(); stats.setContentsMargins(28, 16, 28, 0); stats.setSpacing(36)
         self.stat_labels = {}
+        book = svc.row_of(aid)["card"] == "portrait"
         for k in ("PLAY TIME", "LAST PLAYED", "INSTALLED", "LATEST", "LOCATION"):
-            col = QVBoxLayout(); col.setSpacing(2); col.addWidget(lbl(k, "small")); vv = lbl(""); vv.setStyleSheet("font-weight:700"); col.addWidget(vv); self.stat_labels[k] = vv; stats.addLayout(col)
+            shown = {"PLAY TIME": "READING TIME", "LAST PLAYED": "LAST READ"}.get(k, k) if book else k
+            col = QVBoxLayout(); col.setSpacing(2); col.addWidget(lbl(shown, "small")); vv = lbl(""); vv.setStyleSheet("font-weight:700"); col.addWidget(vv); self.stat_labels[k] = vv; stats.addLayout(col)
         stats.addStretch(1); self.dv.addLayout(stats)
         links = QHBoxLayout(); links.setContentsMargins(24, 10, 28, 0)
         sp = QPushButton("Store page"); sp.setObjectName("link"); sp.clicked.connect(lambda: self.ui.open_product(aid)); links.addWidget(sp)
@@ -2004,6 +2085,43 @@ def smoke(win, out_dir, phase):
             for k, f in enumerate(steps):
                 QTimer.singleShot(800 * (k + 1), f)
         at(11000, wait_flag)
+    elif phase == "ebooks":                # 1.1.12: data-driven rows - EBOOKS row, portrait cards, Ebooks filter, normal Install
+        aid = os.environ.get("HDX_SMOKE_APP", "learn-japanese-easy"); local = os.environ.get("HDX_SMOKE_CATALOG")
+        def load_local():
+            if local:                       # QA only: apply a not-yet-pushed catalog.json exactly as a sync would
+                import ex_remote as rmod
+                doc = json.load(open(local, encoding="utf-8")); meta, titles, skipped = rmod.parse(doc)
+                win.svc.cat_meta = meta; win.svc.last_catalog_diff = win.svc._apply_titles(titles); win.rebuild_pages()
+            L("aid", aid, "rows", [r["id"] for r in win.svc.rows()], "book row", win.svc.row_of(aid) if aid in win.svc.catalog else None)
+        def wait_cat(n=0):
+            if not local and aid not in win.svc.catalog and n < 90:     # live: wait for the catalog sync to bring the book in
+                if n % 10 == 0:
+                    L("waiting for catalog", win.svc.cat_source, win.svc.cat_meta.get("catalog_version"))
+                QTimer.singleShot(1000, lambda: wait_cat(n + 1)); return
+            load_local(); L("source", win.svc.cat_source, "catalog_version", win.svc.cat_meta.get("catalog_version"))
+            for k, f in enumerate((to_ebooks, lambda: shot("eb_store_row.png"), lambda: win.open_product(aid), lambda: shot("eb_product.png"),
+                                   lib, lambda: shot("eb_library_filter.png"), install if os.environ.get("HDX_SMOKE_INSTALL") else win.close)):
+                QTimer.singleShot(1200 * (k + 1), f)
+        at(6000, wait_cat)
+        def to_ebooks():
+            win.go("store"); sp = win.pages["store"]; hl = sp.sections.get("EBOOKS")
+            if hl:
+                y = hl.mapTo(sp.sc.widget(), QPointF(0, 0).toPoint()).y(); sp.sc.verticalScrollBar().setValue(max(0, y - 40))
+            L("EBOOKS section", bool(hl), "cards", [type(c).__name__ for c in sp.cards if c.aid == aid])
+        def lib():
+            win.go("library"); lp = win.pages["library"]; lp.set_kind("EBOOKS"); lp.select(aid)
+            L("library filter EBOOKS items", [lp.list.item(i).text() for i in range(lp.list.count())])
+        def install():
+            L("status before", win.svc.status(aid)); win.open_product(aid); win.pages["product"].bar.on_main(); win._t0 = time.time()
+            QTimer.singleShot(1500, wait)
+        def wait():
+            st = win.svc.status(aid) if aid in win.svc.catalog else "missing"
+            if st in ("play",) or time.time() - win._t0 > 240:
+                L("status after", st, "installed", win.svc.installed.get(aid), "%.0fs" % (time.time() - win._t0))
+                win.open_product(aid); QTimer.singleShot(800, lambda: shot("eb_installed.png"))
+                QTimer.singleShot(1500, lambda: (win.go("library"), win.pages["library"].select(aid)))
+                QTimer.singleShot(2600, lambda: shot("eb_library_installed.png")); QTimer.singleShot(3500, win.close); return
+            QTimer.singleShot(1000, wait)
     elif phase == "updates":               # 1.1.10: UPDATES page, outside change detection, UPDATE from the page
         aid = os.environ.get("HDX_SMOKE_APP", "the-anulment"); t0 = time.time()
         def st(tag):

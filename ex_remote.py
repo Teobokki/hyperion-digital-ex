@@ -1,4 +1,4 @@
-"""HYPERION DIGITAL EX - remote store catalog (1.1.11).
+"""HYPERION DIGITAL EX - remote store catalog (1.1.11; 1.1.12: data-driven rows/sections).
 
 The list of titles, their texts, install/registry names and art live in catalog/catalog.json + assets/apps/<id>/ on main
 of Teobokki/hyperion-digital-ex. The store reads them at main's current commit SHA (never a cached CDN copy), validates
@@ -12,6 +12,59 @@ REPO = "hyperion-digital-ex"
 PATH = "catalog/catalog.json"
 SCHEMA = 1                                    # newer schemas are read too: unknown fields are ignored
 ROWS = {"GAMES": "Games", "APPS": "Apps & Tools", "Games": "Games", "Apps & Tools": "Apps & Tools"}
+# 1.1.12: the store's sections come from catalog.json "rows" (ordered). These two are the defaults when a catalog has none.
+DEFAULT_ROWS = [
+    {"id": "GAMES", "title": "GAMES", "label": "Games", "card": "landscape", "verb": "Play", "noun": "GAME", "launch": "PLAY"},
+    {"id": "APPS", "title": "APPS & TOOLS", "label": "Apps & Tools", "card": "landscape", "verb": "Get", "noun": "APP", "launch": "PLAY"},
+]
+RE_ROW = re.compile(r"^[A-Z0-9_]{2,24}$")
+CARDS = ("landscape", "portrait")
+
+
+def parse_rows(doc):
+    """catalog "rows" -> ordered list of clean row dicts (bad rows are skipped; GAMES and APPS always exist)"""
+    out, seen = [], set()
+    raw = doc.get("rows") if isinstance(doc, dict) else None
+    for r in (raw if isinstance(raw, list) else [])[:20]:
+        try:
+            if not isinstance(r, dict) or not isinstance(r.get("id"), str) or not RE_ROW.match(r["id"]) or r["id"] in seen:
+                raise ValueError("id")
+            base = next((d for d in DEFAULT_ROWS if d["id"] == r["id"]), {})
+            row = dict(base); row["id"] = r["id"]
+            for k, n in (("title", 40), ("label", 40), ("verb", 16), ("noun", 16), ("launch", 16), ("subtitle", 200)):
+                v = r.get(k)
+                if v is not None:
+                    if not isinstance(v, str) or not v.strip() or len(v) > n:
+                        raise ValueError(k)
+                    row[k] = v
+            row.setdefault("title", r["id"]); row.setdefault("label", row["title"].title())
+            row.setdefault("verb", "Get"); row.setdefault("noun", "APP"); row.setdefault("launch", "PLAY")
+            row["card"] = r.get("card", base.get("card", "landscape"))
+            if row["card"] not in CARDS:
+                raise ValueError("card")
+            for k in ("front", "back"):
+                v = r.get(k)
+                if v is not None:
+                    if not (isinstance(v, str) and RE_ART.match(v)):
+                        raise ValueError(k)
+                    row[k] = v
+            seen.add(row["id"]); out.append(row)
+        except Exception:
+            continue
+    for d in DEFAULT_ROWS:
+        if d["id"] not in seen:
+            out.insert(DEFAULT_ROWS.index(d), dict(d)); seen.add(d["id"])
+    return out
+
+
+def row_key(rows, name):
+    """a title's "row"/"category" value -> row id (accepts the id, the title or the label), or None"""
+    if not isinstance(name, str):
+        return None
+    for r in rows:
+        if name in (r["id"], r["title"], r["label"]):
+            return r["id"]
+    return {"Games": "GAMES", "Apps & Tools": "APPS"}.get(name)
 RE_ID = re.compile(r"^[a-z0-9][a-z0-9-]{1,48}$")
 RE_REPO = re.compile(r"^[A-Za-z0-9._-]{1,80}$")
 RE_FILE = re.compile(r"^[^\\/:*?\"<>|]{1,80}$")
@@ -36,8 +89,9 @@ def _s(t, k, n=4000, req=False):
     return v
 
 
-def validate_title(t):
+def validate_title(t, rows=None):
     """one catalog entry -> clean dict for the store, or raises ValueError (the entry is then skipped)"""
+    rows = rows or DEFAULT_ROWS
     if not isinstance(t, dict):
         raise ValueError("not an object")
     out = {}
@@ -45,10 +99,10 @@ def validate_title(t):
     if not RE_ID.match(out["id"]):
         raise ValueError("id")
     out["name"] = _s(t, "name", 80, True)
-    row = t.get("row", t.get("category"))
-    if row not in ROWS:
+    rk = row_key(rows, t.get("row", t.get("category")))
+    if rk is None:
         raise ValueError("row")
-    out["category"] = ROWS[row]
+    out["row"] = rk; out["category"] = next(r["label"] for r in rows if r["id"] == rk)
     out["repo"] = _s(t, "repo", 80, True)
     if not RE_REPO.match(out["repo"]):
         raise ValueError("repo")
@@ -106,9 +160,10 @@ def parse(doc):
     if not isinstance(schema, int) or schema < 1:
         raise ValueError("bad schema")
     titles, skipped, seen = [], [], set()
+    rows = parse_rows(doc)
     for i, t in enumerate(doc["titles"][:200]):
         try:
-            c = validate_title(t)
+            c = validate_title(t, rows)
             if c["id"] in seen:
                 raise ValueError("duplicate id")
             seen.add(c["id"]); titles.append(c)
@@ -119,7 +174,8 @@ def parse(doc):
     feat = [x for x in doc.get("featured", []) if isinstance(x, str) and x in seen] if isinstance(doc.get("featured"), list) else []
     ks = doc.get("known_sizes", {})
     ks = {k: v for k, v in ks.items() if isinstance(k, str) and isinstance(v, int)} if isinstance(ks, dict) else {}
-    meta = {"schema": schema, "catalog_version": doc.get("catalog_version"), "featured": feat or [titles[0]["id"]], "known_sizes": ks}
+    meta = {"schema": schema, "catalog_version": doc.get("catalog_version"), "featured": feat or [titles[0]["id"]], "known_sizes": ks,
+            "rows": rows}
     return meta, titles, skipped
 
 
@@ -172,5 +228,5 @@ def sync_art(base, titles, sha, fetch_bytes, bundled=None):
 
 def fingerprint(t):
     """what the UI shows for a title (texts, names, art hashes) - used to tell 'changed' titles apart"""
-    keep = {k: v for k, v in t.items() if k not in ("latest", "assets", "assets_ver")}
+    keep = {k: v for k, v in t.items() if k not in ("latest", "assets", "assets_ver", "row")}
     return hashlib.sha1(json.dumps(keep, sort_keys=True, ensure_ascii=False).encode()).hexdigest()

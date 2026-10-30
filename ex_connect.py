@@ -5,7 +5,7 @@ import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, url
 from ex_catalog import CATALOG, KNOWN_SIZES
 import ex_remote as rm
 
-APP_VERSION = "1.1.11"
+APP_VERSION = "1.1.12"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
@@ -230,7 +230,8 @@ class ExConnect:
         self.cache = self._load(os.path.join(self.dir, "catalog_cache.json"), {})
         # 1.1.11: the title list comes from the remote catalog.json (last good copy cached); ex_catalog.py is only the fallback
         self.catalog = {}; self.cat_dir = rm.cache_dir(self.dir); self.catalog_error = None; self.catalog_skipped = []
-        self.cat_meta = {"schema": 1, "catalog_version": "built-in", "featured": ["fireout-shine"], "known_sizes": dict(KNOWN_SIZES)}
+        self.cat_meta = {"schema": 1, "catalog_version": "built-in", "featured": ["fireout-shine"], "known_sizes": dict(KNOWN_SIZES),
+                         "rows": rm.parse_rows({})}
         self.cat_source = "built-in"; self.catalog_sha = None; self.last_catalog_diff = ([], [])
         titles = []
         for a in CATALOG:
@@ -310,6 +311,15 @@ class ExConnect:
     def is_new(self, aid):
         t = self.state.get("seen_titles", {}).get(aid, 0)
         return bool(t) and time.time() - t < 14 * 86400
+
+    def rows(self):
+        """1.1.12: ordered store sections from catalog.json (GAMES, APPS & TOOLS, EBOOKS, ...)"""
+        return self.cat_meta.get("rows") or rm.parse_rows({})
+
+    def row_of(self, aid):
+        t = self.catalog.get(aid) or {}
+        rid = t.get("row") or rm.row_key(self.rows(), t.get("category")) or "APPS"
+        return next((r for r in self.rows() if r["id"] == rid), self.rows()[-1])
 
     def featured(self):
         return [a for a in self.cat_meta.get("featured", []) if a in self.catalog] or list(self.catalog)[:1]
