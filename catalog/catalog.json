@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 4,
+ "catalog_version": 5,
  "featured": [
   "fireout-shine"
  ],
@@ -621,6 +621,69 @@
      "sha256": "d0df8beacf947a532df877827e55c959ede0e6fd9a857818cd9f125252efffd5"
     }
    }
+  },
+  {
+   "id": "learn-japanese-easy",
+   "row": "EBOOKS",
+   "name": "簡単に日本語を学ぶ — learn japanese easy",
+   "repo": "learn-japanese-easy",
+   "genre": "Ebook · Japanese for beginners",
+   "tagline": "A Book of True Value. Discover the hidden gems of life through the eyes of EX. 簡単に日本語を学ぶ",
+   "description": "An ebook by EX Inc. for learning beginner Japanese. Turn its pages with a smooth page-turn, swipe or the arrow keys. It covers hiragana and katakana charts, a gojūon page and 24 beginner kanji with readings, and 40 everyday words (greetings, numbers 1–10, food, family). Each word comes with furigana, an orange kana line, romaji and English. There are also three quizzes. Tap a word or a character to hear it. Make your own pages in the Page Maker: type English to get the Japanese with automatic furigana and romaji (offline), paint on them with an ink brush, keep them under My Pages, or export them as PNG or PDF.",
+   "features": [
+    "Page-turn reader: arrows, keys, swipe-drag, contents, bookmarks and zoom",
+    "Kana and beginner kanji reference pages in a grey vertical style, plus hiragana and katakana charts",
+    "40 words with furigana, romaji and English, plus 3 tap-to-answer quizzes",
+    "Built-in Japanese audio. Tap any word or character (offline)",
+    "Page Maker: offline English → 日本語, auto furigana and romaji, ink brush with colour wheel, eraser and undo",
+    "Save to My Pages. Export PNG or PDF",
+    "Per-user install, no admin"
+   ],
+   "reg": "{1D454AC4-CF7D-4370-BD7A-86F9F5C08E90}_is1",
+   "app_id": "{1D454AC4-CF7D-4370-BD7A-86F9F5C08E90}",
+   "exe": "learn japanese easy.exe",
+   "folder": "learn japanese easy",
+   "portable": [],
+   "version": "1.0.0",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/learn-japanese-easy/main/latest.json",
+   "art": {
+    "book_back.jpg": {
+     "size": 104183,
+     "sha256": "72b7b568c5040722da553880b5bde3668c161d441182970db8371898a3f7e712"
+    },
+    "book_front.jpg": {
+     "size": 154596,
+     "sha256": "394591ef55f52bfcb072f00883c57167137dd1f78d97f15bda4196c54c2fbb1f"
+    },
+    "capsule.jpg": {
+     "size": 50993,
+     "sha256": "69f6d8494ea6bde03f6a587c4bc4ef14e0973f87de5c3fec51cdff37877f70f3"
+    },
+    "hero.jpg": {
+     "size": 132423,
+     "sha256": "3c88be541e46c5632eda9fa8e0508fae9b0cfba44f6a8f3ecc72b0729be42c0d"
+    },
+    "icon.png": {
+     "size": 119632,
+     "sha256": "0d91f1a90c1ea2ffcf4711121867c1ca21757105ef4c7aec896c96553eb8ea53"
+    },
+    "shot0.jpg": {
+     "size": 183600,
+     "sha256": "f45cfc9d1d5c9dbc4bb5a42043c84adc60343754c71f2012f0b706d67224ad5d"
+    },
+    "shot1.jpg": {
+     "size": 103082,
+     "sha256": "a1c371ed508b1186c025f4c6e99e6adeac5b2fe25c366a2d32e27689c189641f"
+    },
+    "shot2.jpg": {
+     "size": 98402,
+     "sha256": "ae6b49f4574c15d2b894b305f90e7b5a5bb6ba10276fe9b58e4eae225554de38"
+    },
+    "shot3.jpg": {
+     "size": 143653,
+     "sha256": "5c36cee49dc5d32583061c50823525a1f691fea412ece05e18e6486e41feae1d"
+    }
+   }
   }
  ],
  "known_sizes": {
@@ -647,7 +710,41 @@
   "THE-ANULMENT-1.0.0-Windows-x64.zip": 184610333,
   "THE-ANULMENT-Portable.exe": 184200266,
   "DREAM.VINE.LAUNCHER.Setup.1.0.2.exe": 13957793,
-  "DREAM.VINE.LAUNCHER.1.0.2.Windows.x64.zip": 17697430
+  "DREAM.VINE.LAUNCHER.1.0.2.Windows.x64.zip": 17697430,
+  "learn.japanese.easy.Setup.1.0.0.exe": 27129881,
+  "learn.japanese.easy.1.0.0.Windows.x64.zip": 33282314
  },
- "updated": "2026-10-30T16:49:31Z"
+ "updated": "2026-10-30T18:40:11Z",
+ "rows": [
+  {
+   "id": "GAMES",
+   "title": "GAMES",
+   "label": "Games",
+   "card": "landscape",
+   "verb": "Play",
+   "noun": "GAME",
+   "launch": "PLAY"
+  },
+  {
+   "id": "APPS",
+   "title": "APPS & TOOLS",
+   "label": "Apps & Tools",
+   "card": "landscape",
+   "verb": "Get",
+   "noun": "APP",
+   "launch": "PLAY"
+  },
+  {
+   "id": "EBOOKS",
+   "title": "EBOOKS",
+   "label": "Ebooks",
+   "card": "portrait",
+   "front": "book_front.jpg",
+   "back": "book_back.jpg",
+   "verb": "Read",
+   "noun": "BOOK",
+   "launch": "READ",
+   "subtitle": "Books by EX Inc. Install them like any app."
+  }
+ ]
 }
