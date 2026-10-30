@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 2,
+ "catalog_version": 3,
  "featured": [
   "fireout-shine"
  ],
@@ -429,22 +429,25 @@
    "row": "APPS",
    "name": "EX CREATOR STUDIO",
    "repo": "ex-creator-studio",
-   "genre": "Creative · Lip-sync · Video",
+   "genre": "Creative · Lip-sync · Art · Video",
    "tagline": "One board. Any character. Type a line and watch it talk, then download it as an MP4.",
-   "description": "Upload any character or art to the REX BOARD and type what it should say. EX CREATOR STUDIO speaks it with an offline Windows voice and lip-syncs the character's mouth to it, then renders the result as an MP4. EX STUDIO adds a built-in screen recorder.",
+   "description": "Upload any character or art to the REX BOARD and type what it should say. EX CREATOR STUDIO speaks it with an offline Windows voice and lip-syncs the character's mouth to it, then renders the result as an MP4. EX ART is a layered image editor for drawings, thumbnails and screenshots, and EX STUDIO and EX SCREEN RECORDER 2026 record your screen.",
    "features": [
     "Auto character detection for anime/cartoon faces and real faces, with mouth location",
     "Set mouth manually by clicking or dragging a box, so any character can talk",
     "Offline SAPI5 text-to-speech with your installed Windows voices and a speed setting",
     "Pin screenshots onto the board, drag and resize them",
     "Download renders an H.264/AAC MP4 to your Downloads folder",
-    "EX STUDIO screen recorder"
+    "EX STUDIO screen recorder",
+    "EX ART layered image editor: brushes, selections, text, shapes, blend modes, masks, filters and 80-step undo",
+    "Add screenshots and images (drop, paste or capture), then move, resize and rotate them on their own layers",
+    "EX SCREEN RECORDER 2026: full screen, monitor, window or region to a YouTube-ready MP4 with system audio"
    ],
    "reg": "{C3E7A1D4-5B2F-4E8A-9C61-0A1B2C3D4E5F}_is1",
    "exe": "EX CREATOR STUDIO.exe",
    "folder": "EX CREATOR STUDIO",
    "portable": [],
-   "version": "1.3.0",
+   "version": "1.4.0",
    "app_id": "{C3E7A1D4-5B2F-4E8A-9C61-0A1B2C3D4E5F}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/ex-creator-studio/main/latest.json",
    "art": {
@@ -475,6 +478,14 @@
     "shot3.jpg": {
      "size": 120661,
      "sha256": "fa4e68a332146be1ffc2aa3b2d111f66971ee57ee8e7966f652fb73d0a00e63f"
+    },
+    "shot4.jpg": {
+     "size": 129449,
+     "sha256": "7641a3df101497e03d9832eb7cf33df317621ee0a17f4cf928a8c863ff459c98"
+    },
+    "shot5.jpg": {
+     "size": 138837,
+     "sha256": "f86fccb66342d69a8753372f2fa5bca95b7e2884b5e13141d37537573151e030"
     }
    }
   },
@@ -626,5 +637,5 @@
   "DREAM.VINE.LAUNCHER.Setup.1.0.2.exe": 13957793,
   "DREAM.VINE.LAUNCHER.1.0.2.Windows.x64.zip": 17697430
  },
- "updated": "2026-10-29T18:54:01Z"
+ "updated": "2026-10-30T15:14:17Z"
 }
