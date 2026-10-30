@@ -1,9 +1,9 @@
 {
-  "version": "1.1.11",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.11",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.11/HYPERION.DIGITAL.EX.Setup.1.1.11.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.11/HYPERION.DIGITAL.EX.Setup.1.1.11.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.11/HYPERION.DIGITAL.EX.1.1.11.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.11/HYPERION.DIGITAL.EX.Portable.exe",
-  "notes": "The store catalog is now remote: new and changed games and apps arrive through CHECK FOR UPDATES, the new CHECK FOR STORE UPDATES button and the automatic checks, with no store update. New titles get a NEW badge. The Store and Library refresh live. Per-user, no admin."
+  "version": "1.1.12",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.12",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.12/HYPERION.DIGITAL.EX.Setup.1.1.12.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.12/HYPERION.DIGITAL.EX.Setup.1.1.12.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.12/HYPERION.DIGITAL.EX.1.1.12.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.12/HYPERION.DIGITAL.EX.Portable.exe",
+  "notes": "Store sections now come from catalog.json, so new rows need no store rebuild. New EBOOKS section with book-shaped cover cards (front cover, back cover on the store page) and the normal Install button. Library gets All / Games / Apps / Ebooks filters. Per-user, no admin."
 }
