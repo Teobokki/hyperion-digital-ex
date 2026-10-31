@@ -1,9 +1,12 @@
 {
-  "version": "1.1.12",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.12",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.12/HYPERION.DIGITAL.EX.Setup.1.1.12.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.12/HYPERION.DIGITAL.EX.Setup.1.1.12.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.12/HYPERION.DIGITAL.EX.1.1.12.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.12/HYPERION.DIGITAL.EX.Portable.exe",
-  "notes": "Store sections now come from catalog.json, so new rows need no store rebuild. New EBOOKS section with book-shaped cover cards (front cover, back cover on the store page) and the normal Install button. Library gets All / Games / Apps / Ebooks filters. Per-user, no admin."
+  "version": "1.1.13",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.13",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.13/HYPERION.DIGITAL.EX.Setup.1.1.13.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.13/HYPERION.DIGITAL.EX.Setup.1.1.13.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.13/HYPERION.DIGITAL.EX.1.1.13.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.13/HYPERION.DIGITAL.EX.Portable.exe",
+  "sha256": "86ffcf937ad5bea465f9d877fc2af6ff56b5e71ed7ecc4ed36043eeafe6453a0",
+  "zip_sha256": "4ba6c6efe73c4322ec64da55b6335b7fc5f1bd7f2b4554259b4ba6658c170fda",
+  "released": "2026-10-31",
+  "notes": "Fixes 'Could not check the store (CERTIFICATE_VERIFY_FAILED)' on PCs with antivirus/firewall HTTPS scanning: certificates are now verified against the Windows certificate store, with a Mozilla CA bundle + Windows ROOT/CA fallback. Verification always on. Clearer error message. Per-user, no admin."
 }
