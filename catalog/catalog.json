@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 6,
+ "catalog_version": 7,
  "featured": [
   "fireout-shine"
  ],
@@ -408,7 +408,7 @@
     "COKA.exe",
     "COKA-Portable.exe"
    ],
-   "version": "1.0.0",
+   "version": "1.0.0.1",
    "app_id": "{3B5D1D44-A7D9-4FD3-BCE1-4AF7672D7B55}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/coka/main/latest.json",
    "art": {
@@ -797,7 +797,9 @@
   "learn.japanese.easy.1.0.0.Windows.x64.zip": 33282314,
   "COKA-Setup-1.0.0.exe": 32834802,
   "COKA-1.0.0-Windows-x64.zip": 46861380,
-  "COKA-Portable.exe": 46763252
+  "COKA-Portable.exe": 47025191,
+  "COKA-Setup-1.0.0.1.exe": 33092309,
+  "COKA-1.0.0.1-Windows-x64.zip": 47123113
  },
  "updated": "2026-10-31T19:58:19Z",
  "rows": [
