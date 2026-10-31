@@ -5,7 +5,7 @@ import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, url
 from ex_catalog import CATALOG, KNOWN_SIZES
 import ex_remote as rm
 
-APP_VERSION = "1.1.12"
+APP_VERSION = "1.1.13"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
@@ -52,11 +52,103 @@ def downloads_folder():
     return os.path.join(os.path.expanduser("~"), "Downloads")
 
 
-def _ctx():
+# ---- TLS trust (1.1.13) -------------------------------------------------------------------------------------------
+# Antivirus / firewall / corporate-proxy "HTTPS scanning" re-signs every site with its own root certificate, which it
+# installs only in the Windows certificate store. Python's bundled OpenSSL never looked there, so verification failed
+# with "unable to get issuer cert". We now verify against the Windows store itself (truststore), and fall back to
+# certifi's Mozilla bundle PLUS every Windows ROOT/CA certificate. Verification is ALWAYS on - never CERT_NONE.
+try:
+    import truststore
+except Exception:
+    truststore = None
+try:
+    import certifi
+except Exception:
+    certifi = None
+_CTXS = None
+
+
+def _fallback_ctx():
+    """certifi bundle (or Python's default paths) + all Windows ROOT/CA store certificates. Verifying."""
+    ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)      # TLS_CLIENT = CERT_REQUIRED + check_hostname by default
     try:
-        return ssl.create_default_context()
+        if certifi is not None:
+            ctx.load_verify_locations(cafile=certifi.where())
+        else:
+            ctx.load_default_certs()
     except Exception:
-        return None
+        ctx.load_default_certs()
+    if hasattr(ssl, "enum_certificates"):
+        for store in ("ROOT", "CA"):
+            try:
+                for der, enc, trust in ssl.enum_certificates(store):
+                    if enc == "x509_asn" and (trust is True or "1.3.6.1.5.5.7.3.1" in trust):
+                        try:
+                            ctx.load_verify_locations(cadata=der)
+                        except Exception:
+                            pass
+            except Exception:
+                pass
+    return ctx
+
+
+def _contexts():
+    """Verifying contexts to try in order: Windows/OS trust store first, then certifi + Windows certs."""
+    global _CTXS
+    if _CTXS is None:
+        out = []
+        if truststore is not None and os.environ.get("HDX_NO_TRUSTSTORE") != "1":
+            try:
+                out.append(truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT))
+            except Exception:
+                pass
+        out.append(_FALLBACK or ssl.create_default_context())
+        _CTXS = out
+    return _CTXS
+
+
+def _ctx():
+    return _contexts()[0]
+
+
+# Build the fallback context BEFORE truststore patches ssl.SSLContext (a plain SSLContext can't be configured after
+# injection), then inject so any other ssl.create_default_context() user also verifies against the Windows store.
+_FALLBACK = None
+try:
+    _FALLBACK = _fallback_ctx()
+except Exception:
+    pass
+if truststore is not None and os.environ.get("HDX_NO_TRUSTSTORE") != "1":
+    try:
+        truststore.inject_into_ssl()
+    except Exception:
+        pass
+
+
+def _is_cert_error(e):
+    r = getattr(e, "reason", e)
+    return isinstance(r, ssl.SSLCertVerificationError) or "CERTIFICATE_VERIFY_FAILED" in str(r)
+
+
+def open_url(req, timeout=20):
+    """urlopen with verified TLS; on a certificate failure retry with the next trust source (still verifying)."""
+    ctxs = _contexts(); err = None
+    for i, c in enumerate(ctxs):
+        try:
+            return urllib.request.urlopen(req, timeout=timeout, context=c)
+        except Exception as e:
+            if not _is_cert_error(e) or i == len(ctxs) - 1:
+                raise
+            err = e
+    raise err
+
+
+def describe_error(e):
+    """Short, human error text. Certificate failures get an explanation instead of an OpenSSL code."""
+    if _is_cert_error(e):
+        return ("secure connection not trusted - antivirus, firewall or network 'HTTPS scanning' may be replacing "
+                "GitHub's certificate with one Windows doesn't trust")
+    return "%s: %s" % (type(e).__name__, str(e)[:100])
 
 
 NOCACHE = {"Cache-Control": "no-cache, no-store, max-age=0", "Pragma": "no-cache", "Expires": "0"}
@@ -65,7 +157,7 @@ NOCACHE = {"Cache-Control": "no-cache, no-store, max-age=0", "Pragma": "no-cache
 def fetch_json(url, timeout=12):
     url += ("&" if "?" in url else "?") + "t=%d" % int(time.time() * 1000)     # cache-buster
     req = urllib.request.Request(url, headers=dict(UA, **NOCACHE))
-    with urllib.request.urlopen(req, timeout=timeout, context=_ctx()) as r:
+    with open_url(req, timeout=timeout) as r:
         return json.loads(r.read(2_000_000).decode("utf-8-sig"))
 
 
@@ -73,7 +165,7 @@ def main_sha(repo, timeout=8):
     """Commit SHA of main, read from git's smart-HTTP ref list on github.com (not CDN-cached, no API rate limit)."""
     req = urllib.request.Request("https://github.com/Teobokki/%s.git/info/refs?service=git-upload-pack" % repo,
                                  headers=dict(NOCACHE, **{"User-Agent": "git/2.45 " + UA["User-Agent"]}))
-    with urllib.request.urlopen(req, timeout=timeout, context=_ctx()) as r:
+    with open_url(req, timeout=timeout) as r:
         m = re.search(rb"([0-9a-f]{40}) refs/heads/main\b", r.read(400_000))
     return m.group(1).decode() if m else None
 
@@ -82,7 +174,7 @@ def fetch_bytes(url, limit, timeout=20):
     if not rm.allowed_url(url):
         raise ValueError("blocked URL")
     req = urllib.request.Request(url, headers=dict(UA, **NOCACHE))
-    with urllib.request.urlopen(req, timeout=timeout, context=_ctx()) as r:
+    with open_url(req, timeout=timeout) as r:
         return r.read(limit)
 
 
@@ -350,7 +442,7 @@ class ExConnect:
             try:
                 self.last_catalog_diff = self.sync_catalog(); self.store_check = ("ok", self.last_catalog_diff, time.time())
             except Exception as e:
-                self.catalog_error = "%s: %s" % (type(e).__name__, str(e)[:100]); self.store_check = ("error", self.catalog_error, time.time())
+                self.catalog_error = describe_error(e); self.store_check = ("error", self.catalog_error, time.time())
             self.notify("store_checked", "")
             if on_done:
                 on_done()
@@ -376,7 +468,7 @@ class ExConnect:
                         raise ValueError("latest.json has no version")
                     ok += 1
                 except Exception as e:      # 1.1.10: remembered and shown - no silent 'up to date' from stale data
-                    self.check_errors[aid] = "%s: %s" % (type(e).__name__, str(e)[:80]); return
+                    self.check_errors[aid] = describe_error(e)[:110]; return
                 self.check_errors.pop(aid, None); self.checked_at[aid] = time.time(); self.sources[aid] = src
                 app["latest"] = lj
                 ver = str(lj.get("version", app["version"]))
@@ -399,7 +491,7 @@ class ExConnect:
                 if diff[0] or diff[1]:
                     self.notify("catalog_changed", "")
             except Exception as e:                  # offline / bad file: keep the last good (cached) catalog
-                self.catalog_error = "%s: %s" % (type(e).__name__, str(e)[:100]); self.last_catalog_diff = ([], [])
+                self.catalog_error = describe_error(e); self.last_catalog_diff = ([], [])
             for aid in list(self.catalog):
                 t = threading.Thread(target=one, args=(aid,), daemon=True); t.start(); threads.append(t)
             try:
@@ -663,7 +755,7 @@ class ExConnect:
                 hdr["Range"] = "bytes=%d-" % have
             try:
                 req = urllib.request.Request(j.url, headers=hdr)
-                with urllib.request.urlopen(req, timeout=45, context=_ctx()) as r:
+                with open_url(req, timeout=45) as r:
                     mode = "ab"
                     if have and r.status == 200:
                         have = 0; mode = "wb"

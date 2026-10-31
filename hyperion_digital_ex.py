@@ -1568,7 +1568,7 @@ class UpdateDialog(QDialog):
                 break
             try:
                 req = xc.urllib.request.Request(url, headers=dict(xc.UA, **({"Range": "bytes=%d-" % have} if have else {})))
-                with xc.urllib.request.urlopen(req, timeout=45, context=xc._ctx()) as r:
+                with xc.open_url(req, timeout=45) as r:
                     if have and r.status == 200:
                         have = 0
                     cr = r.headers.get("Content-Range")
@@ -1997,7 +1997,7 @@ class Main(QMainWindow):
         try:
             self.svc.self_latest = xc.fetch_json(xc.SELF_LATEST_URL)
         except Exception as e:
-            self.pages["settings"].ust.setText("Could not check for updates (%s)." % type(e).__name__); return
+            self.pages["settings"].ust.setText("Could not check for updates (%s)." % xc.describe_error(e)); return
         self.on_self_checked(manual=True)
 
     def do_self_update(self):
