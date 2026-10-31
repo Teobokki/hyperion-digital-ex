@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 5,
+ "catalog_version": 6,
  "featured": [
   "fireout-shine"
  ],
@@ -381,6 +381,88 @@
    }
   },
   {
+   "id": "coka",
+   "row": "GAMES",
+   "name": "COKA — CALL OF KIMS ARMY",
+   "repo": "coka",
+   "genre": "First-person shooter · RPG · Campaign",
+   "tagline": "Train with Ana at Camp Kim: range, kill house, night raids, and COKA ONLINE AI TRAINING.",
+   "description": "COKA — CALL OF KIMS ARMY is a first-person army-camp training shooter. You play Ana, a recruit of Kims Army at Camp Kim, in a dusty golden-hour camp of tents, sandbags, gabions, trucks and watchtowers. Play a 6-mission voiced campaign: basic training on the range and the obstacle course, the kill house, night ops, defending the camp against waves, a convoy escort and the final assault on the east compound. In COKA ONLINE AI TRAINING you play Team Deathmatch 6v6 or Free-for-all against named AI bots. Earn XP, rank up from Recruit to Commander, and unlock fictional weapons, attachments, digital camos and perks. All characters, units, weapons and events in this game are fictional. Publisher: EX Inc./HYPERION DIGITAL. ©2026 EX Inc./HYPERION DIGITAL ©2026.",
+   "features": [
+    "First person with arms and weapon viewmodel, ADS sights (iron, red dot, 4x scope), bob, sway and recoil",
+    "6-mission voiced campaign with checkpoints and cinematic camera intros",
+    "COKA ONLINE AI TRAINING: TDM 6v6 and FFA 8 against named bots, 3 difficulty levels, scoreboard and match XP",
+    "Shooting range with pop-up targets, an obstacle course and a kill house",
+    "11 ranks, 5 fictional weapons, attachments, 6 digital camos and 6 perks",
+    "Golden-hour camp with real sun shadows, dust haze and smoke columns; RTX and EX HD modes, no bloom",
+    "Sprint, crouch, slide, jump, grenades, knife, hit markers, minimap and kill feed",
+    "Per-user install, no admin rights; built-in update check"
+   ],
+   "publisher": "EX Inc./HYPERION DIGITAL",
+   "developer": "EX Inc./HYPERION DIGITAL",
+   "release": "2026",
+   "reg": "{3B5D1D44-A7D9-4FD3-BCE1-4AF7672D7B55}_is1",
+   "exe": "COKA.exe",
+   "folder": "COKA",
+   "portable": [
+    "COKA.exe",
+    "COKA-Portable.exe"
+   ],
+   "version": "1.0.0",
+   "app_id": "{3B5D1D44-A7D9-4FD3-BCE1-4AF7672D7B55}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/coka/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 69604,
+     "sha256": "d27b36af535c3c942e719d286bfe077460f4e464c37966b873cd7aa3a0690947"
+    },
+    "cover.jpg": {
+     "size": 637926,
+     "sha256": "1e302cffb56b8b8058ed3ce097dfd4686151767e3187b68fc3a0e2ffc6e72000"
+    },
+    "hero.jpg": {
+     "size": 189291,
+     "sha256": "3e8996a4a40e75e8c9d77b7d9cb54b7c978ad28c3c96282eaffef4b2c8431566"
+    },
+    "hero_bg.jpg": {
+     "size": 49027,
+     "sha256": "13098cfde5008e62288f3b45319794650e9ddbbcb20f0c184a4fbbbdd2b621b9"
+    },
+    "icon.png": {
+     "size": 155369,
+     "sha256": "06101cacdc198404706069aab0c94bc0216e659ddb231e5d518d8a8d1f7ef255"
+    },
+    "shot0.jpg": {
+     "size": 133225,
+     "sha256": "9a6727a3232f55efadcbf7f895939ca958fa01ed13717492d99973e092f9cc98"
+    },
+    "shot1.jpg": {
+     "size": 118992,
+     "sha256": "876fe8b81c370aff7902073c5564f95f96e1e34cb22d6324c64e9f4428dd9313"
+    },
+    "shot2.jpg": {
+     "size": 137455,
+     "sha256": "8b207a312c26fe56d3a48fb8f014ed66a936e03889b8a19a4494df8411e5b658"
+    },
+    "shot3.jpg": {
+     "size": 95716,
+     "sha256": "e0d5ebfd6e859f92e087509db1e3178729dd420075e48712018a3f4c834f8e98"
+    },
+    "shot4.jpg": {
+     "size": 128610,
+     "sha256": "83e8097a96cdd656a6ea4eac2d7ccf710bda419fa1a5a7127a98d4dc99dac6d1"
+    },
+    "shot5.jpg": {
+     "size": 135952,
+     "sha256": "0d988990cd2b2dfb6604d4ef103a10d8d13cb3148d9a1ec13658cb307da8d78c"
+    },
+    "shot6.jpg": {
+     "size": 194436,
+     "sha256": "4db6bc6fe47ec2c7526a9819b16ce4ee9002e64b6fd672cdfcfe392b7d00e1ff"
+    }
+   }
+  },
+  {
    "id": "hyperia",
    "row": "APPS",
    "name": "HYPERIA",
@@ -712,9 +794,12 @@
   "DREAM.VINE.LAUNCHER.Setup.1.0.2.exe": 13957793,
   "DREAM.VINE.LAUNCHER.1.0.2.Windows.x64.zip": 17697430,
   "learn.japanese.easy.Setup.1.0.0.exe": 27129881,
-  "learn.japanese.easy.1.0.0.Windows.x64.zip": 33282314
+  "learn.japanese.easy.1.0.0.Windows.x64.zip": 33282314,
+  "COKA-Setup-1.0.0.exe": 32834802,
+  "COKA-1.0.0-Windows-x64.zip": 46861380,
+  "COKA-Portable.exe": 46763252
  },
- "updated": "2026-10-30T18:40:11Z",
+ "updated": "2026-10-31T19:58:19Z",
  "rows": [
   {
    "id": "GAMES",
