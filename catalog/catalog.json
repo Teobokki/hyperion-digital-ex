@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 8,
+ "catalog_version": 9,
  "featured": [
   "fireout-shine"
  ],
@@ -515,8 +515,8 @@
    "tagline": "One board. Any character. Type a line and watch it talk, then download it as an MP4.",
    "description": "Upload any character or art to the REX BOARD and type what it should say. EX CREATOR STUDIO speaks it with an offline Windows voice and lip-syncs the character's mouth to it, then renders the result as an MP4. REX ANIMATE turns stickman drawings into video, frame by frame, with editable titles, an audio track and MP4 export. EX ART is a layered image editor for drawings, thumbnails and screenshots, and EX STUDIO and EX SCREEN RECORDER 2026 record your screen.",
    "features": [
-    "Auto character detection for anime/cartoon faces and real faces, with mouth location",
-    "Set mouth manually by clicking or dragging a box, so any character can talk",
+    "Auto character detection with mouth-corner face landmarks, so the lip sync sits on the lips (photos, 3D, anime, cartoons, stickmen and emoji)",
+    "Drag or resize the mouth spot if needed; it is remembered per picture. Set mouth by clicking or dragging a box, so any character can talk",
     "Offline SAPI5 text-to-speech with your installed Windows voices and a speed setting",
     "Pin screenshots onto the board, drag and resize them",
     "Download renders an H.264/AAC MP4 to your Downloads folder",
@@ -533,7 +533,7 @@
    "exe": "EX CREATOR STUDIO.exe",
    "folder": "EX CREATOR STUDIO",
    "portable": [],
-   "version": "1.5.0",
+   "version": "1.5.1",
    "app_id": "{C3E7A1D4-5B2F-4E8A-9C61-0A1B2C3D4E5F}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/ex-creator-studio/main/latest.json",
    "art": {
@@ -777,7 +777,7 @@
   "HYPERIA.Setup.1.1.23.exe": 15319842,
   "HYPERIA.zip": 16477249,
   "EX.CREATOR.STUDIO.Setup.1.3.0.exe": 69162520,
-  "EX.CREATOR.STUDIO.zip": 102129520,
+  "EX.CREATOR.STUDIO.zip": 106188924,
   "EX.NETWORK.Setup.1.2.1.exe": 10069445,
   "EX_NETWORK.zip": 10861118,
   "EX.SUDO.TERMINAL.Setup.1.1.2.exe": 11926787,
@@ -801,9 +801,10 @@
   "COKA-Setup-1.0.0.1.exe": 33092309,
   "COKA-1.0.0.1-Windows-x64.zip": 47123113,
   "COKA-Setup-1.0.0.2.exe": 33044545,
-  "COKA-1.0.0.2-Windows-x64.zip": 47078642
+  "COKA-1.0.0.2-Windows-x64.zip": 47078642,
+  "EX.CREATOR.STUDIO.Setup.1.5.1.exe": 73133611
  },
- "updated": "2026-10-31T19:58:19Z",
+ "updated": "2026-11-02T16:33:55Z",
  "rows": [
   {
    "id": "GAMES",
