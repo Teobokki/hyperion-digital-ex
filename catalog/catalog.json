@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 14,
+ "catalog_version": 15,
  "featured": [
   "fireout-shine"
  ],
@@ -538,28 +538,28 @@
    "latest_url": "https://raw.githubusercontent.com/Teobokki/ex-creator-studio/main/latest.json",
    "art": {
     "capsule.jpg": {
-     "size": 34795,
-     "sha256": "9240f761d42f64eae159e883d1256ff951904c552559d645f63f4a8975d996a4"
+     "size": 34831,
+     "sha256": "5d3628450a2095fc5d6bc0fe7d30b2a9d343cabbc2810c22000564d719fbe33e"
     },
     "hero.jpg": {
-     "size": 77502,
-     "sha256": "81206c3b880dc9e5b5afebcea91c61b25ecc8c5b27b56ac081161c71fd3ecdfa"
+     "size": 77581,
+     "sha256": "4072b8a5599aad841e8906504e1e284012597902648862ad5114d4ebc94b6257"
     },
     "icon.png": {
      "size": 14314,
      "sha256": "0dbe57dcfbac46ed13c1cc32a8d6552fd974c952f542e03ef1cb1c4e42f793c7"
     },
     "shot0.jpg": {
-     "size": 119835,
-     "sha256": "958efdf886b80356db30863755703fd26542f0868dc338d3de3da1eac5ecafb0"
+     "size": 120024,
+     "sha256": "44b93591682514a8623a6131c21978beb7aab9c4f718f29127a6fd7c9ab2921b"
     },
     "shot1.jpg": {
-     "size": 136984,
-     "sha256": "46571f6c7d25c2ee655460c3652f035905fb2d7fd419d0ed279e0716cc162002"
+     "size": 137414,
+     "sha256": "e3017164791cf420972431ad9cbe23c844545cd1cd545858980909a9a9172631"
     },
     "shot2.jpg": {
-     "size": 136519,
-     "sha256": "8999ad11ef31ba68d77093197039349a750931fe405b09f27b7fe7995273adc7"
+     "size": 136534,
+     "sha256": "91c6c9b8fc1e827c5e5cf8ef245a61f450d776406176334c50312804637a5571"
     },
     "shot3.jpg": {
      "size": 120285,
@@ -807,7 +807,7 @@
   "EX.CREATOR.STUDIO.Setup.1.5.3.exe": 73156114,
   "EX.CREATOR.STUDIO.Setup.1.5.4.exe": 73143038
  },
- "updated": "2026-11-02T17:40:18Z",
+ "updated": "2026-11-02T17:46:15Z",
  "rows": [
   {
    "id": "GAMES",
