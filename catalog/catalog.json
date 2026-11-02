@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 12,
+ "catalog_version": 13,
  "featured": [
   "fireout-shine"
  ],
@@ -538,32 +538,32 @@
    "latest_url": "https://raw.githubusercontent.com/Teobokki/ex-creator-studio/main/latest.json",
    "art": {
     "capsule.jpg": {
-     "size": 35049,
-     "sha256": "57400639b70d4ad79f724b2361764b2c8c9a835acd390889594503aa0bb78883"
+     "size": 34850,
+     "sha256": "afcba33e6a80617378f6c09e7fb3a4aaa279ae9efd10037d077c9053984ff964"
     },
     "hero.jpg": {
-     "size": 77674,
-     "sha256": "921e849976c5a8e9d763a408418287eb9c7e226955dc5343d74148540208254a"
+     "size": 77494,
+     "sha256": "cc74bf42d88f214571557f1eebad248e7bc716c1b080c7f54c40e06ded063d9c"
     },
     "icon.png": {
      "size": 14314,
      "sha256": "0dbe57dcfbac46ed13c1cc32a8d6552fd974c952f542e03ef1cb1c4e42f793c7"
     },
     "shot0.jpg": {
-     "size": 120502,
-     "sha256": "0def66c510ea9950727cd69e9f737d9f94e1b5dad69fb6f46f71c8e2566931da"
+     "size": 120045,
+     "sha256": "e7cfca24b38bc0de777c7cd48208631a14bf7ea9af933d7a2e8b9b8a40323291"
     },
     "shot1.jpg": {
-     "size": 138276,
-     "sha256": "945d5bb16efcbbc4764581480ce0d0ffc48950226c5e131055008e44f4c8d722"
+     "size": 137005,
+     "sha256": "a2ec359d8db7d1b3eb9044accd97873ad841743c5b8862f8677cd74294f9c30d"
     },
     "shot2.jpg": {
-     "size": 137031,
-     "sha256": "01b19aafb00bfb86375726fa7c1d6894f73b4d24d1b2bc1c10b3fda8b5b35e63"
+     "size": 136585,
+     "sha256": "d448b4710709f96b36a793c58188732e6a8ad17db5ce32894657d88ae9d1437f"
     },
     "shot3.jpg": {
-     "size": 120661,
-     "sha256": "fa4e68a332146be1ffc2aa3b2d111f66971ee57ee8e7966f652fb73d0a00e63f"
+     "size": 120285,
+     "sha256": "03e62ff91d20e40d47d498f82245a2c6c592c1e9d69e9261ebe222b768eef6a6"
     },
     "shot4.jpg": {
      "size": 129449,
@@ -807,7 +807,7 @@
   "EX.CREATOR.STUDIO.Setup.1.5.3.exe": 73156114,
   "EX.CREATOR.STUDIO.Setup.1.5.4.exe": 73143038
  },
- "updated": "2026-11-02T17:20:10Z",
+ "updated": "2026-11-02T17:34:43Z",
  "rows": [
   {
    "id": "GAMES",
