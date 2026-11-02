@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 16,
+ "catalog_version": 17,
  "featured": [
   "fireout-shine"
  ],
@@ -705,6 +705,69 @@
    }
   },
   {
+   "id": "ex-storage-lab",
+   "row": "APPS",
+   "name": "EX STORAGE LAB",
+   "repo": "ex-storage-lab",
+   "genre": "Utility · Storage cleaner",
+   "tagline": "Free up storage safely. EX STORAGE LAB finds reclaimable space and asks you exactly what to delete.",
+   "description": "EX STORAGE LAB shows how full each drive is and scans for space you can win back: temporary files, the Recycle Bin, browser caches, thumbnail cache, crash dumps and error reports, app caches, old installers in Downloads, plus Large Files and Duplicate Files finders. Nothing is ever selected or deleted for you: tick whole categories or single files, check the confirmation list with the total size, then choose Move to Recycle Bin (default) or Delete permanently. Files in use are skipped, system folders are never touched, and it installs per-user without admin rights.",
+   "features": [
+    "Drive usage bars with used and free space for every drive",
+    "Temp folders, Recycle Bin, browser caches (Edge, Chrome, Firefox, Opera, Brave - cache only, never passwords, cookies or history)",
+    "Thumbnail cache, crash dumps, error reports and app caches",
+    "Old installers in Downloads, Large Files finder and SHA-256 Duplicate Files finder",
+    "Asks first: nothing is pre-selected; tick categories or single files (path, size, date)",
+    "Confirmation list with the total size; Move to Recycle Bin (default) or Delete permanently",
+    "Result summary with space freed and a full log; locked files are skipped",
+    "Per-user install, no admin or UAC; built-in update check"
+   ],
+   "publisher": "EX Inc.",
+   "developer": "EX Inc.",
+   "release": "2026",
+   "reg": "{9A67CFBB-5E39-408C-A13F-677448FA2798}_is1",
+   "exe": "EX STORAGE LAB.exe",
+   "folder": "EX STORAGE LAB",
+   "portable": [],
+   "version": "1.0.0",
+   "app_id": "{9A67CFBB-5E39-408C-A13F-677448FA2798}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/ex-storage-lab/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 23236,
+     "sha256": "544af1f9954c1605bf63c8d439baf87fbcb38a41475d56e29580490bc24a358c"
+    },
+    "hero.jpg": {
+     "size": 114795,
+     "sha256": "e058fc5affb56eed13b44f201747d884be3879a8dbc85961c49dd3a7c01d226a"
+    },
+    "icon.png": {
+     "size": 64530,
+     "sha256": "8dd6fa9c253ec4b526da6121db77d9c89bbe97a1114700c4b97e11415ccbe763"
+    },
+    "shot0.jpg": {
+     "size": 225055,
+     "sha256": "2f72b52fb6488d889ae4a4dd64705a4c96a1824b10a0b82758b70cfd4b9168a0"
+    },
+    "shot1.jpg": {
+     "size": 197315,
+     "sha256": "741f81019126d1127aff294ad2d3643d0a775e5f3100b19fc61def009ecafe1e"
+    },
+    "shot2.jpg": {
+     "size": 136450,
+     "sha256": "b84ea30c58f579bc9b5d1ea18e21fd43b921d4f4500c51c98f18f928c11ba62d"
+    },
+    "shot3.jpg": {
+     "size": 134334,
+     "sha256": "180c8e9456f94e034ea462f26e881b2eda4c236dc3f72c93d225d2d782eea6f1"
+    },
+    "shot4.jpg": {
+     "size": 88182,
+     "sha256": "e3292c4dc12064cea8dafdd056c9ca10571e02d2e6190bf2f8de0a8fc7212279"
+    }
+   }
+  },
+  {
    "id": "learn-japanese-easy",
    "row": "EBOOKS",
    "name": "簡単に日本語を学ぶ — learn japanese easy",
@@ -806,9 +869,11 @@
   "EX.CREATOR.STUDIO.Setup.1.5.2.exe": 73145989,
   "EX.CREATOR.STUDIO.Setup.1.5.3.exe": 73156114,
   "EX.CREATOR.STUDIO.Setup.1.5.4.exe": 73143038,
-  "EX.CREATOR.STUDIO.Setup.1.5.5.exe": 73151146
+  "EX.CREATOR.STUDIO.Setup.1.5.5.exe": 73151146,
+  "EX.STORAGE.LAB.Setup.1.0.0.exe": 20633072,
+  "EX.STORAGE.LAB.1.0.0.Windows.x64.zip": 25915112
  },
- "updated": "2026-11-02T18:03:22Z",
+ "updated": "2026-11-02T18:37:24Z",
  "rows": [
   {
    "id": "GAMES",
