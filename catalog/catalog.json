@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 11,
+ "catalog_version": 12,
  "featured": [
   "fireout-shine"
  ],
@@ -533,7 +533,7 @@
    "exe": "EX CREATOR STUDIO.exe",
    "folder": "EX CREATOR STUDIO",
    "portable": [],
-   "version": "1.5.3",
+   "version": "1.5.4",
    "app_id": "{C3E7A1D4-5B2F-4E8A-9C61-0A1B2C3D4E5F}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/ex-creator-studio/main/latest.json",
    "art": {
@@ -777,7 +777,7 @@
   "HYPERIA.Setup.1.1.23.exe": 15319842,
   "HYPERIA.zip": 16477249,
   "EX.CREATOR.STUDIO.Setup.1.3.0.exe": 69162520,
-  "EX.CREATOR.STUDIO.zip": 106197412,
+  "EX.CREATOR.STUDIO.zip": 106203836,
   "EX.NETWORK.Setup.1.2.1.exe": 10069445,
   "EX_NETWORK.zip": 10861118,
   "EX.SUDO.TERMINAL.Setup.1.1.2.exe": 11926787,
@@ -804,9 +804,10 @@
   "COKA-1.0.0.2-Windows-x64.zip": 47078642,
   "EX.CREATOR.STUDIO.Setup.1.5.1.exe": 73133611,
   "EX.CREATOR.STUDIO.Setup.1.5.2.exe": 73145989,
-  "EX.CREATOR.STUDIO.Setup.1.5.3.exe": 73156114
+  "EX.CREATOR.STUDIO.Setup.1.5.3.exe": 73156114,
+  "EX.CREATOR.STUDIO.Setup.1.5.4.exe": 73143038
  },
- "updated": "2026-11-02T16:58:55Z",
+ "updated": "2026-11-02T17:20:10Z",
  "rows": [
   {
    "id": "GAMES",
