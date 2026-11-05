@@ -45,7 +45,7 @@ CATALOG = [
         id="fireout-shine", reg="{7E3A91C4-2B6D-4F18-A5C9-3D8E1F0B6A72}_is1", name="\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3", repo="fireout-shine", category=GAMES,
         genre="Racing \u00b7 \u6307\u540d\u624b\u914d\u3055\u308c\u308b GET WANTED \u00b7 Open world",
         exe="FIREOUT SHINE.exe", folder="FIREOUT SHINE",
-        portable=["FIREOUT SHINE.exe", "FIREOUT-SHINE-Portable.exe"], version="1.0.5.2", release="2026",
+        portable=["FIREOUT SHINE.exe", "FIREOUT-SHINE-Portable.exe"], version="1.0.5.4", release="2026",
         publisher="EX Inc./HYPERION DIGITAL", developer="EX Inc./HYPERION DIGITAL",
         tagline="Open-world neon Tokyo and Hikari Beach: race, escape the police and live the night as ANA and DANIEL.",
         about=("\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3 (FIREOUT SHINE) is an open-world driving game set in "
@@ -55,7 +55,7 @@ CATALOG = [
                "outfits, and use the EX IX G9 phone to call a JP Taxi. "
                "Publisher: EX Inc./HYPERION DIGITAL. \u00a92026 EX Inc./HYPERION DIGITAL \u00a92026."),
         features=[
-            "Open-world neon Tokyo plus Hikari Beach: scramble crossing, sign-lined streets, an elevated expressway and glass skyscrapers",
+            "Open-world neon Tokyo plus Hikari Beach: scramble crossing, sign-lined streets, Tokyo-style multi-setback skyscrapers and a denser Japanese metro skyline",
             "Play as ANA and DANIEL and switch between them at any time (Q)",
             "Take any car with F; street races against AI rivals, a time trial, a drift zone and speed cameras",
             "FRGARAGE: choose your car (including the DEBAUCHE sedan), paint it and set a custom number plate",
