@@ -72,12 +72,37 @@ RE_ART = re.compile(r"^[a-z0-9_]{1,40}\.(png|jpg|jpeg)$")
 RE_REG = re.compile(r"^\{[A-Za-z0-9-]{8,60}\}{1,2}_is1$")
 RE_VER = re.compile(r"^\d+(\.\d+){0,3}$")
 RE_SHA = re.compile(r"^[0-9a-f]{64}$")
-ALLOWED = ("https://github.com/%s/" % OWNER, "https://raw.githubusercontent.com/%s/" % OWNER)
+ALLOWED = (
+    "https://github.com/%s/" % OWNER,
+    "https://raw.githubusercontent.com/%s/" % OWNER,
+    "https://cdn.jsdelivr.net/gh/%s/" % OWNER,
+    "https://raw.githack.com/%s/" % OWNER,
+    "https://rawcdn.githack.com/%s/" % OWNER,
+    "https://api.github.com/repos/%s/" % OWNER,
+)
 
 
 def allowed_url(u):
-    """only downloads from github.com/Teobokki (and its raw files)"""
-    return isinstance(u, str) and u.startswith(ALLOWED) and ".." not in u and len(u) < 400
+    """only downloads from Teobokki on GitHub / official raw + CDN mirrors (jsDelivr, gitHack)"""
+    return isinstance(u, str) and u.startswith(ALLOWED) and ".." not in u and len(u) < 500
+
+
+def raw_urls(owner, repo, ref, path):
+    """Ordered HTTPS mirrors for a file at owner/repo@ref/path (raw GitHub first, then CDNs)."""
+    path = (path or "").lstrip("/")
+    return [
+        "https://raw.githubusercontent.com/%s/%s/%s/%s" % (owner, repo, ref, path),
+        "https://cdn.jsdelivr.net/gh/%s/%s@%s/%s" % (owner, repo, ref, path),
+        "https://raw.githack.com/%s/%s/%s/%s" % (owner, repo, ref, path),
+        "https://rawcdn.githack.com/%s/%s/%s/%s" % (owner, repo, ref, path),
+    ]
+
+
+def host_of(url):
+    try:
+        return url.split("/", 3)[2]
+    except Exception:
+        return "?"
 
 
 def _s(t, k, n=4000, req=False):
@@ -211,18 +236,24 @@ def sync_art(base, titles, sha, fetch_bytes, bundled=None):
                 if os.path.exists(p):          # the cached copy is outdated and the bundled one is current
                     os.remove(p); changed.setdefault(t["id"], []).append(name)
                 continue
-            url = "https://raw.githubusercontent.com/%s/%s/%s/assets/apps/%s/%s" % (OWNER, REPO, sha, t["id"], name)
-            try:
-                data = fetch_bytes(url, meta["size"] + 1)
-                if len(data) != meta["size"] or (meta.get("sha256") and hashlib.sha256(data).hexdigest() != meta["sha256"]):
-                    raise ValueError("size/sha256 mismatch")
-                os.makedirs(d, exist_ok=True)
-                with open(p + ".tmp", "wb") as f:
-                    f.write(data)
-                os.replace(p + ".tmp", p)
-                changed.setdefault(t["id"], []).append(name)
-            except Exception as e:
-                errs.append("%s/%s: %s" % (t["id"], name, e))
+            urls = raw_urls(OWNER, REPO, sha, "assets/apps/%s/%s" % (t["id"], name))
+            last = None
+            for url in urls:
+                try:
+                    data = fetch_bytes(url, meta["size"] + 1)
+                    if len(data) != meta["size"] or (meta.get("sha256") and hashlib.sha256(data).hexdigest() != meta["sha256"]):
+                        raise ValueError("size/sha256 mismatch on %s" % host_of(url))
+                    os.makedirs(d, exist_ok=True)
+                    with open(p + ".tmp", "wb") as f:
+                        f.write(data)
+                    os.replace(p + ".tmp", p)
+                    changed.setdefault(t["id"], []).append(name)
+                    last = None
+                    break
+                except Exception as e:
+                    last = e
+            if last is not None:
+                errs.append("%s/%s: %s" % (t["id"], name, last))
     return changed, errs
 
 

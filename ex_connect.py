@@ -5,7 +5,7 @@ import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, url
 from ex_catalog import CATALOG, KNOWN_SIZES
 import ex_remote as rm
 
-APP_VERSION = "1.1.14"
+APP_VERSION = "1.1.15"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
@@ -144,14 +144,56 @@ def open_url(req, timeout=20):
 
 
 def describe_error(e):
-    """Short, human error text. Certificate failures get an explanation instead of an OpenSSL code."""
+    """Short, human error text. Certificate / DNS failures get an explanation instead of raw codes."""
     if _is_cert_error(e):
         return ("secure connection not trusted - antivirus, firewall or network 'HTTPS scanning' may be replacing "
                 "GitHub's certificate with one Windows doesn't trust")
+    msg = str(getattr(e, "reason", e) or e)
+    low = msg.lower()
+    # Windows WSAHOST_NOT_FOUND / getaddrinfo failed (Errno 11001) - hostname could not be resolved
+    if "getaddrinfo" in low or "11001" in msg or "name or service not known" in low or "nodename nor servname" in low:
+        host = ""
+        try:
+            m = re.search(r"https?://([^/\s'\"]+)", str(e))
+            host = (" for " + m.group(1)) if m else ""
+        except Exception:
+            host = ""
+        return "DNS lookup failed%s (Windows could not resolve that hostname)" % host
     return "%s: %s" % (type(e).__name__, str(e)[:100])
 
 
 NOCACHE = {"Cache-Control": "no-cache, no-store, max-age=0", "Pragma": "no-cache", "Expires": "0"}
+
+# ---- DNS resilience (1.1.15) --------------------------------------------------------------------------------------
+# Errno 11001 getaddrinfo failed is a Windows DNS failure for ONE hostname. The browser can still open github.com while
+# raw.githubusercontent.com (or api.github.com) fails. Prefer IPv4 when dual-stack flakes, and try several Teobokki
+# mirrors (raw.githubusercontent.com -> jsDelivr -> gitHack -> GitHub Contents API) with short timeouts.
+import socket
+# Keep the real libc getaddrinfo once; never re-wrap on module reload (that caused RecursionError).
+_ORIG_GETADDRINFO = getattr(socket, "_hdx_real_getaddrinfo", None) or socket.getaddrinfo
+socket._hdx_real_getaddrinfo = _ORIG_GETADDRINFO
+
+
+def _prefer_ipv4_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
+    """Try AF_INET first when family is unspecified; fall back to the original dual-stack lookup."""
+    if family == 0 and os.environ.get("HDX_ALLOW_IPV6") != "1":
+        try:
+            return _ORIG_GETADDRINFO(host, port, socket.AF_INET, type, proto, flags)
+        except OSError:
+            pass
+    return _ORIG_GETADDRINFO(host, port, family, type, proto, flags)
+
+
+if os.environ.get("HDX_NO_IPV4_PREF") != "1" and not getattr(socket, "_hdx_ipv4_pref", False):
+    try:
+        socket.getaddrinfo = _prefer_ipv4_getaddrinfo
+        socket._hdx_ipv4_pref = True
+    except Exception:
+        pass
+
+
+def _host_label(url):
+    return rm.host_of(url)
 
 
 def fetch_json(url, timeout=12):
@@ -159,15 +201,6 @@ def fetch_json(url, timeout=12):
     req = urllib.request.Request(url, headers=dict(UA, **NOCACHE))
     with open_url(req, timeout=timeout) as r:
         return json.loads(r.read(2_000_000).decode("utf-8-sig"))
-
-
-def main_sha(repo, timeout=8):
-    """Commit SHA of main, read from git's smart-HTTP ref list on github.com (not CDN-cached, no API rate limit)."""
-    req = urllib.request.Request("https://github.com/Teobokki/%s.git/info/refs?service=git-upload-pack" % repo,
-                                 headers=dict(NOCACHE, **{"User-Agent": "git/2.45 " + UA["User-Agent"]}))
-    with open_url(req, timeout=timeout) as r:
-        m = re.search(rb"([0-9a-f]{40}) refs/heads/main\b", r.read(400_000))
-    return m.group(1).decode() if m else None
 
 
 def fetch_bytes(url, limit, timeout=20):
@@ -178,26 +211,92 @@ def fetch_bytes(url, limit, timeout=20):
         return r.read(limit)
 
 
-def fetch_latest(repo, timeout=8, path="latest.json"):
-    """latest.json exactly as it is on main right now.
+def fetch_first(urls, kind="json", limit=2_000_000, timeout=8):
+    """Try each URL in order; return (payload, host_label). Raises the last error if every mirror fails."""
+    errs = []
+    for url in urls:
+        if not (rm.allowed_url(url) or url.startswith("https://github.com/Teobokki/")):
+            continue
+        try:
+            if kind == "json":
+                return fetch_json(url, timeout=timeout), _host_label(url)
+            if kind == "bytes":
+                return fetch_bytes(url, limit, timeout=timeout), _host_label(url)
+            if kind == "raw":
+                req = urllib.request.Request(url, headers=dict(UA, **NOCACHE))
+                with open_url(req, timeout=timeout) as r:
+                    return r.read(limit), _host_label(url)
+        except Exception as e:
+            errs.append("%s: %s" % (_host_label(url), describe_error(e)))
+    raise OSError("all mirrors failed (%s)" % "; ".join(errs[:6]) if errs else "no URLs")
 
-    1.1.10: raw.githubusercontent.com caches main/latest.json for 5 minutes and IGNORES query strings (a fresh '?t=' is
-    still an x-cache HIT), so the old cache-buster did nothing. Reading it at main's current commit SHA gives a URL that
-    has never been cached. Falls back to main (busted, no-cache) and then to the API copy."""
+
+def main_sha(repo, timeout=8):
+    """Commit SHA of main. github.com git refs first; api.github.com commits as DNS fallback."""
     errs = []
     try:
-        sha = main_sha(repo, timeout)
-        if sha:
-            return fetch_json("https://raw.githubusercontent.com/Teobokki/%s/%s/%s" % (repo, sha, path), timeout), "main@" + sha[:7]
+        req = urllib.request.Request("https://github.com/Teobokki/%s.git/info/refs?service=git-upload-pack" % repo,
+                                     headers=dict(NOCACHE, **{"User-Agent": "git/2.45 " + UA["User-Agent"]}))
+        with open_url(req, timeout=timeout) as r:
+            m = re.search(rb"([0-9a-f]{40}) refs/heads/main\b", r.read(400_000))
+        if m:
+            return m.group(1).decode()
     except Exception as e:
         errs.append(e)
     try:
-        return fetch_json("https://raw.githubusercontent.com/Teobokki/%s/main/%s" % (repo, path), timeout), "raw main"
+        c = fetch_json("https://api.github.com/repos/Teobokki/%s/commits/main" % repo, timeout=timeout)
+        sha = c.get("sha") if isinstance(c, dict) else None
+        if isinstance(sha, str) and re.match(r"^[0-9a-f]{40}$", sha):
+            return sha
     except Exception as e:
         errs.append(e)
-    import base64
-    c = fetch_json("https://api.github.com/repos/Teobokki/%s/contents/%s?ref=main" % (repo, path), timeout)
-    return json.loads(base64.b64decode(c["content"]).decode("utf-8-sig")), "api"
+    if errs:
+        raise errs[-1]
+    return None
+
+
+def fetch_repo_json(repo, path, ref=None, timeout=8):
+    """Fetch a JSON file from a Teobokki repo via raw + CDN mirrors, then the Contents API.
+
+    Returns (doc, source_label). Prefer a commit SHA ref (cache-bust); fall back to main."""
+    refs = []
+    if ref:
+        refs.append(ref)
+    if "main" not in refs:
+        refs.append("main")
+    errs = []
+    for r in refs:
+        urls = rm.raw_urls("Teobokki", repo, r, path)
+        try:
+            doc, host = fetch_first(urls, kind="json", timeout=timeout)
+            tag = ("main@" + r[:7]) if re.match(r"^[0-9a-f]{40}$", r) else r
+            return doc, "%s %s" % (host, tag)
+        except Exception as e:
+            errs.append(e)
+    # GitHub Contents API (base64) - different hostname when raw.* DNS fails but api.github.com works
+    try:
+        import base64
+        c = fetch_json("https://api.github.com/repos/Teobokki/%s/contents/%s?ref=%s" % (repo, path, refs[0]), timeout)
+        doc = json.loads(base64.b64decode(c["content"]).decode("utf-8-sig"))
+        tag = ("main@" + refs[0][:7]) if re.match(r"^[0-9a-f]{40}$", refs[0]) else refs[0]
+        return doc, "api.github.com %s" % tag
+    except Exception as e:
+        errs.append(e)
+    raise errs[-1] if errs else OSError("fetch_repo_json failed")
+
+
+def fetch_latest(repo, timeout=8, path="latest.json"):
+    """latest.json exactly as it is on main right now, via resilient mirrors (1.1.15).
+
+    1.1.10: raw.githubusercontent.com caches main/latest.json for 5 minutes and IGNORES query strings. Reading it at
+    main's current commit SHA gives a URL that has never been cached. 1.1.15 also tries jsDelivr / gitHack / API when
+    Windows DNS cannot resolve raw.githubusercontent.com (Errno 11001)."""
+    sha = None
+    try:
+        sha = main_sha(repo, timeout)
+    except Exception:
+        sha = None
+    return fetch_repo_json(repo, path, ref=sha, timeout=timeout)
 
 
 def file_version(path):
@@ -417,16 +516,22 @@ class ExConnect:
         return [a for a in self.cat_meta.get("featured", []) if a in self.catalog] or list(self.catalog)[:1]
 
     def sync_catalog(self):
-        """read catalog.json at main's commit SHA, validate, fetch changed art, apply. Returns (new ids, changed ids)."""
-        sha = main_sha(rm.REPO)
+        """read catalog.json at main's commit SHA (mirror fallbacks), validate, fetch changed art, apply."""
+        sha = None
+        try:
+            sha = main_sha(rm.REPO)
+        except Exception:
+            sha = None
+        doc, src = fetch_repo_json(rm.REPO, rm.PATH, ref=sha, timeout=10)
+        if not sha and isinstance(doc, dict) and isinstance(doc.get("_sha"), str) and re.match(r"^[0-9a-f]{40}$", doc["_sha"]):
+            sha = doc["_sha"]
         if not sha:
-            raise ValueError("no main branch")
-        doc = fetch_json("https://raw.githubusercontent.com/%s/%s/%s/%s" % (rm.OWNER, rm.REPO, sha, rm.PATH))
+            sha = "main"   # art URLs need a ref; every mirror accepts main
         meta, titles, skipped = rm.parse(doc)
         art_changed, errs = rm.sync_art(self.dir, titles, sha, fetch_bytes, BUNDLED_ART)
         added, changed = self._apply_titles(titles)
         changed = sorted(set(changed) | (set(art_changed) - set(added)))
-        self.cat_meta, self.catalog_skipped, self.cat_source, self.catalog_sha = meta, skipped, "live main@" + sha[:7], sha
+        self.cat_meta, self.catalog_skipped, self.cat_source, self.catalog_sha = meta, skipped, "live %s" % src, (None if sha == "main" else sha)
         self.catalog_art_errors = errs; self.catalog_error = None
         doc["_sha"] = sha
         tmp = os.path.join(self.cat_dir, "catalog.json.tmp")
@@ -495,7 +600,10 @@ class ExConnect:
             for aid in list(self.catalog):
                 t = threading.Thread(target=one, args=(aid,), daemon=True); t.start(); threads.append(t)
             try:
-                self.self_latest = fetch_json(SELF_LATEST_URL)
+                if os.environ.get("HDX_SELF_LATEST_URL"):
+                    self.self_latest = fetch_json(SELF_LATEST_URL)
+                else:
+                    self.self_latest, self.sources["__self__"] = fetch_repo_json(SELF_REPO, "latest.json", timeout=8)
             except Exception:
                 pass
             for t in threads:
