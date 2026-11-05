@@ -1,12 +1,12 @@
 {
-  "version": "1.1.14",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.14",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.14/HYPERION.DIGITAL.EX.Setup.1.1.14.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.14/HYPERION.DIGITAL.EX.Setup.1.1.14.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.14/HYPERION.DIGITAL.EX.1.1.14.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.14/HYPERION.DIGITAL.EX.Portable.exe",
-  "sha256": "d0fc084aa8d155497974f8fc39b32a6cf2c1c06afdb540df01af8cc0ccdbe3e1",
-  "zip_sha256": "edc2e55fcfd8d3b03054a5bf1ef8828e5f11c9fdf26078240ca3c661ae34f106",
+  "version": "1.1.15",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.15",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.15/HYPERION.DIGITAL.EX.Setup.1.1.15.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.15/HYPERION.DIGITAL.EX.Setup.1.1.15.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.15/HYPERION.DIGITAL.EX.1.1.15.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.15/HYPERION.DIGITAL.EX.Portable.exe",
+  "sha256": "c2ac634be6850ff4ad263fd630c81e477e338e9b860366743d98f0fb7d2c313d",
+  "zip_sha256": "be0b367237d8ac5c384baf1eb559da4840e55cb631ab712ad6df6dae536079fa",
   "released": "2026-11-05",
-  "notes": "Library list: COKA always sorts first (LIBRARY_PINNED_IDS). Featured & Recommended still uses COKA as the main hero. Per-user, no admin."
+  "notes": "DNS resilience: catalog/latest.json/art try raw.githubusercontent.com \u2192 jsDelivr \u2192 gitHack \u2192 API when Windows getaddrinfo fails (Errno 11001). Prefer IPv4. TLS truststore unchanged. Until store refreshes, install MIYOYAZU from https://github.com/Teobokki/miyoyazu-dash/releases/tag/v1.0.1"
 }
