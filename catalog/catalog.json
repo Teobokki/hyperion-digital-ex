@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 24,
+ "catalog_version": 25,
  "featured": [
   "coka"
  ],
@@ -474,7 +474,7 @@
    "features": [
     "60 stages across 6 original worlds with a real challenge ramp",
     "Play as Miyoyazu — stylized 3D figure in a dark red/black dress",
-    "Third-person / over-shoulder camera (FIREOUT SHINE style)",
+    "Automatic third-person camera (FIREOUT SHINE style): follows, swings into turns, looks ahead into jumps, soft pull-in when blocked",
     "Run, jump, double-jump, dash; collect coins; stage clear ranks",
     "Stage twists: TIME VEIL, GIANT STEP, LIGHT FALL, SKY FLIP, RUSH WIND",
     "Hub world select and stage select; lives and retries",
@@ -492,7 +492,7 @@
     "MIYOYAZU DASH.exe",
     "MIYOYAZU-DASH-Portable.exe"
    ],
-   "version": "1.0.1",
+   "version": "1.0.2",
    "app_id": "{DD54B7E7-3FF7-4CC2-8A96-B562E8341B00}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/miyoyazu-dash/main/latest.json",
    "art": {
@@ -964,11 +964,13 @@
   "COKA-1.0.0.5-Windows-x64.zip": 47087700,
   "MIYOYAZU-DASH-Setup-1.0.0.exe": 30387870,
   "MIYOYAZU-DASH-1.0.0-Windows-x64.zip": 44090801,
-  "MIYOYAZU-DASH-Portable.exe": 45019261,
+  "MIYOYAZU-DASH-Portable.exe": 45023719,
   "MIYOYAZU-DASH-Setup-1.0.1.exe": 31188070,
-  "MIYOYAZU-DASH-1.0.1-Windows-x64.zip": 45115590
+  "MIYOYAZU-DASH-1.0.1-Windows-x64.zip": 45115590,
+  "MIYOYAZU-DASH-Setup-1.0.2.exe": 31198346,
+  "MIYOYAZU-DASH-1.0.2-Windows-x64.zip": 45121361
  },
- "updated": "2026-11-05T21:03:46Z",
+ "updated": "2026-11-05T21:39:04Z",
  "rows": [
   {
    "id": "GAMES",
