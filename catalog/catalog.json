@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 21,
+ "catalog_version": 22,
  "featured": [
   "coka"
  ],
@@ -151,7 +151,7 @@
    "features": [
     "Open-world neon Tokyo plus Hikari Beach: scramble crossing, sign-lined streets, Tokyo-style multi-setback skyscrapers and a denser Japanese metro skyline",
     "Seasonal FESTIVAL feed (UTC weeks): Spring sakura, Summer night races, Autumn drifts, Winter run — race, photo and drive-to events with rewards",
-    "Circular speedometer HUD and EX SCREEN RECORDER 2026 on the pause menu (saves MP4 to Downloads)",
+    "Circular speedometer HUD and EX SCREEN RECORDER 2026 on the pause menu (system sound always on, no mic; MP4 to Downloads)",
     "Play as ANA and DANIEL and switch between them at any time (Q)",
     "Take any car with F; street races against AI rivals, a time trial, a drift zone and speed cameras",
     "FRGARAGE: choose your car (including the ENERASTIC MG EVO SEDAN), paint it and set a custom number plate",
@@ -168,7 +168,7 @@
     "FIREOUT SHINE.exe",
     "FIREOUT-SHINE-Portable.exe"
    ],
-   "version": "1.0.5.4",
+   "version": "1.0.5.5",
    "app_id": "{7E3A91C4-2B6D-4F18-A5C9-3D8E1F0B6A72}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/fireout-shine/main/latest.json",
    "art": {
@@ -880,7 +880,7 @@
   "COKA-Setup-1.0.0.5.exe": 33048085,
   "COKA-1.0.0.5-Windows-x64.zip": 47087700
  },
- "updated": "2026-11-05T20:02:03Z",
+ "updated": "2026-11-05T20:17:57Z",
  "rows": [
   {
    "id": "GAMES",
