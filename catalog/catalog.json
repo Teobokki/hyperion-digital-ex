@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 22,
+ "catalog_version": 23,
  "featured": [
   "coka"
  ],
@@ -464,6 +464,88 @@
    }
   },
   {
+   "id": "miyoyazu-dash",
+   "row": "GAMES",
+   "name": "MIYOYAZU DASH",
+   "repo": "miyoyazu-dash",
+   "genre": "3D platformer · Dash · Coins",
+   "tagline": "Dash through 60 stages as Miyoyazu — jump, collect coins, clear goals across six original worlds.",
+   "description": "MIYOYAZU DASH is a third-person 3D dash platformer from EX Inc./HYPERION DIGITAL. Play as Miyoyazu in her dark red and black dress across sixty stages in six original worlds: Stone Ruins, Hikari Park, Neon Path, Autumn Garden, Winter Cliff and Spring Blossom. Run, jump, double-jump and dash, collect coins, reach the goal arch, and chase ranks by time and coin count. Challenge ramps from teaching stages to tight late-game platforms and long gaps. Some stages add a light twist — TIME VEIL, GIANT STEP, LIGHT FALL, SKY FLIP or RUSH WIND. Romantic rose and gold UI, filmic colour grade and grain, RTX / EX HD modes, no bloom. Publisher: EX Inc./HYPERION DIGITAL. ©2026 EX Inc./HYPERION DIGITAL ©2026.",
+   "features": [
+    "60 stages across 6 original worlds with a real challenge ramp",
+    "Play as Miyoyazu — stylized 3D figure in a dark red/black dress",
+    "Third-person / over-shoulder camera (FIREOUT SHINE style)",
+    "Run, jump, double-jump, dash; collect coins; stage clear ranks",
+    "Stage twists: TIME VEIL, GIANT STEP, LIGHT FALL, SKY FLIP, RUSH WIND",
+    "Hub world select and stage select; lives and retries",
+    "Romantic rose/gold modern UI; filmic grade and grain; no bloom",
+    "RTX and EX HD graphics modes; per-user install, no admin"
+   ],
+   "publisher": "EX Inc./HYPERION DIGITAL",
+   "developer": "EX Inc./HYPERION DIGITAL",
+   "release": "2026",
+   "reg": "{DD54B7E7-3FF7-4CC2-8A96-B562E8341B00}_is1",
+   "exe": "MIYOYAZU DASH.exe",
+   "folder": "MIYOYAZU DASH",
+   "portable": [
+    "MIYOYAZU DASH.exe",
+    "MIYOYAZU-DASH-Portable.exe"
+   ],
+   "version": "1.0.0",
+   "app_id": "{DD54B7E7-3FF7-4CC2-8A96-B562E8341B00}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/miyoyazu-dash/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 83072,
+     "sha256": "597269bf250712ab19ea3e84f3c8c856a8dd3758dd10ea6eae0d269d9315ef63"
+    },
+    "cover.jpg": {
+     "size": 589734,
+     "sha256": "19ae739995f01797f48849b3cab668e2077f2f407c0ad0190c444c58703fe2e4"
+    },
+    "hero.jpg": {
+     "size": 303806,
+     "sha256": "b5f76b25ce6df79249d862a33a5597a698ba61fe8e7b6443ff012c7acadba538"
+    },
+    "hero_bg.jpg": {
+     "size": 279680,
+     "sha256": "528db513f0b6859c221c0ad712bb91090d12cab211e08ab5af35a53bc35440da"
+    },
+    "icon.png": {
+     "size": 139489,
+     "sha256": "40c5e88f68317fed16052d47dcb4c9f33971b434cfb87e6cf75bca3db6e44daf"
+    },
+    "shot0.jpg": {
+     "size": 106091,
+     "sha256": "4420f5d77bd0081844b25b8531b2067a9ea3bd5c4f883e09b717cedffb76ba84"
+    },
+    "shot1.jpg": {
+     "size": 104655,
+     "sha256": "176a9adddfb0a22e978018dff836f0333f5b8d3c1aa33ab615ed0c7b195cf5d2"
+    },
+    "shot2.jpg": {
+     "size": 92516,
+     "sha256": "68c61f31287546946e4bd60974596770dd90a22157ac4590295ebac51baa5093"
+    },
+    "shot3.jpg": {
+     "size": 115375,
+     "sha256": "83b9af79146424b0d1c19b20b22202788cf31a60f45d55a5828de8b34e7bd9d0"
+    },
+    "shot4.jpg": {
+     "size": 119091,
+     "sha256": "169d9c5f3c67ed4a0de57b3914c40b59923df4dac7e1d1c154ed8ca4ff8d30d5"
+    },
+    "shot5.jpg": {
+     "size": 199789,
+     "sha256": "f199ec5cbed2b549082ad7a0d083aae774e9dfa8da4d651d532e2bd0621c2173"
+    },
+    "shot6.jpg": {
+     "size": 207917,
+     "sha256": "d14e526159a537c08d5babfa76200e76552d7bc8a6ada4f41dd111d936f83f2a"
+    }
+   }
+  },
+  {
    "id": "hyperia",
    "row": "APPS",
    "name": "HYPERIA",
@@ -878,9 +960,12 @@
   "COKA-Setup-1.0.0.4.exe": 33045491,
   "COKA-1.0.0.4-Windows-x64.zip": 47088133,
   "COKA-Setup-1.0.0.5.exe": 33048085,
-  "COKA-1.0.0.5-Windows-x64.zip": 47087700
+  "COKA-1.0.0.5-Windows-x64.zip": 47087700,
+  "MIYOYAZU-DASH-Setup-1.0.0.exe": 30387870,
+  "MIYOYAZU-DASH-1.0.0-Windows-x64.zip": 44090801,
+  "MIYOYAZU-DASH-Portable.exe": 43994447
  },
- "updated": "2026-11-05T20:17:57Z",
+ "updated": "2026-11-05T21:00:24Z",
  "rows": [
   {
    "id": "GAMES",
