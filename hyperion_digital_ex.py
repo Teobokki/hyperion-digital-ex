@@ -445,12 +445,12 @@ class DreamVineCard(QFrame):
         qp.drawRoundedRect(QRectF(1, 1, w - 2, h - 2), 10, 10)
 
 
-FEATURED_IDS = ("fireout-shine",)
+FEATURED_IDS = ("coka",)
 FEATURED_BANNER = False
 
 
 class FeaturedCarousel(QWidget):
-    """Featured & Recommended: FIREOUT SHINE is the only card (FEATURED_IDS); arrows, dots and auto-rotate only appear with 2+ cards. Arrows + dots, 8 s auto-rotate (no hover pause); only the pause/play toggle stops it."""
+    """Featured & Recommended: COKA is the main hero card (FEATURED_IDS / catalog featured); arrows, dots and auto-rotate only appear with 2+ cards. Arrows + dots, 8 s auto-rotate (no hover pause); only the pause/play toggle stops it."""
 
     def __init__(self, ui, banner):
         super().__init__()
@@ -459,7 +459,7 @@ class FeaturedCarousel(QWidget):
         for g in self.games:
             g.clicked.connect(ui.open_product)
         self.stack = QStackedWidget()
-        for g in self.games:            # FIREOUT SHINE only; other games stay in GAMES and the Library
+        for g in self.games:            # COKA (and any other featured ids); other games stay in GAMES and the Library
             self.stack.addWidget(g)
         if FEATURED_BANNER:
             self.stack.addWidget(banner)
@@ -718,7 +718,7 @@ class StorePage(QWidget):
             ids = [a["id"] for a in ui.svc.catalog.values() if ui.svc.row_of(a["id"])["id"] == row["id"]] + [a["id"] for a in UPCOMING if a["category"] == cat]
             if not ids:
                 continue
-            ids.sort(key=lambda x: x not in ui.svc.featured())      # featured titles (FIREOUT SHINE) come first
+            ids.sort(key=lambda x: x not in ui.svc.featured())      # featured titles (COKA) come first
             hl = lbl("%s  ·  %d" % (title, len(ids)), "h2"); self.sections[cat] = hl; self.sections[row["id"]] = hl
             hdr = QHBoxLayout(); hdr.addWidget(hl)
             if row.get("subtitle"):

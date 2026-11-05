@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "catalog_version": 17,
+ "catalog_version": 18,
  "featured": [
-  "fireout-shine"
+  "coka"
  ],
  "titles": [
   {
@@ -386,14 +386,15 @@
    "name": "COKA — CALL OF KIMS ARMY",
    "repo": "coka",
    "genre": "First-person shooter · RPG · Campaign",
-   "tagline": "Train with Ana at Camp Kim: range, kill house, night raids, and COKA ONLINE AI TRAINING.",
-   "description": "COKA — CALL OF KIMS ARMY is a first-person army-camp training shooter. You play Ana, a recruit of Kims Army at Camp Kim, in a dusty golden-hour camp of tents, sandbags, gabions, trucks and watchtowers. Play a 6-mission voiced campaign: basic training on the range and the obstacle course, the kill house, night ops, defending the camp against waves, a convoy escort and the final assault on the east compound. In COKA ONLINE AI TRAINING you play Team Deathmatch 6v6 or Free-for-all against named AI bots. Earn XP, rank up from Recruit to Commander, and unlock fictional weapons, attachments, digital camos and perks. All characters, units, weapons and events in this game are fictional. Publisher: EX Inc./HYPERION DIGITAL. ©2026 EX Inc./HYPERION DIGITAL ©2026.",
+   "tagline": "Train with Ana at Camp Kim through rotating seasons: range, kill house, night raids, and COKA ONLINE AI TRAINING.",
+   "description": "COKA — CALL OF KIMS ARMY is a first-person army-camp training shooter. You play Ana, a recruit of Kims Army at Camp Kim, in a dusty golden-hour camp of tents, sandbags, gabions, trucks and watchtowers that rotates through Spring, Summer, Autumn and Winter on a shared real-time schedule. Play a 6-mission voiced campaign: basic training on the range and the obstacle course, the kill house, night ops, defending the camp against waves, a convoy escort and the final assault on the east compound. In COKA ONLINE AI TRAINING you play Team Deathmatch 6v6 or Free-for-all against named AI bots. Earn XP, rank up from Recruit to Commander, and unlock fictional weapons, attachments, digital camos and perks. All characters, units, weapons and events in this game are fictional. Publisher: EX Inc./HYPERION DIGITAL. ©2026 EX Inc./HYPERION DIGITAL ©2026.",
    "features": [
     "First person with arms and weapon viewmodel, ADS sights (iron, red dot, 4x scope), bob, sway and recoil",
     "6-mission voiced campaign with checkpoints and cinematic camera intros",
     "COKA ONLINE AI TRAINING: TDM 6v6 and FFA 8 against named bots, 3 difficulty levels, scoreboard and match XP",
     "Shooting range with pop-up targets, an obstacle course and a kill house",
     "11 ranks, 5 fictional weapons, attachments, 6 digital camos and 6 perks",
+    "Rotating seasons (Spring / Summer / Autumn / Winter) on a shared 7-day UTC clock: menu countdown, camp look, light fog and stamina modifiers",
     "Golden-hour camp with real sun shadows, dust haze and smoke columns; RTX and EX HD modes, no bloom",
     "Sprint, crouch, slide, jump, grenades, knife, hit markers, minimap and kill feed",
     "Per-user install, no admin rights; built-in update check"
@@ -408,7 +409,7 @@
     "COKA.exe",
     "COKA-Portable.exe"
    ],
-   "version": "1.0.0.2",
+   "version": "1.0.0.3",
    "app_id": "{3B5D1D44-A7D9-4FD3-BCE1-4AF7672D7B55}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/coka/main/latest.json",
    "art": {
@@ -860,7 +861,7 @@
   "learn.japanese.easy.1.0.0.Windows.x64.zip": 33282314,
   "COKA-Setup-1.0.0.exe": 32834802,
   "COKA-1.0.0-Windows-x64.zip": 46861380,
-  "COKA-Portable.exe": 46979596,
+  "COKA-Portable.exe": 46987684,
   "COKA-Setup-1.0.0.1.exe": 33092309,
   "COKA-1.0.0.1-Windows-x64.zip": 47123113,
   "COKA-Setup-1.0.0.2.exe": 33044545,
@@ -871,9 +872,11 @@
   "EX.CREATOR.STUDIO.Setup.1.5.4.exe": 73143038,
   "EX.CREATOR.STUDIO.Setup.1.5.5.exe": 73151146,
   "EX.STORAGE.LAB.Setup.1.0.0.exe": 20633072,
-  "EX.STORAGE.LAB.1.0.0.Windows.x64.zip": 25915112
+  "EX.STORAGE.LAB.1.0.0.Windows.x64.zip": 25915112,
+  "COKA-Setup-1.0.0.3.exe": 33054761,
+  "COKA-1.0.0.3-Windows-x64.zip": 47088877
  },
- "updated": "2026-11-02T18:37:24Z",
+ "updated": "2026-11-05T18:36:08Z",
  "rows": [
   {
    "id": "GAMES",
