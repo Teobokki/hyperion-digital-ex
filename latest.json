@@ -1,12 +1,12 @@
 {
-  "version": "1.1.13",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.13",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.13/HYPERION.DIGITAL.EX.Setup.1.1.13.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.13/HYPERION.DIGITAL.EX.Setup.1.1.13.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.13/HYPERION.DIGITAL.EX.1.1.13.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.13/HYPERION.DIGITAL.EX.Portable.exe",
-  "sha256": "86ffcf937ad5bea465f9d877fc2af6ff56b5e71ed7ecc4ed36043eeafe6453a0",
-  "zip_sha256": "4ba6c6efe73c4322ec64da55b6335b7fc5f1bd7f2b4554259b4ba6658c170fda",
-  "released": "2026-10-31",
-  "notes": "Fixes 'Could not check the store (CERTIFICATE_VERIFY_FAILED)' on PCs with antivirus/firewall HTTPS scanning: certificates are now verified against the Windows certificate store, with a Mozilla CA bundle + Windows ROOT/CA fallback. Verification always on. Clearer error message. Per-user, no admin."
+  "version": "1.1.14",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.14",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.14/HYPERION.DIGITAL.EX.Setup.1.1.14.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.14/HYPERION.DIGITAL.EX.Setup.1.1.14.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.14/HYPERION.DIGITAL.EX.1.1.14.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.14/HYPERION.DIGITAL.EX.Portable.exe",
+  "sha256": "d0fc084aa8d155497974f8fc39b32a6cf2c1c06afdb540df01af8cc0ccdbe3e1",
+  "zip_sha256": "edc2e55fcfd8d3b03054a5bf1ef8828e5f11c9fdf26078240ca3c661ae34f106",
+  "released": "2026-11-05",
+  "notes": "Library list: COKA always sorts first (LIBRARY_PINNED_IDS). Featured & Recommended still uses COKA as the main hero. Per-user, no admin."
 }
