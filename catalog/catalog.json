@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 23,
+ "catalog_version": 24,
  "featured": [
   "coka"
  ],
@@ -479,7 +479,8 @@
     "Stage twists: TIME VEIL, GIANT STEP, LIGHT FALL, SKY FLIP, RUSH WIND",
     "Hub world select and stage select; lives and retries",
     "Romantic rose/gold modern UI; filmic grade and grain; no bloom",
-    "RTX and EX HD graphics modes; per-user install, no admin"
+    "RTX and EX HD graphics modes; per-user install, no admin",
+    "Retro energizing menu/stage music and punchy 90s-style SFX (not cutesy)"
    ],
    "publisher": "EX Inc./HYPERION DIGITAL",
    "developer": "EX Inc./HYPERION DIGITAL",
@@ -491,7 +492,7 @@
     "MIYOYAZU DASH.exe",
     "MIYOYAZU-DASH-Portable.exe"
    ],
-   "version": "1.0.0",
+   "version": "1.0.1",
    "app_id": "{DD54B7E7-3FF7-4CC2-8A96-B562E8341B00}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/miyoyazu-dash/main/latest.json",
    "art": {
@@ -963,9 +964,11 @@
   "COKA-1.0.0.5-Windows-x64.zip": 47087700,
   "MIYOYAZU-DASH-Setup-1.0.0.exe": 30387870,
   "MIYOYAZU-DASH-1.0.0-Windows-x64.zip": 44090801,
-  "MIYOYAZU-DASH-Portable.exe": 43994447
+  "MIYOYAZU-DASH-Portable.exe": 45019261,
+  "MIYOYAZU-DASH-Setup-1.0.1.exe": 31188070,
+  "MIYOYAZU-DASH-1.0.1-Windows-x64.zip": 45115590
  },
- "updated": "2026-11-05T21:00:24Z",
+ "updated": "2026-11-05T21:03:46Z",
  "rows": [
   {
    "id": "GAMES",
