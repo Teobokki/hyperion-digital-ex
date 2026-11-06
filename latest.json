@@ -1,12 +1,12 @@
 {
-  "version": "1.1.15",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.15",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.15/HYPERION.DIGITAL.EX.Setup.1.1.15.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.15/HYPERION.DIGITAL.EX.Setup.1.1.15.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.15/HYPERION.DIGITAL.EX.1.1.15.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.15/HYPERION.DIGITAL.EX.Portable.exe",
-  "sha256": "c2ac634be6850ff4ad263fd630c81e477e338e9b860366743d98f0fb7d2c313d",
-  "zip_sha256": "be0b367237d8ac5c384baf1eb559da4840e55cb631ab712ad6df6dae536079fa",
-  "released": "2026-11-05",
-  "notes": "DNS resilience: catalog/latest.json/art try raw.githubusercontent.com \u2192 jsDelivr \u2192 gitHack \u2192 API when Windows getaddrinfo fails (Errno 11001). Prefer IPv4. TLS truststore unchanged. Until store refreshes, install MIYOYAZU from https://github.com/Teobokki/miyoyazu-dash/releases/tag/v1.0.1"
+  "version": "1.1.16",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.16",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.16/HYPERION.DIGITAL.EX.Setup.1.1.16.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.16/HYPERION.DIGITAL.EX.Setup.1.1.16.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.16/HYPERION.DIGITAL.EX.1.1.16.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.16/HYPERION.DIGITAL.EX.Portable.exe",
+  "sha256": "4a476b95611d4b3e77ff84b2be371b7dd7b792963ccc98ac85d6afbe9898f9f4",
+  "zip_sha256": "45e125f79a00d9a6822181f114a79f8f0fe91afd5d19c0e291544d962120a372",
+  "released": "2026-11-06",
+  "notes": "Library now pins CHIC EX at the top of every Library list. Catalog library_pinned (v27) drives the order when present; offline fallback is chic-ex. Featured stays CHIC EX. DNS mirrors from 1.1.15 unchanged."
 }
