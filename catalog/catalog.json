@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 28,
+ "catalog_version": 29,
  "featured": [
   "chic-ex"
  ],
@@ -1000,7 +1000,7 @@
    "portable": [
     "HANGUL WOOD.exe"
    ],
-   "version": "1.0.0",
+   "version": "1.0.1",
    "app_id": "{B174425E-0736-4E5E-B6DB-85B27CA049D1}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/hangul-wood/main/latest.json",
    "art": {
@@ -1092,9 +1092,11 @@
   "CHIC-EX-1.0.0-Windows-x64.zip": 100023579,
   "CHIC.EX.exe": 105733775,
   "HANGUL-WOOD-Setup-1.0.0.exe": 156021174,
-  "HANGUL-WOOD-1.0.0-Windows-x64.zip": 175645058
+  "HANGUL-WOOD-1.0.0-Windows-x64.zip": 175645058,
+  "HANGUL-WOOD-Setup-1.0.1.exe": 156030935,
+  "HANGUL-WOOD-1.0.1-Windows-x64.zip": 175652075
  },
- "updated": "2026-11-06T16:04:56Z",
+ "updated": "2026-11-06T17:50:01Z",
  "rows": [
   {
    "id": "GAMES",
