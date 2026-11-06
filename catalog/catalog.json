@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 30,
+ "catalog_version": 31,
  "featured": [
   "chic-ex"
  ],
@@ -1040,15 +1040,15 @@
    "name": "개추 트래스",
    "repo": "gaechu-trass",
    "genre": "Creative · Video · Episode",
-   "tagline": "Korean-first episode board: add any number of pictures from Downloads and compose a cinematic widescreen episode.",
-   "description": "개추 트래스 is a Korean-first cinematic episode board by EX Inc. Upload any number of pictures or art from your Downloads folder (no image limit). The board composes them into a widescreen episode with an opening title card, sequential scenes with slow pan/zoom and crossfades, and an end card. Play a preview on the board, reorder scenes, then export an MP4 back to Downloads. The UI is Korean; episode titles accept Hangul, Japanese, and English. ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "tagline": "Korean-first episode home and maker: watch the featured teaser in-app, then compose your own widescreen episodes from Downloads.",
+   "description": "개추 트래스 is a Korean-first cinematic episode maker by EX Inc. The default 에피소드 home features the bundled teaser 개추 트래스 (에피소드 1) with an in-app cinematic player (재생, 일시정지, 정지, seek, 전체 화면). Export from the ⌂ 개추 트래스 maker board and your episodes join the home library. Add any number of pictures from Downloads (no image limit); compose a widescreen episode with title card, Ken Burns scenes, crossfades, and end card. UI is Korean; episode titles accept Hangul, Japanese, and English. ©2026 EX Inc./HYPERION DIGITAL ©2026",
    "features": [
-    "Korean-only UI labels on an EX CREATOR STUDIO–style board",
-    "Add any number of pictures from Downloads (multi-select, no image limit)",
-    "Widescreen letterbox episode: title card, Ken Burns scenes, crossfades, end card",
-    "Episode title accepts Hangul, Japanese (kana/kanji), and English",
-    "Reorder scenes, remove one, or clear the board",
-    "Play preview on the board; export H.264 MP4 to Downloads",
+    "에피소드 home (default) with featured bundled teaser 개추 트래스",
+    "In-app cinematic player: 재생, 일시정지, 정지, timeline, 전체 화면",
+    "⌂ 개추 트래스 maker board — add any number of pictures from Downloads",
+    "Exports appear on home so you can rewatch your episodes",
+    "Widescreen letterbox episode compose with pan/zoom and crossfades",
+    "Episode title accepts Hangul, Japanese, and English",
     "Per-user install, no admin needed"
    ],
    "publisher": "EX Inc./HYPERION DIGITAL",
@@ -1060,7 +1060,7 @@
    "portable": [
     "개추 트래스.exe"
    ],
-   "version": "1.0.0",
+   "version": "1.0.1",
    "app_id": "{09A0D0B7-E132-4385-B05F-6E708A3A15B7}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/gaechu-trass/main/latest.json",
    "art": {
@@ -1081,8 +1081,8 @@
      "sha256": "193cc18db5b7aab8a51b33a04dd8078b5e67800ef1a4a479e29cf2884593d6ec"
     },
     "shot0.jpg": {
-     "size": 70348,
-     "sha256": "ab324b885e8ff1fa0c1c5751031c461b3fb2e3ba352bae1224055bf95492c66f"
+     "size": 49068,
+     "sha256": "7c6e450fb994a59632c8a5a8dc75cba6789839e0aeece6131f2f58ee5d2cf459"
     },
     "shot1.jpg": {
      "size": 82059,
@@ -1156,9 +1156,11 @@
   "HANGUL-WOOD-Setup-1.0.1.exe": 156030935,
   "HANGUL-WOOD-1.0.1-Windows-x64.zip": 175652075,
   "GAECHU-TRASS-Setup-1.0.0.exe": 62765243,
-  "GAECHU-TRASS-1.0.0-Windows-x64.zip": 86760649
+  "GAECHU-TRASS-1.0.0-Windows-x64.zip": 86760649,
+  "GAECHU-TRASS-Setup-1.0.1.exe": 79951402,
+  "GAECHU-TRASS-1.0.1-Windows-x64.zip": 103952215
  },
- "updated": "2026-11-06T18:19:47Z",
+ "updated": "2026-11-06T19:41:35Z",
  "rows": [
   {
    "id": "GAMES",
