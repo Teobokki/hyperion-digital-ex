@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 32,
+ "catalog_version": 33,
  "featured": [
   "chic-ex"
  ],
@@ -1040,10 +1040,11 @@
    "name": "개추 트래스",
    "repo": "gaechu-trass",
    "genre": "Creative · Video · Episode",
-   "tagline": "Korean-first episode maker: compose widescreen episodes from Downloads, then watch them on 에피소드 home.",
-   "description": "개추 트래스 is a Korean-first cinematic episode maker by EX Inc. It opens on the ⌂ 개추 트래스 maker board: add any number of pictures from Downloads (no image limit) and compose a widescreen episode with title card, Ken Burns scenes, crossfades, and end card. 에피소드 home keeps the bundled teaser 개추 트래스 (에피소드 1) and your exports with an in-app player (재생, 일시정지, 정지, seek, 전체 화면). UI is Korean; episode titles accept Hangul, Japanese, and English. ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "tagline": "Korean-first episode maker: compose widescreen episodes from Downloads, add optional TTS SUBTITLES per scene, then watch on 에피소드 home.",
+   "description": "개추 트래스 is a Korean-first cinematic episode maker by EX Inc. It opens on the ⌂ 개추 트래스 maker board: add any number of pictures from Downloads (no image limit) and compose a widescreen episode with title card, Ken Burns scenes, crossfades, and end card. Every scene has its own optional TTS SUBTITLES field — type a line in Korean, Japanese, or English and it appears as an on-screen caption and is narrated in the exported MP4; leave it empty and the scene stays silent. 에피소드 home keeps the bundled teaser 개추 트래스 (에피소드 1) and your exports with an in-app player (재생, 일시정지, 정지, seek, 전체 화면). UI is Korean; titles and subtitles accept Hangul, Japanese, and English. ©2026 EX Inc./HYPERION DIGITAL ©2026",
    "features": [
     "Opens on ⌂ 개추 트래스 maker board (이미지 추가 / compose / 내보내기)",
+    "Optional TTS SUBTITLES per scene: caption + voice narration (한국어 · 日本語 · English)",
     "에피소드 home with featured bundled teaser 개추 트래스",
     "In-app cinematic player: 재생, 일시정지, 정지, timeline, 전체 화면",
     "Add any number of pictures from Downloads — no image limit",
@@ -1061,7 +1062,7 @@
    "portable": [
     "개추 트래스.exe"
    ],
-   "version": "1.0.2",
+   "version": "1.0.3",
    "app_id": "{09A0D0B7-E132-4385-B05F-6E708A3A15B7}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/gaechu-trass/main/latest.json",
    "art": {
@@ -1082,8 +1083,8 @@
      "sha256": "193cc18db5b7aab8a51b33a04dd8078b5e67800ef1a4a479e29cf2884593d6ec"
     },
     "shot0.jpg": {
-     "size": 54985,
-     "sha256": "df5ccff1386e4ae061dfd51db6432a4ca92c9c7bad0b6c73a45f09044073b6e4"
+     "size": 149796,
+     "sha256": "a415afb7c88dea268217fe2d0291f8c19463cc34fcee599568cbc38f0c87faf5"
     },
     "shot1.jpg": {
      "size": 82059,
@@ -1159,9 +1160,13 @@
   "GAECHU-TRASS-Setup-1.0.0.exe": 62765243,
   "GAECHU-TRASS-1.0.0-Windows-x64.zip": 86760649,
   "GAECHU-TRASS-Setup-1.0.1.exe": 79951402,
-  "GAECHU-TRASS-1.0.1-Windows-x64.zip": 103952215
+  "GAECHU-TRASS-1.0.1-Windows-x64.zip": 103952215,
+  "GAECHU-TRASS-Setup-1.0.2.exe": 79956087,
+  "GAECHU-TRASS-1.0.2-Windows-x64.zip": 103952485,
+  "GAECHU-TRASS-Setup-1.0.3.exe": 81732548,
+  "GAECHU-TRASS-1.0.3-Windows-x64.zip": 106059758
  },
- "updated": "2026-11-06T19:41:35Z",
+ "updated": "2026-11-06T21:28:47Z",
  "rows": [
   {
    "id": "GAMES",
