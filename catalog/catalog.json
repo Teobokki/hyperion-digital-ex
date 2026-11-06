@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 26,
+ "catalog_version": 27,
  "featured": [
   "chic-ex"
  ],
@@ -1031,7 +1031,7 @@
   "CHIC-EX-1.0.0-Windows-x64.zip": 100023579,
   "CHIC.EX.exe": 105733775
  },
- "updated": "2026-11-06T15:16:26Z",
+ "updated": "2026-11-06T15:22:25Z",
  "rows": [
   {
    "id": "GAMES",
@@ -1063,5 +1063,8 @@
    "launch": "READ",
    "subtitle": "Books by EX Inc. Install them like any app."
   }
+ ],
+ "library_pinned": [
+  "chic-ex"
  ]
 }

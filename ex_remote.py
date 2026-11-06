@@ -197,10 +197,11 @@ def parse(doc):
     if not titles:
         raise ValueError("catalog.json has no valid titles")
     feat = [x for x in doc.get("featured", []) if isinstance(x, str) and x in seen] if isinstance(doc.get("featured"), list) else []
+    lib_pin = [x for x in doc.get("library_pinned", []) if isinstance(x, str) and x in seen] if isinstance(doc.get("library_pinned"), list) else []
     ks = doc.get("known_sizes", {})
     ks = {k: v for k, v in ks.items() if isinstance(k, str) and isinstance(v, int)} if isinstance(ks, dict) else {}
-    meta = {"schema": schema, "catalog_version": doc.get("catalog_version"), "featured": feat or [titles[0]["id"]], "known_sizes": ks,
-            "rows": rows}
+    meta = {"schema": schema, "catalog_version": doc.get("catalog_version"), "featured": feat or [titles[0]["id"]],
+            "library_pinned": lib_pin, "known_sizes": ks, "rows": rows}
     return meta, titles, skipped
 
 

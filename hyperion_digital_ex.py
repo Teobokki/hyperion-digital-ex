@@ -446,7 +446,7 @@ class DreamVineCard(QFrame):
 
 
 FEATURED_IDS = ("coka",)
-LIBRARY_PINNED_IDS = ("coka",)  # always first in Library list (per row); Featured stays FEATURED_IDS
+LIBRARY_PINNED_IDS = ("chic-ex",)  # offline/fallback Library pin; live order prefers catalog library_pinned via svc.library_pinned()
 FEATURED_BANNER = False
 
 
@@ -922,7 +922,7 @@ class LibraryPage(QWidget):
             ids = [a["id"] for a in self.ui.svc.catalog.values() if self.ui.svc.row_of(a["id"])["id"] == row["id"] and q in a["name"].lower()]
             if not ids and self.kind == "ALL" and row["id"] not in ("GAMES", "APPS"):
                 continue
-            ids.sort(key=lambda x: (0 if x in LIBRARY_PINNED_IDS else 1, LIBRARY_PINNED_IDS.index(x) if x in LIBRARY_PINNED_IDS else 0))
+            pins = self.ui.svc.library_pinned(); ids.sort(key=lambda x: (0 if x in pins else 1, pins.index(x) if x in pins else 0))
             hdr = QListWidgetItem("%s  (%d)" % (title, len(ids))); hdr.setFlags(Qt.NoItemFlags); f = hdr.font(); f.setBold(True); f.setPointSize(8); hdr.setFont(f)
             hdr.setForeground(QColor("#6f8396")); self.list.addItem(hdr)
             for aid in ids:
@@ -1417,7 +1417,7 @@ class ProfilePage(QWidget):
     def refresh(self):
         svc = self.ui.svc; pr = self.ui.profile
         recent = sorted([(t, aid) for aid, t in svc.state.get("last_played", {}).items() if aid in svc.catalog], reverse=True)
-        rec_ids = [aid for _t, aid in recent][:4] or [aid for aid in sorted(svc.installed, key=lambda x: (0 if x in LIBRARY_PINNED_IDS else 1)) if aid in svc.catalog][:4]
+        pins = svc.library_pinned(); rec_ids = [aid for _t, aid in recent][:4] or [aid for aid in sorted(svc.installed, key=lambda x: (0 if x in pins else 1, pins.index(x) if x in pins else 0)) if aid in svc.catalog][:4]
         sig = (json.dumps(pr.data, sort_keys=True), pr.has_avatar() and os.path.getmtime(pr.avatar_path), tuple(sorted(svc.installed)), tuple(rec_ids), svc.online,
                int(sum(svc.state.get("playtime", {}).values()) // 60))
         if sig == self._sig:
