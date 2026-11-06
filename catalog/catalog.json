@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 29,
+ "catalog_version": 30,
  "featured": [
   "chic-ex"
  ],
@@ -1033,6 +1033,66 @@
      "sha256": "cec921a9797b82f02d40da5dd20861d7b6735cc2f2aba46dbe03909f11127436"
     }
    }
+  },
+  {
+   "id": "gaechu-trass",
+   "row": "APPS",
+   "name": "개추 트래스",
+   "repo": "gaechu-trass",
+   "genre": "Creative · Video · Episode",
+   "tagline": "Korean-first episode board: add any number of pictures from Downloads and compose a cinematic widescreen episode.",
+   "description": "개추 트래스 is a Korean-first cinematic episode board by EX Inc. Upload any number of pictures or art from your Downloads folder (no image limit). The board composes them into a widescreen episode with an opening title card, sequential scenes with slow pan/zoom and crossfades, and an end card. Play a preview on the board, reorder scenes, then export an MP4 back to Downloads. The UI is Korean; episode titles accept Hangul, Japanese, and English. ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "features": [
+    "Korean-only UI labels on an EX CREATOR STUDIO–style board",
+    "Add any number of pictures from Downloads (multi-select, no image limit)",
+    "Widescreen letterbox episode: title card, Ken Burns scenes, crossfades, end card",
+    "Episode title accepts Hangul, Japanese (kana/kanji), and English",
+    "Reorder scenes, remove one, or clear the board",
+    "Play preview on the board; export H.264 MP4 to Downloads",
+    "Per-user install, no admin needed"
+   ],
+   "publisher": "EX Inc./HYPERION DIGITAL",
+   "developer": "EX Inc./HYPERION DIGITAL",
+   "release": "2026",
+   "reg": "{09A0D0B7-E132-4385-B05F-6E708A3A15B7}_is1",
+   "exe": "개추 트래스.exe",
+   "folder": "개추 트래스",
+   "portable": [
+    "개추 트래스.exe"
+   ],
+   "version": "1.0.0",
+   "app_id": "{09A0D0B7-E132-4385-B05F-6E708A3A15B7}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/gaechu-trass/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 17426,
+     "sha256": "9dd408710a19cbba1e533fce7021e51f1fa078b766a7baaac13f587cc2f9ae4e"
+    },
+    "cover.jpg": {
+     "size": 195471,
+     "sha256": "454730e937558dcbec7b15d03234308ddab425c4db81da3a42be5ca8bcc2b20a"
+    },
+    "hero.jpg": {
+     "size": 96360,
+     "sha256": "9d3ab3aade00d77b83e71566025244d6f6c7289a1226c011bacc6e9d2d2bb7ae"
+    },
+    "icon.png": {
+     "size": 335965,
+     "sha256": "193cc18db5b7aab8a51b33a04dd8078b5e67800ef1a4a479e29cf2884593d6ec"
+    },
+    "shot0.jpg": {
+     "size": 70348,
+     "sha256": "ab324b885e8ff1fa0c1c5751031c461b3fb2e3ba352bae1224055bf95492c66f"
+    },
+    "shot1.jpg": {
+     "size": 82059,
+     "sha256": "940f4344d292dbdadfcf7345070f6cbce01ed0a93620b4ac727d5e3f88457b67"
+    },
+    "shot2.jpg": {
+     "size": 76272,
+     "sha256": "405085cd732708825a4337f54b31726e0ff4711226c958aa85725e66e20b256a"
+    }
+   }
   }
  ],
  "known_sizes": {
@@ -1094,9 +1154,11 @@
   "HANGUL-WOOD-Setup-1.0.0.exe": 156021174,
   "HANGUL-WOOD-1.0.0-Windows-x64.zip": 175645058,
   "HANGUL-WOOD-Setup-1.0.1.exe": 156030935,
-  "HANGUL-WOOD-1.0.1-Windows-x64.zip": 175652075
+  "HANGUL-WOOD-1.0.1-Windows-x64.zip": 175652075,
+  "GAECHU-TRASS-Setup-1.0.0.exe": 62765243,
+  "GAECHU-TRASS-1.0.0-Windows-x64.zip": 86760649
  },
- "updated": "2026-11-06T17:50:01Z",
+ "updated": "2026-11-06T18:19:47Z",
  "rows": [
   {
    "id": "GAMES",
