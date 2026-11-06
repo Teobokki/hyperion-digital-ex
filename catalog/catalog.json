@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 27,
+ "catalog_version": 28,
  "featured": [
   "chic-ex"
  ],
@@ -972,6 +972,67 @@
      "sha256": "5c36cee49dc5d32583061c50823525a1f691fea412ece05e18e6486e41feae1d"
     }
    }
+  },
+  {
+   "id": "hangul-wood",
+   "row": "APPS",
+   "name": "HANGUL WOOD",
+   "repo": "hangul-wood",
+   "genre": "Writing · Language",
+   "tagline": "A document editor where you type in English and it writes Hangul. HANGUL WOOD 1777.",
+   "description": "HANGUL WOOD is a full document editor where you type in English and your page fills with Korean Hangul. Write straight onto the page: when you finish a sentence, press Enter, or pause, the English turns into 한글 in place and keeps your formatting (Ctrl+Z brings the English back). A built-in English-to-Korean model works fully offline; Auto mode uses an online translator over HTTPS for higher quality and falls back to the built-in one when the network is down. Ribbon tabs for Home, Insert, Layout, Hangul and View give you fonts, sizes, bold/italic/underline, colors, lists, alignment, styles, tables, pictures, page breaks, a ruler and page view. Save .hwd or .txt, export PDF, print. Branded with the HANGUL WOOD 1777 HW mark. ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "features": [
+    "Type English, get Hangul: live conversion at . ! ? Enter or a short pause, or Convert now (Ctrl+Space)",
+    "Built-in offline English→Korean translator; Auto mode adds online translation with offline fallback",
+    "Hover any Hangul to see the English it came from; English → 한글 side pane",
+    "Ribbon tabs: Home, Insert, Layout, Hangul, View with styles, lists, tables, pictures and ruler",
+    "Fonts and sizes with bundled Noto Sans KR, bold, italic, underline, colors, alignment, line spacing",
+    "Save .hwd or .txt, Export PDF, Print",
+    "English names written in Hangul by sound (Teo → 테오), optional",
+    "Per-user install, no admin needed"
+   ],
+   "publisher": "EX Inc./HYPERION DIGITAL",
+   "developer": "EX Inc./HYPERION DIGITAL",
+   "release": "2026",
+   "reg": "{B174425E-0736-4E5E-B6DB-85B27CA049D1}_is1",
+   "exe": "HANGUL WOOD.exe",
+   "folder": "HANGUL WOOD",
+   "portable": [
+    "HANGUL WOOD.exe"
+   ],
+   "version": "1.0.0",
+   "app_id": "{B174425E-0736-4E5E-B6DB-85B27CA049D1}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/hangul-wood/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 41266,
+     "sha256": "21848da0279ea298c19df931aa492017ca152066dce323184834052a947f823d"
+    },
+    "cover.jpg": {
+     "size": 233413,
+     "sha256": "910caf7696a4a651fcb8076e0834df7980ab91164736b55353048800a676acc3"
+    },
+    "hero.jpg": {
+     "size": 116634,
+     "sha256": "e561ac34f549ea9b75f67d4cacaee16537e0c08a4146a9fec516d26916fb089a"
+    },
+    "icon.png": {
+     "size": 60424,
+     "sha256": "8c46e599b18d5e46fb04395119e27b1b0355a9de11553c9ea811670a64c57de5"
+    },
+    "shot0.jpg": {
+     "size": 149365,
+     "sha256": "97156c3070a5064a12ce5fea0226fb4e06b920ebeba16929cc884ea1e703d0d4"
+    },
+    "shot1.jpg": {
+     "size": 148601,
+     "sha256": "4cb9954617a080bc627848c692faaad834218bbf9b340ab3706e79485a9b7310"
+    },
+    "shot2.jpg": {
+     "size": 135746,
+     "sha256": "cec921a9797b82f02d40da5dd20861d7b6735cc2f2aba46dbe03909f11127436"
+    }
+   }
   }
  ],
  "known_sizes": {
@@ -1029,9 +1090,11 @@
   "MIYOYAZU-DASH-Setup-1.0.2.exe": 31198346,
   "MIYOYAZU-DASH-1.0.2-Windows-x64.zip": 45121361,
   "CHIC-EX-1.0.0-Windows-x64.zip": 100023579,
-  "CHIC.EX.exe": 105733775
+  "CHIC.EX.exe": 105733775,
+  "HANGUL-WOOD-Setup-1.0.0.exe": 156021174,
+  "HANGUL-WOOD-1.0.0-Windows-x64.zip": 175645058
  },
- "updated": "2026-11-06T15:22:25Z",
+ "updated": "2026-11-06T16:04:56Z",
  "rows": [
   {
    "id": "GAMES",
