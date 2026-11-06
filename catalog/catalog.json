@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "catalog_version": 25,
+ "catalog_version": 26,
  "featured": [
-  "coka"
+  "chic-ex"
  ],
  "titles": [
   {
@@ -547,6 +547,65 @@
    }
   },
   {
+   "id": "chic-ex",
+   "row": "APPS",
+   "name": "CHIC EX",
+   "repo": "chic-ex",
+   "genre": "Lifestyle",
+   "tagline": "The latest app by EX, with gorgeous women every month.",
+   "description": "CHIC EX is the latest app by EX, with gorgeous women every month. Publisher: EX Inc./HYPERION DIGITAL. ©2026 EX Inc./HYPERION DIGITAL ©2026.",
+   "features": [
+    "The latest app by EX",
+    "Gorgeous women every month",
+    "Standalone Windows app: no setup, just run CHIC EX.exe",
+    "Updates through HYPERION DIGITAL EX, including a copy kept in Downloads"
+   ],
+   "publisher": "EX Inc./HYPERION DIGITAL",
+   "developer": "EX Inc./HYPERION DIGITAL",
+   "release": "2026",
+   "exe": "CHIC EX.exe",
+   "folder": "CHIC EX",
+   "portable": [
+    "CHIC EX.exe"
+   ],
+   "version": "1.0.0",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/chic-ex/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 45065,
+     "sha256": "a2a30809752efda17522873004d847432c7e2394e83c1999daf4fcb5b277554d"
+    },
+    "cover.jpg": {
+     "size": 574127,
+     "sha256": "4b3e864dff95ff3d458b0b6dc04b2f1055203c18009048e38ad8aa1ad506c7a4"
+    },
+    "hero.jpg": {
+     "size": 140239,
+     "sha256": "faf6f433b88bc891301069d89533349c2b76b149e264030b6e8721d71a06e005"
+    },
+    "hero_bg.jpg": {
+     "size": 33675,
+     "sha256": "bfecdcdff5c206f0fbcfbf8e06f3c3109c48660a6d497cf275ef3f607e6007ee"
+    },
+    "icon.png": {
+     "size": 86349,
+     "sha256": "6969629fbfc15b2afdeb9bb41b46054738e2937347c3541619286a8d018a46d1"
+    },
+    "shot0.jpg": {
+     "size": 163291,
+     "sha256": "0d0c5ca839c5aa7cfd56e1d09b7f943919e36c58eced325800bbb38dd7b36b3d"
+    },
+    "shot1.jpg": {
+     "size": 157950,
+     "sha256": "79c5d32e15264b076a77b98cbc0ccb685df9329c9fc291b702134ac6266174f4"
+    },
+    "shot2.jpg": {
+     "size": 90925,
+     "sha256": "2d12b29219d8b852f2a0fff08b44fbf013e9351eb3f35b18b3508b0f95665744"
+    }
+   }
+  },
+  {
    "id": "hyperia",
    "row": "APPS",
    "name": "HYPERIA",
@@ -968,9 +1027,11 @@
   "MIYOYAZU-DASH-Setup-1.0.1.exe": 31188070,
   "MIYOYAZU-DASH-1.0.1-Windows-x64.zip": 45115590,
   "MIYOYAZU-DASH-Setup-1.0.2.exe": 31198346,
-  "MIYOYAZU-DASH-1.0.2-Windows-x64.zip": 45121361
+  "MIYOYAZU-DASH-1.0.2-Windows-x64.zip": 45121361,
+  "CHIC-EX-1.0.0-Windows-x64.zip": 100023579,
+  "CHIC.EX.exe": 105733775
  },
- "updated": "2026-11-05T21:39:04Z",
+ "updated": "2026-11-06T15:16:26Z",
  "rows": [
   {
    "id": "GAMES",
