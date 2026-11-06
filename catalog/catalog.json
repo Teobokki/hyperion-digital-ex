@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 31,
+ "catalog_version": 32,
  "featured": [
   "chic-ex"
  ],
@@ -1040,12 +1040,13 @@
    "name": "개추 트래스",
    "repo": "gaechu-trass",
    "genre": "Creative · Video · Episode",
-   "tagline": "Korean-first episode home and maker: watch the featured teaser in-app, then compose your own widescreen episodes from Downloads.",
-   "description": "개추 트래스 is a Korean-first cinematic episode maker by EX Inc. The default 에피소드 home features the bundled teaser 개추 트래스 (에피소드 1) with an in-app cinematic player (재생, 일시정지, 정지, seek, 전체 화면). Export from the ⌂ 개추 트래스 maker board and your episodes join the home library. Add any number of pictures from Downloads (no image limit); compose a widescreen episode with title card, Ken Burns scenes, crossfades, and end card. UI is Korean; episode titles accept Hangul, Japanese, and English. ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "tagline": "Korean-first episode maker: compose widescreen episodes from Downloads, then watch them on 에피소드 home.",
+   "description": "개추 트래스 is a Korean-first cinematic episode maker by EX Inc. It opens on the ⌂ 개추 트래스 maker board: add any number of pictures from Downloads (no image limit) and compose a widescreen episode with title card, Ken Burns scenes, crossfades, and end card. 에피소드 home keeps the bundled teaser 개추 트래스 (에피소드 1) and your exports with an in-app player (재생, 일시정지, 정지, seek, 전체 화면). UI is Korean; episode titles accept Hangul, Japanese, and English. ©2026 EX Inc./HYPERION DIGITAL ©2026",
    "features": [
-    "에피소드 home (default) with featured bundled teaser 개추 트래스",
+    "Opens on ⌂ 개추 트래스 maker board (이미지 추가 / compose / 내보내기)",
+    "에피소드 home with featured bundled teaser 개추 트래스",
     "In-app cinematic player: 재생, 일시정지, 정지, timeline, 전체 화면",
-    "⌂ 개추 트래스 maker board — add any number of pictures from Downloads",
+    "Add any number of pictures from Downloads — no image limit",
     "Exports appear on home so you can rewatch your episodes",
     "Widescreen letterbox episode compose with pan/zoom and crossfades",
     "Episode title accepts Hangul, Japanese, and English",
@@ -1060,7 +1061,7 @@
    "portable": [
     "개추 트래스.exe"
    ],
-   "version": "1.0.1",
+   "version": "1.0.2",
    "app_id": "{09A0D0B7-E132-4385-B05F-6E708A3A15B7}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/gaechu-trass/main/latest.json",
    "art": {
@@ -1081,8 +1082,8 @@
      "sha256": "193cc18db5b7aab8a51b33a04dd8078b5e67800ef1a4a479e29cf2884593d6ec"
     },
     "shot0.jpg": {
-     "size": 49068,
-     "sha256": "7c6e450fb994a59632c8a5a8dc75cba6789839e0aeece6131f2f58ee5d2cf459"
+     "size": 54985,
+     "sha256": "df5ccff1386e4ae061dfd51db6432a4ca92c9c7bad0b6c73a45f09044073b6e4"
     },
     "shot1.jpg": {
      "size": 82059,
