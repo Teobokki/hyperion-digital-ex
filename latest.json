@@ -1,12 +1,12 @@
 {
-  "version": "1.1.16",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v1.1.16",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.16/HYPERION.DIGITAL.EX.Setup.1.1.16.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.16/HYPERION.DIGITAL.EX.Setup.1.1.16.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.16/HYPERION.DIGITAL.EX.1.1.16.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v1.1.16/HYPERION.DIGITAL.EX.Portable.exe",
-  "sha256": "4a476b95611d4b3e77ff84b2be371b7dd7b792963ccc98ac85d6afbe9898f9f4",
-  "zip_sha256": "45e125f79a00d9a6822181f114a79f8f0fe91afd5d19c0e291544d962120a372",
-  "released": "2026-11-06",
-  "notes": "Library now pins CHIC EX at the top of every Library list. Catalog library_pinned (v27) drives the order when present; offline fallback is chic-ex. Featured stays CHIC EX. DNS mirrors from 1.1.15 unchanged."
+  "version": "2.96",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v2.96",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.96/HYPERION.DIGITAL.EX.Setup.2.96.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.96/HYPERION.DIGITAL.EX.Setup.2.96.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.96/HYPERION.DIGITAL.EX.2.96.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.96/HYPERION.DIGITAL.EX.Portable.exe",
+  "sha256": "3131228cc94889ca047d0502172e5f45109e707a0f040ede1638d7e532a23ce5",
+  "zip_sha256": "c747d398e4d8cc8821507ceb8bab4f97503ab20f4a7ee1bec282f6c6adc59dc7",
+  "released": "2026-11-08",
+  "notes": "PIKNOTT CELESTIKA is the Featured & Recommended main card and is pinned at the top of Library. Offline fallbacks match the live catalog. Title lists still refresh through CHECK FOR STORE UPDATES."
 }
