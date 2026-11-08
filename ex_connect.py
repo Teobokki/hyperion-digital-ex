@@ -5,7 +5,7 @@ import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, url
 from ex_catalog import CATALOG, KNOWN_SIZES
 import ex_remote as rm
 
-APP_VERSION = "1.1.16"
+APP_VERSION = "2.96"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
@@ -421,7 +421,7 @@ class ExConnect:
         self.cache = self._load(os.path.join(self.dir, "catalog_cache.json"), {})
         # 1.1.11: the title list comes from the remote catalog.json (last good copy cached); ex_catalog.py is only the fallback
         self.catalog = {}; self.cat_dir = rm.cache_dir(self.dir); self.catalog_error = None; self.catalog_skipped = []
-        self.cat_meta = {"schema": 1, "catalog_version": "built-in", "featured": ["fireout-shine"], "library_pinned": ["chic-ex"], "known_sizes": dict(KNOWN_SIZES),
+        self.cat_meta = {"schema": 1, "catalog_version": "built-in", "featured": ["piknott-celestika"], "library_pinned": ["piknott-celestika"], "known_sizes": dict(KNOWN_SIZES),
                          "rows": rm.parse_rows({})}
         self.cat_source = "built-in"; self.catalog_sha = None; self.last_catalog_diff = ([], [])
         titles = []
@@ -516,9 +516,9 @@ class ExConnect:
         return [a for a in self.cat_meta.get("featured", []) if a in self.catalog] or list(self.catalog)[:1]
 
     def library_pinned(self):
-        """Library list pin order: catalog library_pinned when present, else ("chic-ex",) offline fallback (matches LIBRARY_PINNED_IDS)."""
+        """Library list pin order: catalog library_pinned when present, else ("piknott-celestika",) offline fallback (matches LIBRARY_PINNED_IDS)."""
         pins = [a for a in self.cat_meta.get("library_pinned", []) if isinstance(a, str) and a in self.catalog]
-        return pins or [a for a in ("chic-ex",) if a in self.catalog] or ["chic-ex"]
+        return pins or [a for a in ("piknott-celestika",) if a in self.catalog] or ["piknott-celestika"]
 
     def sync_catalog(self):
         """read catalog.json at main's commit SHA (mirror fallbacks), validate, fetch changed art, apply."""

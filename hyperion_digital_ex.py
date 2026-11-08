@@ -445,13 +445,13 @@ class DreamVineCard(QFrame):
         qp.drawRoundedRect(QRectF(1, 1, w - 2, h - 2), 10, 10)
 
 
-FEATURED_IDS = ("coka",)
-LIBRARY_PINNED_IDS = ("chic-ex",)  # offline/fallback Library pin; live order prefers catalog library_pinned via svc.library_pinned()
+FEATURED_IDS = ("piknott-celestika",)
+LIBRARY_PINNED_IDS = ("piknott-celestika",)  # offline/fallback Library pin; live order prefers catalog library_pinned via svc.library_pinned()
 FEATURED_BANNER = False
 
 
 class FeaturedCarousel(QWidget):
-    """Featured & Recommended: COKA is the main hero card (FEATURED_IDS / catalog featured); arrows, dots and auto-rotate only appear with 2+ cards. Arrows + dots, 8 s auto-rotate (no hover pause); only the pause/play toggle stops it."""
+    """Featured & Recommended: PIKNOTT CELESTIKA is the main hero card (FEATURED_IDS / catalog featured); arrows, dots and auto-rotate only appear with 2+ cards. Arrows + dots, 8 s auto-rotate (no hover pause); only the pause/play toggle stops it."""
 
     def __init__(self, ui, banner):
         super().__init__()
