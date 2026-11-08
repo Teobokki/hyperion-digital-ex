@@ -1,9 +1,7 @@
 {
  "schema": 1,
- "catalog_version": 34,
- "featured": [
-  "chic-ex"
- ],
+ "catalog_version": 35,
+ "featured": ["piknott-celestika"],
  "titles": [
   {
    "id": "dream-vine",

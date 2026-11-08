@@ -22,7 +22,7 @@ if os.path.exists(OUT):
 else:
     from ex_catalog import CATALOG, KNOWN_SIZES, GAMES
     keys = ("id", "name", "repo", "genre", "tagline", "about", "features", "publisher", "developer", "release", "reg", "exe", "folder", "portable", "version")
-    doc = {"schema": 1, "catalog_version": 1, "featured": ["fireout-shine"], "titles": [], "known_sizes": KNOWN_SIZES}
+    doc = {"schema": 1, "catalog_version": 1, "featured": ["piknott-celestika"], "titles": [], "known_sizes": KNOWN_SIZES}
     for a in CATALOG:
         t = {"id": a["id"], "row": "GAMES" if a["category"] == GAMES else "APPS"}
         t.update({("description" if k == "about" else k): a[k] for k in keys if k in a and k != "id"})
