@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 35,
+ "catalog_version": 36,
  "featured": ["piknott-celestika"],
  "titles": [
   {
@@ -1200,6 +1200,6 @@
   }
  ],
  "library_pinned": [
-  "chic-ex"
+  "piknott-celestika"
  ]
 }
