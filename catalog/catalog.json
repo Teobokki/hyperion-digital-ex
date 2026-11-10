@@ -1,7 +1,9 @@
 {
  "schema": 1,
- "catalog_version": 36,
- "featured": ["piknott-celestika"],
+ "catalog_version": 37,
+ "featured": [
+  "piknott-celestika"
+ ],
  "titles": [
   {
    "id": "dream-vine",
@@ -1035,15 +1037,15 @@
   {
    "id": "gaechu-trass",
    "row": "APPS",
-   "name": "개추 트래스",
+   "name": "EPISODIA",
    "repo": "gaechu-trass",
    "genre": "Creative · Video · Episode",
-   "tagline": "Korean-first episode maker: ⌂ 개추 트래스 maker first in the top bar, 에피소드 watching second. Optional TTS SUBTITLES per scene.",
-   "description": "개추 트래스 is a Korean-first cinematic episode maker by EX Inc. The top bar lists ⌂ 개추 트래스 (maker) first and 에피소드 (watching) second; it opens on the maker board. Add any number of pictures from Downloads (no image limit) and compose a widescreen episode with title card, Ken Burns scenes, crossfades, and end card. Every scene has its own optional TTS SUBTITLES field — type a line in Korean, Japanese, or English and it appears as an on-screen caption and is narrated in the exported MP4; leave it empty and the scene stays silent. 에피소드 home keeps the bundled teaser 개추 트래스 (에피소드 1) and your exports with an in-app player (재생, 일시정지, 정지, seek, 전체 화면). UI is Korean; titles and subtitles accept Hangul, Japanese, and English. ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "tagline": "Korean-first episode maker (formerly 개추 트래스): ⌂ EPISODIA maker first, 에피소드 watching second. Optional TTS SUBTITLES per scene.",
+   "description": "EPISODIA (formerly 개추 트래스) is a Korean-first cinematic episode maker by EX Inc. The top bar lists ⌂ EPISODIA (maker) first and 에피소드 (watching) second; it opens on the maker board. Add any number of pictures from Downloads (no image limit) and compose a widescreen episode with title card, Ken Burns scenes, crossfades, and end card. Every scene has its own optional TTS SUBTITLES field — type a line in Korean, Japanese, or English and it appears as an on-screen caption and is narrated in the exported MP4; leave it empty and the scene stays silent. 에피소드 home keeps the bundled teaser EPISODIA (에피소드 1) and your exports with an in-app player (재생, 일시정지, 정지, seek, 전체 화면). UI is Korean; titles and subtitles accept Hangul, Japanese, and English. ©2026 EX Inc./HYPERION DIGITAL ©2026",
    "features": [
-    "Top bar: ⌂ 개추 트래스 maker first, 에피소드 watching second — opens on maker",
+    "Top bar: ⌂ EPISODIA maker first, 에피소드 watching second — opens on maker",
     "Optional TTS SUBTITLES per scene: caption + voice narration (한국어 · 日本語 · English)",
-    "에피소드 home with featured bundled teaser 개추 트래스",
+    "에피소드 home with featured bundled teaser EPISODIA",
     "In-app cinematic player: 재생, 일시정지, 정지, timeline, 전체 화면",
     "Add any number of pictures from Downloads — no image limit",
     "Exports appear on home so you can rewatch your episodes",
@@ -1055,34 +1057,34 @@
    "developer": "EX Inc./HYPERION DIGITAL",
    "release": "2026",
    "reg": "{09A0D0B7-E132-4385-B05F-6E708A3A15B7}_is1",
-   "exe": "개추 트래스.exe",
-   "folder": "개추 트래스",
+   "exe": "EPISODIA.exe",
+   "folder": "EPISODIA",
    "portable": [
-    "개추 트래스.exe"
+    "EPISODIA.exe"
    ],
-   "version": "1.0.4",
+   "version": "1.1.0",
    "app_id": "{09A0D0B7-E132-4385-B05F-6E708A3A15B7}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/gaechu-trass/main/latest.json",
    "art": {
     "capsule.jpg": {
-     "size": 17426,
-     "sha256": "9dd408710a19cbba1e533fce7021e51f1fa078b766a7baaac13f587cc2f9ae4e"
+     "size": 12472,
+     "sha256": "01a04b8d1ea257a8381c60279c0752b8d0dff043c49254c27f2254d32ca3ec15"
     },
     "cover.jpg": {
-     "size": 195471,
-     "sha256": "454730e937558dcbec7b15d03234308ddab425c4db81da3a42be5ca8bcc2b20a"
+     "size": 58546,
+     "sha256": "962a33c63a106a8f18c56c9a721500f70e0e02792fd52c161da65eca7a6c9f6c"
     },
     "hero.jpg": {
-     "size": 96360,
-     "sha256": "9d3ab3aade00d77b83e71566025244d6f6c7289a1226c011bacc6e9d2d2bb7ae"
+     "size": 53905,
+     "sha256": "20e98ec6a8328dad9c07b3d121c10a32585c187cbd2ef90ada602d4d4e5b5f09"
     },
     "icon.png": {
-     "size": 335965,
-     "sha256": "193cc18db5b7aab8a51b33a04dd8078b5e67800ef1a4a479e29cf2884593d6ec"
+     "size": 92844,
+     "sha256": "56dca3dc85ac756597cf452763c278d37ff6272565844267cadd3c90f4c77a0c"
     },
     "shot0.jpg": {
-     "size": 51707,
-     "sha256": "460e8abeb847c9ac956c001ae1bd74cb0c693aa907fcb3157d5d530a14ef8aa4"
+     "size": 49039,
+     "sha256": "961b94e658e4b37dfbd00e3a877ed11340fa47b2fa6b2ad8b29031de2bf29473"
     },
     "shot1.jpg": {
      "size": 82059,
@@ -1166,7 +1168,7 @@
   "GAECHU-TRASS-Setup-1.0.4.exe": 81735159,
   "GAECHU-TRASS-1.0.4-Windows-x64.zip": 106060088
  },
- "updated": "2026-11-06T22:03:00Z",
+ "updated": "2026-11-10",
  "rows": [
   {
    "id": "GAMES",
