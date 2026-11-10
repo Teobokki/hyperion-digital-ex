@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 38,
+ "catalog_version": 39,
  "featured": [
   "piknott-celestika"
  ],
@@ -1000,7 +1000,7 @@
    "portable": [
     "HANGUL WOOD.exe"
    ],
-   "version": "1.0.1",
+   "version": "1.0.2",
    "app_id": "{B174425E-0736-4E5E-B6DB-85B27CA049D1}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/hangul-wood/main/latest.json",
    "art": {
