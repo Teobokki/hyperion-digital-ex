@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 42,
+ "catalog_version": 43,
  "featured": [
   "piknott-celestika"
  ],
@@ -1122,7 +1122,7 @@
    "portable": [
     "NOT TUBE.exe"
    ],
-   "version": "1.0.1",
+   "version": "1.0.2",
    "app_id": "{F7397060-9B24-49F6-AB06-1358C47FDB97}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/not-tube/main/latest.json",
    "art": {
@@ -1230,7 +1230,9 @@
   "NOT-TUBE-Setup-1.0.0.exe": 45698791,
   "NOT-TUBE-1.0.0-Windows-x64.zip": 65325314,
   "NOT-TUBE-Setup-1.0.1.exe": 45694449,
-  "NOT-TUBE-1.0.1-Windows-x64.zip": 65323346
+  "NOT-TUBE-1.0.1-Windows-x64.zip": 65323346,
+  "NOT-TUBE-Setup-1.0.2.exe": 45694519,
+  "NOT-TUBE-1.0.2-Windows-x64.zip": 65321683
  },
  "updated": "2026-11-10",
  "rows": [
