@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 40,
+ "catalog_version": 41,
  "featured": [
   "piknott-celestika"
  ],
@@ -1096,6 +1096,65 @@
      "sha256": "405085cd732708825a4337f54b31726e0ff4711226c958aa85725e66e20b256a"
     }
    }
+  },
+  {
+   "id": "not-tube",
+   "row": "APPS",
+   "name": "NOT TUBE",
+   "repo": "not-tube",
+   "genre": "Video · Entertainment",
+   "tagline": "NOT TUBE THE YOUTUBE RIVAL APP NOW AVAILABLE REGAIN YOUR USER RIGHTS AND MORE",
+   "description": "NOT TUBE THE YOUTUBE RIVAL APP NOW AVAILABLE REGAIN YOUR USER RIGHTS AND MORE ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "features": [
+    "Make your own channel and upload videos to Home in NOT TUBE STUDIO",
+    "NOT SHORTS: vertical short videos with a looping swipe-style player",
+    "NOTSCRIBE to channels, like, comment, Watch later, History and search",
+    "NOT TUBE BOT ACCOUNTS boost every video to 2K views automatically",
+    "Dark video-site layout with chips, grid, watch page and up next",
+    "Per-user install, no admin needed"
+   ],
+   "publisher": "EX Inc./HYPERION DIGITAL",
+   "developer": "EX Inc./HYPERION DIGITAL",
+   "release": "2026",
+   "reg": "{F7397060-9B24-49F6-AB06-1358C47FDB97}_is1",
+   "exe": "NOT TUBE.exe",
+   "folder": "NOT TUBE",
+   "portable": [
+    "NOT TUBE.exe"
+   ],
+   "version": "1.0.0",
+   "app_id": "{F7397060-9B24-49F6-AB06-1358C47FDB97}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/not-tube/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 17411,
+     "sha256": "5b54f2b0411b4922783ef247c9860aa5195dad5ba75a8187383d156ce54a244a"
+    },
+    "cover.jpg": {
+     "size": 109064,
+     "sha256": "34f0ad89f49f03fce5b9c0f15c1b2a12dad6dde912edc6a4d5f09d7e65805710"
+    },
+    "hero.jpg": {
+     "size": 37257,
+     "sha256": "0f5f5c42bcbb0103665831530af4801b2e1e9a484e7f860dc9c57c394a1685a5"
+    },
+    "icon.png": {
+     "size": 39703,
+     "sha256": "13f0e926bce8f029b2a704fb94c8616bc49684c8e1b32f6f0a95a00e1ecaac5f"
+    },
+    "shot0.jpg": {
+     "size": 134129,
+     "sha256": "718d75ee2bfe4ca6bc7745f0583a6f0a054f9d317e3660c239af914b11656319"
+    },
+    "shot1.jpg": {
+     "size": 231351,
+     "sha256": "43e6dcef09c2c5dc2044392f14bdc2e97eafafb53872fd84f94652c6848727c3"
+    },
+    "shot2.jpg": {
+     "size": 113346,
+     "sha256": "dad451615ae53173d836b818653c6bcd22fd58188aca4931f0104e0466126956"
+    }
+   }
   }
  ],
  "known_sizes": {
@@ -1167,7 +1226,9 @@
   "GAECHU-TRASS-Setup-1.0.3.exe": 81732548,
   "GAECHU-TRASS-1.0.3-Windows-x64.zip": 106059758,
   "GAECHU-TRASS-Setup-1.0.4.exe": 81735159,
-  "GAECHU-TRASS-1.0.4-Windows-x64.zip": 106060088
+  "GAECHU-TRASS-1.0.4-Windows-x64.zip": 106060088,
+  "NOT-TUBE-Setup-1.0.0.exe": 45698791,
+  "NOT-TUBE-1.0.0-Windows-x64.zip": 65325314
  },
  "updated": "2026-11-10",
  "rows": [
