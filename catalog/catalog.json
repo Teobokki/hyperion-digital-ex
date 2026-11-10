@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 37,
+ "catalog_version": 38,
  "featured": [
   "piknott-celestika"
  ],
@@ -1044,6 +1044,7 @@
    "description": "EPISODIA (formerly 개추 트래스) is a Korean-first cinematic episode maker by EX Inc. The top bar lists ⌂ EPISODIA (maker) first and 에피소드 (watching) second; it opens on the maker board. Add any number of pictures from Downloads (no image limit) and compose a widescreen episode with title card, Ken Burns scenes, crossfades, and end card. Every scene has its own optional TTS SUBTITLES field — type a line in Korean, Japanese, or English and it appears as an on-screen caption and is narrated in the exported MP4; leave it empty and the scene stays silent. 에피소드 home keeps the bundled teaser EPISODIA (에피소드 1) and your exports with an in-app player (재생, 일시정지, 정지, seek, 전체 화면). UI is Korean; titles and subtitles accept Hangul, Japanese, and English. ©2026 EX Inc./HYPERION DIGITAL ©2026",
    "features": [
     "Top bar: ⌂ EPISODIA maker first, 에피소드 watching second — opens on maker",
+    "Top bar badge: SUPPORTS KOREAN TTS · JAPANESE TTS · ENGLISH TTS",
     "Optional TTS SUBTITLES per scene: caption + voice narration (한국어 · 日本語 · English)",
     "에피소드 home with featured bundled teaser EPISODIA",
     "In-app cinematic player: 재생, 일시정지, 정지, timeline, 전체 화면",
@@ -1062,7 +1063,7 @@
    "portable": [
     "EPISODIA.exe"
    ],
-   "version": "1.1.0",
+   "version": "1.1.1",
    "app_id": "{09A0D0B7-E132-4385-B05F-6E708A3A15B7}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/gaechu-trass/main/latest.json",
    "art": {
