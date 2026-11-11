@@ -195,6 +195,23 @@ CATALOG = [
                "It fits each slide to the window and refreshes live when the PDF changes."),
         features=["Fit-to-window slide view", "Live refresh when the PDF changes",
                   "Left/Right arrow keys change slides", "Built-in update check"]),
+    dict(
+        id="not-tube", reg="{F7397060-9B24-49F6-AB06-1358C47FDB97}_is1", name="NOT TUBE", repo="not-tube", category=APPS,
+        genre="Video · Entertainment",
+        exe="NOT TUBE.exe", folder="NOT TUBE", portable=["NOT TUBE.exe"], version="1.0.6", release="2026",
+        publisher="EX Inc./HYPERION DIGITAL", developer="EX Inc./HYPERION DIGITAL",
+        tagline="NOT TUBE THE YOUTUBE RIVAL APP NOW AVAILABLE REGAIN YOUR USER RIGHTS AND MORE",
+        about=("NOT TUBE THE YOUTUBE RIVAL APP NOW AVAILABLE REGAIN YOUR USER RIGHTS AND MORE "
+               "©2026 EX Inc./HYPERION DIGITAL ©2026"),
+        features=[
+            "Make your own channel and upload videos to Home in NOT TUBE STUDIO",
+            "Featured channels on Home with glamorous AI-generated try-on haul videos",
+            "NOT SHORTS: vertical short videos with a looping swipe-style player",
+            "NOTSCRIBE to channels, like, comment, Watch later, History and search",
+            "NOT TUBE BOT ACCOUNTS boost every video to 2K views automatically",
+            "Dark video-site layout with chips, grid, watch page and up next",
+            "Per-user install, no admin needed",
+        ]),
 ]
 
 # upcoming games: shown in the store with a status tag; never installed, scanned or update-checked (none right now)

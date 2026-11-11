@@ -203,8 +203,10 @@ def parse(doc):
     lib_pin = [x for x in doc.get("library_pinned", []) if isinstance(x, str) and x in seen] if isinstance(doc.get("library_pinned"), list) else []
     ks = doc.get("known_sizes", {})
     ks = {k: v for k, v in ks.items() if isinstance(k, str) and isinstance(v, int)} if isinstance(ks, dict) else {}
+    raw_sp = doc.get("spotlight", "not-tube")
+    spotlight = raw_sp if isinstance(raw_sp, str) and raw_sp in seen else None
     meta = {"schema": schema, "catalog_version": doc.get("catalog_version"), "featured": feat or [titles[0]["id"]],
-            "library_pinned": lib_pin, "known_sizes": ks, "rows": rows}
+            "library_pinned": lib_pin, "known_sizes": ks, "rows": rows, "spotlight": spotlight}
     return meta, titles, skipped
 
 

@@ -3,7 +3,7 @@ EXC = ['numpy', 'cv2', 'panda3d', 'direct', 'fitz', 'pymupdf', 'webview', 'clr',
        'matplotlib', 'scipy', 'pandas', 'IPython', 'pytest', 'PyQt5', 'wx', 'bottle', 'comtypes', 'winpty', 'tkinter',
        'PySide6.QtNetwork', 'PySide6.QtQml', 'PySide6.QtQuick', 'PySide6.QtOpenGL', 'PySide6.QtSql', 'PySide6.QtTest',
        'PySide6.QtDBus', 'PySide6.QtPdf', 'PySide6.QtSvg', 'PySide6.QtXml', 'PySide6.QtConcurrent', 'PySide6.QtPrintSupport']
-# 2.98: split Featured & Recommended card when catalog featured has two titles; prior 2.97 per-title developer/license; 2.96 PIKNOTT pin; 1.1.16 CHIC EX pin; 1.1.15 DNS mirrors; 1.1.13 TLS
+# 2.99: catalog-driven Home spotlight (NOT TUBE) above Featured; CELESTIKA cover bundled; 2.98 split featured card; prior 2.97 per-title developer/license; 2.96 PIKNOTT pin; 1.1.16 CHIC EX pin; 1.1.15 DNS mirrors; 1.1.13 TLS
 from PyInstaller.utils.hooks import collect_data_files
 datas += collect_data_files('certifi')
 HID = ['truststore', 'certifi']

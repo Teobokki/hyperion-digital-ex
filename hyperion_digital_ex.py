@@ -106,6 +106,19 @@ def cover_pix(p, w, h, radius=0):
     return out
 
 
+def spotlight_pix(aid, w, h):
+    """Full-width spotlight art: hero.jpg fitted whole (nothing cropped) on a dark fill."""
+    out = QPixmap(w, h); out.fill(QColor(8, 12, 18))
+    hero_path = art(aid, "hero.jpg")
+    p = pix(hero_path) if os.path.exists(hero_path) else QPixmap()
+    if p.isNull():
+        return out
+    s = p.scaled(w, h, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+    qp = QPainter(out); qp.setRenderHint(QPainter.SmoothPixmapTransform)
+    qp.drawPixmap((w - s.width()) // 2, (h - s.height()) // 2, s); qp.end()
+    return out
+
+
 QSS = f"""
 * {{ font-family: 'Segoe UI', 'Yu Gothic UI', 'Meiryo', 'MS Gothic', 'Arial'; color: {FG}; }}
 QMainWindow, #root {{ background: {BG}; }}
@@ -799,11 +812,88 @@ def scroll(widget):
     return s
 
 
+class SpotlightCard(QFrame):
+    """Full-width Home spotlight (catalog "spotlight", default NOT TUBE) above Featured & Recommended.
+    Hero art is fitted whole — key content is never cropped. Click opens the product page; ActionBar installs/opens."""
+    clicked = Signal(str)
+
+    def __init__(self, ui):
+        super().__init__()
+        self.ui = ui
+        self.aid = None
+        self.hover = False
+        self.setCursor(Qt.PointingHandCursor)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.box = QVBoxLayout(self); self.box.setContentsMargins(40, 24, 40, 24); self.box.setSpacing(8)
+        self.box.addStretch(1)
+        self.kind = lbl("SPOTLIGHT")
+        self.kind.setStyleSheet("background:transparent;color:%s;font-weight:800;letter-spacing:2px;font-size:12px" % ACCENT)
+        self.box.addWidget(self.kind)
+        self.bar = None
+        self.refresh()
+
+    def resizeEvent(self, e):
+        # Match the 1600x600 hero so the wordmark and UI shot are not cropped; cap so the Featured heading stays on a 900px Home.
+        h = int(min(520, max(300, round(self.width() * 600 / 1600))))
+        if self.height() != h:
+            self.setFixedHeight(h)
+
+    def refresh(self):
+        aid = self.ui.svc.spotlight()
+        if aid != self.aid:
+            if self.bar is not None:
+                self.box.removeWidget(self.bar); self.bar.deleteLater(); self.bar = None
+            self.aid = aid
+            if aid:
+                a = self.ui.svc.catalog[aid]
+                self.kind.setText("SPOTLIGHT  \u00b7  " + (a.get("category") or "Apps").upper())
+                self.setToolTip("Open %s in the store" % a.get("name", aid))
+                self.bar = ActionBar(self.ui, aid, uninstall=False)
+                self.bar.setMaximumWidth(420)
+                self.bar.setStyleSheet("QLabel{background:transparent}")
+                self.box.addWidget(self.bar)
+            else:
+                self.setToolTip("")
+        if self.bar is not None:
+            self.bar.refresh()
+        self.setVisible(bool(self.aid))
+        self.update()
+
+    def enterEvent(self, e):
+        self.hover = True; self.update()
+
+    def leaveEvent(self, e):
+        self.hover = False; self.update()
+
+    def mousePressEvent(self, e):
+        if e.button() == Qt.LeftButton and self.aid:
+            self.clicked.emit(self.aid)
+
+    def paintEvent(self, e):
+        qp = QPainter(self); qp.setRenderHint(QPainter.Antialiasing); qp.setRenderHint(QPainter.SmoothPixmapTransform)
+        w, h = self.width(), self.height()
+        path = QPainterPath(); path.addRoundedRect(QRectF(0, 0, w, h), 10, 10); qp.setClipPath(path)
+        if self.aid:
+            qp.drawPixmap(0, 0, spotlight_pix(self.aid, w, h))
+        else:
+            qp.fillRect(0, 0, w, h, QColor(PANEL))
+        # Bottom fade only, so the Install button is readable without covering the left wordmark or the UI shot.
+        g = QLinearGradient(0, h * 0.55, 0, h)
+        g.setColorAt(0, QColor(0, 0, 0, 0)); g.setColorAt(1, QColor(8, 12, 18, 200))
+        qp.fillRect(0, 0, w, h, g)
+        qp.setClipping(False)
+        qp.setPen(QPen(QColor(ACCENT if self.hover else LINE), 2)); qp.setBrush(Qt.NoBrush)
+        qp.drawRoundedRect(QRectF(1, 1, w - 2, h - 2), 10, 10)
+
+
 class StorePage(QWidget):
     def __init__(self, ui):
         super().__init__()
         self.ui = ui
         inner = QWidget(); v = QVBoxLayout(inner); v.setContentsMargins(36, 24, 36, 30); v.setSpacing(16)
+        self.spotlight = SpotlightCard(ui)
+        self.spotlight.clicked.connect(ui.open_product)
+        v.addWidget(self.spotlight)
         v.addWidget(lbl("FEATURED & RECOMMENDED", "h2"))
         self.banner = Banner(); self.banner.clicked.connect(self.scroll_to_games)
         self.featured = FeaturedCarousel(ui, self.banner); v.addWidget(self.featured)
@@ -839,6 +929,7 @@ class StorePage(QWidget):
         self.sc.verticalScrollBar().setValue(max(0, y - 12))
 
     def refresh(self):
+        self.spotlight.refresh()
         self.featured.refresh()
         for c in self.cards:
             c.refresh()
