@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 43,
+ "catalog_version": 44,
  "featured": [
   "piknott-celestika"
  ],
@@ -1107,6 +1107,7 @@
    "description": "NOT TUBE THE YOUTUBE RIVAL APP NOW AVAILABLE REGAIN YOUR USER RIGHTS AND MORE ©2026 EX Inc./HYPERION DIGITAL ©2026",
    "features": [
     "Make your own channel and upload videos to Home in NOT TUBE STUDIO",
+    "Featured channels on Home with AI-generated try-on haul videos",
     "NOT SHORTS: vertical short videos with a looping swipe-style player",
     "NOTSCRIBE to channels, like, comment, Watch later, History and search",
     "NOT TUBE BOT ACCOUNTS boost every video to 2K views automatically",
@@ -1122,7 +1123,7 @@
    "portable": [
     "NOT TUBE.exe"
    ],
-   "version": "1.0.2",
+   "version": "1.0.3",
    "app_id": "{F7397060-9B24-49F6-AB06-1358C47FDB97}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/not-tube/main/latest.json",
    "art": {
@@ -1143,16 +1144,16 @@
      "sha256": "13f0e926bce8f029b2a704fb94c8616bc49684c8e1b32f6f0a95a00e1ecaac5f"
     },
     "shot0.jpg": {
-     "size": 134129,
-     "sha256": "718d75ee2bfe4ca6bc7745f0583a6f0a054f9d317e3660c239af914b11656319"
+     "size": 233387,
+     "sha256": "8e95ae68f78ee5f6dbcbeba83867e7108ccb5f15f231144574758b9de1bf4419"
     },
     "shot1.jpg": {
-     "size": 231351,
-     "sha256": "43e6dcef09c2c5dc2044392f14bdc2e97eafafb53872fd84f94652c6848727c3"
+     "size": 213692,
+     "sha256": "e10a95a2f629091ada5b6fb17f3697e659809eb9b0f4e1e8e5da14496da68681"
     },
     "shot2.jpg": {
-     "size": 113346,
-     "sha256": "dad451615ae53173d836b818653c6bcd22fd58188aca4931f0104e0466126956"
+     "size": 184834,
+     "sha256": "6cf78943a320815d24cae22a3df31b306fca6f71d05700761ff69cfc7fe33003"
     }
    }
   }
@@ -1232,9 +1233,11 @@
   "NOT-TUBE-Setup-1.0.1.exe": 45694449,
   "NOT-TUBE-1.0.1-Windows-x64.zip": 65323346,
   "NOT-TUBE-Setup-1.0.2.exe": 45694519,
-  "NOT-TUBE-1.0.2-Windows-x64.zip": 65321683
+  "NOT-TUBE-1.0.2-Windows-x64.zip": 65321683,
+  "NOT-TUBE-Setup-1.0.3.exe": 63059582,
+  "NOT-TUBE-1.0.3-Windows-x64.zip": 83052687
  },
- "updated": "2026-11-10",
+ "updated": "2026-11-11",
  "rows": [
   {
    "id": "GAMES",
