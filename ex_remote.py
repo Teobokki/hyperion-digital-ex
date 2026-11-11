@@ -196,7 +196,10 @@ def parse(doc):
             skipped.append((i, "%s: %s" % (type(e).__name__, e)))
     if not titles:
         raise ValueError("catalog.json has no valid titles")
-    feat = [x for x in doc.get("featured", []) if isinstance(x, str) and x in seen] if isinstance(doc.get("featured"), list) else []
+    raw = doc.get("featured", [])
+    if isinstance(raw, str):
+        raw = [raw]
+    feat = [x for x in raw if isinstance(x, str) and x in seen] if isinstance(raw, list) else []
     lib_pin = [x for x in doc.get("library_pinned", []) if isinstance(x, str) and x in seen] if isinstance(doc.get("library_pinned"), list) else []
     ks = doc.get("known_sizes", {})
     ks = {k: v for k, v in ks.items() if isinstance(k, str) and isinstance(v, int)} if isinstance(ks, dict) else {}

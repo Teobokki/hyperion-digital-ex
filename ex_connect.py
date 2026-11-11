@@ -5,7 +5,7 @@ import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, url
 from ex_catalog import CATALOG, KNOWN_SIZES
 import ex_remote as rm
 
-APP_VERSION = "2.97"
+APP_VERSION = "2.98"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
@@ -421,7 +421,7 @@ class ExConnect:
         self.cache = self._load(os.path.join(self.dir, "catalog_cache.json"), {})
         # 1.1.11: the title list comes from the remote catalog.json (last good copy cached); ex_catalog.py is only the fallback
         self.catalog = {}; self.cat_dir = rm.cache_dir(self.dir); self.catalog_error = None; self.catalog_skipped = []
-        self.cat_meta = {"schema": 1, "catalog_version": "built-in", "featured": ["piknott-celestika"], "library_pinned": ["piknott-celestika"], "known_sizes": dict(KNOWN_SIZES),
+        self.cat_meta = {"schema": 1, "catalog_version": "built-in", "featured": ["piknott-celestika", "piknott-sapphire"], "library_pinned": ["piknott-celestika"], "known_sizes": dict(KNOWN_SIZES),
                          "rows": rm.parse_rows({})}
         self.cat_source = "built-in"; self.catalog_sha = None; self.last_catalog_diff = ([], [])
         titles = []

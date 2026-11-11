@@ -445,23 +445,114 @@ class DreamVineCard(QFrame):
         qp.drawRoundedRect(QRectF(1, 1, w - 2, h - 2), 10, 10)
 
 
-FEATURED_IDS = ("piknott-celestika",)
+FEATURED_IDS = ("piknott-celestika", "piknott-sapphire")
 LIBRARY_PINNED_IDS = ("piknott-celestika",)  # offline/fallback Library pin; live order prefers catalog library_pinned via svc.library_pinned()
 FEATURED_BANNER = False
 
 
+class HalfFeaturedCard(QFrame):
+    """One clickable half of a split Featured & Recommended card."""
+    clicked = Signal(str)
+
+    def __init__(self, ui, aid):
+        super().__init__()
+        self.ui, self.aid = ui, aid
+        a = ui.svc.catalog.get(aid) or {}
+        self.setCursor(Qt.PointingHandCursor)
+        self.setToolTip("Open %s in the store" % a.get("name", aid))
+        self.hover = False
+        v = QVBoxLayout(self); v.setContentsMargins(28, 28, 24, 24); v.setSpacing(8); v.addStretch(1)
+        k = lbl("FEATURED  \u00b7  " + (a.get("category") or "Games").upper())
+        k.setStyleSheet("background:transparent;color:%s;font-weight:800;letter-spacing:2px;font-size:11px" % ACCENT); v.addWidget(k)
+        t = lbl(a.get("name") or aid); t.setStyleSheet("background:transparent;font-size:26px;font-weight:900;color:%s" % FG); t.setWordWrap(True); v.addWidget(t)
+        d = lbl(a.get("tagline") or "", None, True); d.setWordWrap(True)
+        d.setStyleSheet("background:transparent;color:#dbe6f0;font-size:13px"); v.addWidget(d)
+        self.ver = lbl(""); self.ver.setStyleSheet("background:transparent;color:%s;font-weight:700;font-size:11px" % MUTED); v.addWidget(self.ver)
+        self.bar = ActionBar(ui, aid, uninstall=False)
+        self.bar.setStyleSheet("QLabel{background:transparent}")
+        v.addWidget(self.bar)
+        self.refresh()
+
+    def refresh(self):
+        if self.aid not in self.ui.svc.catalog:
+            return
+        self.ver.setText("LATEST VERSION  v%s  \u00b7  %s" % (self.ui.svc.latest_version(self.aid), self.ui.svc.catalog[self.aid]["genre"]))
+        self.bar.refresh()
+
+    def enterEvent(self, e):
+        self.hover = True; self.update()
+
+    def leaveEvent(self, e):
+        self.hover = False; self.update()
+
+    def mousePressEvent(self, e):
+        if e.button() == Qt.LeftButton:
+            self.clicked.emit(self.aid)
+
+    def paintEvent(self, e):
+        qp = QPainter(self); qp.setRenderHint(QPainter.Antialiasing); qp.setRenderHint(QPainter.SmoothPixmapTransform)
+        w, h = self.width(), self.height()
+        qp.drawPixmap(0, 0, hero_pix(self.aid, w, h) if self.aid in self.ui.svc.catalog else QPixmap(w, h))
+        g = QLinearGradient(0, 0, w * 0.85, 0)
+        g.setColorAt(0, QColor(8, 12, 18, 235)); g.setColorAt(0.7, QColor(8, 12, 18, 140)); g.setColorAt(1, QColor(8, 12, 18, 0))
+        qp.fillRect(0, 0, w, h, g)
+        if self.hover:
+            qp.fillRect(0, 0, w, h, QColor(92, 184, 255, 28))
+
+
+class SplitFeaturedCard(QWidget):
+    """Featured & Recommended as two side-by-side halves (each opens its own product page)."""
+    clicked = Signal(str)
+
+    def __init__(self, ui, left_id, right_id):
+        super().__init__()
+        self.ui = ui
+        self.left = HalfFeaturedCard(ui, left_id)
+        self.right = HalfFeaturedCard(ui, right_id)
+        self.games = [self.left, self.right]
+        for g in self.games:
+            g.clicked.connect(self.clicked)
+        row = QHBoxLayout(self); row.setContentsMargins(0, 0, 0, 0); row.setSpacing(0)
+        row.addWidget(self.left, 1)
+        div = QFrame(); div.setFixedWidth(2); div.setStyleSheet("background:%s;" % ACCENT)
+        row.addWidget(div)
+        row.addWidget(self.right, 1)
+
+    def refresh(self):
+        self.left.refresh(); self.right.refresh()
+
+    def paintEvent(self, e):
+        qp = QPainter(self); qp.setRenderHint(QPainter.Antialiasing)
+        w, h = self.width(), self.height()
+        path = QPainterPath(); path.addRoundedRect(QRectF(0, 0, w, h), 10, 10)
+        # clip children visually with a rounded outline
+        qp.setPen(QPen(QColor(LINE), 2)); qp.setBrush(Qt.NoBrush)
+        qp.drawRoundedRect(QRectF(1, 1, w - 2, h - 2), 10, 10)
+
+
 class FeaturedCarousel(QWidget):
-    """Featured & Recommended: PIKNOTT CELESTIKA is the main hero card (FEATURED_IDS / catalog featured); arrows, dots and auto-rotate only appear with 2+ cards. Arrows + dots, 8 s auto-rotate (no hover pause); only the pause/play toggle stops it."""
+    """Featured & Recommended: a list of 2 titles renders as a split card (left / right, each clickable). A single id (or a legacy string) is one full-width card. 3+ ids keep the rotating carousel."""
 
     def __init__(self, ui, banner):
         super().__init__()
-        self.banner = banner; self.games = [DreamVineCard(ui, aid) for aid in ui.svc.featured()]
-        self.dv = self.games[0]
-        for g in self.games:
-            g.clicked.connect(ui.open_product)
+        self.ui = ui
+        self.banner = banner
+        ids = list(ui.svc.featured())
+        self.split = None
+        self.games = []
         self.stack = QStackedWidget()
-        for g in self.games:            # COKA (and any other featured ids); other games stay in GAMES and the Library
-            self.stack.addWidget(g)
+        if len(ids) == 2:
+            self.split = SplitFeaturedCard(ui, ids[0], ids[1])
+            self.split.clicked.connect(ui.open_product)
+            self.games = self.split.games
+            self.stack.addWidget(self.split)
+            self.dv = self.split.left
+        else:
+            self.games = [DreamVineCard(ui, aid) for aid in ids]
+            self.dv = self.games[0] if self.games else None
+            for g in self.games:
+                g.clicked.connect(ui.open_product)
+                self.stack.addWidget(g)
         if FEATURED_BANNER:
             self.stack.addWidget(banner)
         else:
@@ -482,7 +573,7 @@ class FeaturedCarousel(QWidget):
         self.pp.setStyleSheet("QPushButton{background:rgba(255,255,255,0.08);border:none;font-size:13px;border-radius:5px;padding:0} QPushButton:hover{background:rgba(92,184,255,0.45)}")
         self.pp.clicked.connect(self.toggle); row.addWidget(self.pp); row.addStretch(1); v.addLayout(row)
         self.timer = QTimer(self, interval=8000, timeout=lambda: self.go(self.stack.currentIndex() + 1)); self.timer.start()
-        if self.stack.count() <= 1:      # a single card: no arrows, dots, pause button or rotation
+        if self.stack.count() <= 1:      # a single card (including a split of two titles): no arrows, dots, pause or rotation
             self.paused = True; self.timer.stop()
             for w in [self.l, self.r, self.pp] + self.dots:
                 w.hide()
@@ -493,8 +584,12 @@ class FeaturedCarousel(QWidget):
         self.stack.setFixedHeight(h); self.banner.setFixedHeight(h)
         for g in self.games:
             g.setFixedHeight(h)
+        if self.split:
+            self.split.setFixedHeight(h)
 
     def go(self, n):
+        if self.stack.count() == 0:
+            return
         n %= self.stack.count(); self.stack.setCurrentIndex(n)
         if not getattr(self, "paused", False):
             self.timer.start()

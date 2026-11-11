@@ -42,6 +42,26 @@ CATALOG = [
             "Keyboard + mouse and basic gamepad support",
         ]),
     dict(
+        id="piknott-sapphire", reg="{A8F3C291-7B46-4E1D-9C52-2D8E4A6F1B70}_is1", name="PIKNOTT SAPPHIRE", repo="piknott-sapphire", category=GAMES,
+        genre="RPG · Monster catching · Cel-shaded",
+        exe="PIKNOTT SAPPHIRE.exe", folder="PIKNOTT SAPPHIRE",
+        portable=["PIKNOTT SAPPHIRE.exe", "PIKNOTT.SAPPHIRE.Portable.exe"], version="1.0.0",
+        license="©2026 EX INC.HYPERION DIGITAL ©2026",
+        tagline="A fully cel-shaded monster-catching RPG. Catch 13 PIKNOTT across the Sapphire region.",
+        about=("Explore the Sapphire region as a boy in a navy jacket. Choose a starter, sneak through tall grass, throw "
+               "PIKCEL balls to catch wild PIKNOTT, and battle them with the same action-order system as PIKNOTT CELESTIKA, "
+               "with Normal / Strong / Agile move styles. Climb from Crystal Vale through Nightpine, Cragspine, Glacier Mere "
+               "and the Sapphire Caves to Frostcrown, and seek the legendary dragon Azurath at Azure Summit. Your index is "
+               "the SAPPHIRE DOK."),
+        features=[
+            "Choose one of three starters at Azure Camp, then catch 13 PIKNOTT with three kinds of PIKCEL balls",
+            "A new Sapphire region: mountains, sapphire caves, a glacier lake and snowy peaks",
+            "Action-order battles with Normal, Strong and Agile move styles",
+            "Team screen, SAPPHIRE DOK and a region map; talk to guides on the trail",
+            "Rest and heal at camp fires; progress is saved automatically",
+            "Keyboard + mouse and basic gamepad support",
+        ]),
+    dict(
         id="fireout-shine", reg="{7E3A91C4-2B6D-4F18-A5C9-3D8E1F0B6A72}_is1", name="\u30d5\u30a1\u30a4\u30a2\u30a2\u30a6\u30c8\u30fb\u30b7\u30e3\u30a4\u30f3", repo="fireout-shine", category=GAMES,
         genre="Racing \u00b7 \u6307\u540d\u624b\u914d\u3055\u308c\u308b GET WANTED \u00b7 Open world",
         exe="FIREOUT SHINE.exe", folder="FIREOUT SHINE",
