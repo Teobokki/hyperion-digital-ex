@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 55,
+ "catalog_version": 56,
  "featured": [
   "piknott-celestika",
   "piknott-sapphire"
@@ -1327,10 +1327,10 @@
    "name": "REX 7 ENGINE REAL EX",
    "repo": "rex7-engine",
    "genre": "Web · Creative · Animation",
-   "tagline": "REX ENGINE: perchance.org in its own built-in engine, plus the REX 7 ELITE image & animation board.",
-   "description": "REX 7 ENGINE REAL EX opens perchance.org inside the app with its own bundled web engine, so there's no separate runtime to install, and your logins and saves persist. REX 7 ELITE is an image board: upload images from Downloads, then move, scale, rotate, layer and draw over them, and export a PNG. Turn on Animation for frames, onion skin, playback and GIF/MP4 export. ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "tagline": "REX ENGINE: perchance.org's AI Photo Generator in its own built-in engine, plus the REX 7 ELITE image & animation board.",
+   "description": "REX 7 ENGINE REAL EX opens perchance.org/ai-photo-generator inside the app with its own bundled web engine, so there's no separate runtime to install, and your logins and saves persist. REX 7 ELITE is an image board: upload images from Downloads, then move, scale, rotate, layer and draw over them, and export a PNG. Turn on Animation for frames, onion skin, playback and GIF/MP4 export. ©2026 EX Inc./HYPERION DIGITAL ©2026",
    "features": [
-    "perchance.org in a bundled web engine: no separate runtime needed",
+    "perchance.org/ai-photo-generator in a bundled web engine: no separate runtime needed",
     "Back, Forward, Reload, Home and address bar; saves and logins persist",
     "Import to board: capture the web page onto your REX 7 ELITE board",
     "REX 7 ELITE image board: upload from Downloads, move, scale, rotate, layers, Bin and Download",
@@ -1348,7 +1348,7 @@
    "portable": [
     "REX 7 ENGINE REAL EX.exe"
    ],
-   "version": "1.0.0",
+   "version": "1.0.1",
    "app_id": "{5B7E2C41-7A0D-4F3E-9C2B-9D4A6B2E81F3}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/rex7-engine/main/latest.json",
    "art": {
@@ -1361,8 +1361,8 @@
      "sha256": "5d8f68e8e5ac3c365e15e76cc2d3782c8d6a5bd14a9a29b452a30327ce0f2154"
     },
     "hero.jpg": {
-     "size": 115792,
-     "sha256": "74194518a18575fbcee76acef9ef5306a5ae2650f894351facd27b39216cd643"
+     "size": 111162,
+     "sha256": "a05c2ebf4c59d71d06b65d25629d0b8477b74b4212720b085e0edcadab0ee0d4"
     },
     "hero_bg.jpg": {
      "size": 20581,
@@ -1373,20 +1373,20 @@
      "sha256": "e39cefdcb6dd2aaefcaeb05085bac05ff30250727137572cb8f064fa3bcb4849"
     },
     "shot0.jpg": {
-     "size": 127693,
-     "sha256": "bbf77087bff8654390117aedf340b109328677a2a74e6123535c6321cf5e5836"
+     "size": 94282,
+     "sha256": "3a6aae52112cf788548f99af43dfcaedb3abc912c345eb9e5ebf40a07137c2f3"
     },
     "shot1.jpg": {
-     "size": 132886,
-     "sha256": "a293111ee4e97d6f1a6ccc03648b625671fc9fbf2bcf9518e0613e30a89f363d"
+     "size": 122404,
+     "sha256": "7070d6184b4f73b981aeb806b93028444a5ad89f2fd0ef1aa23da2afec16fd0c"
     },
     "shot2.jpg": {
-     "size": 150741,
-     "sha256": "306f7f0137998cb6da7e257fb33a059fc2ec2e75c2c2734a90ffdce318eb0035"
+     "size": 138147,
+     "sha256": "2cbe5649cf0fe105e2958813c6c83efc1bc3aaaddf325b8d34ecb7293f0d43cf"
     },
     "shot3.jpg": {
-     "size": 146869,
-     "sha256": "6e77aeac2d26d3984fc38ff21c8c87c23ffe6d12a9fe7b16f2bc8fb7aa25ab19"
+     "size": 139876,
+     "sha256": "a9c4c60305ef00f04e8ede1435431c95cbd158d15d92136eefd7460769a52513"
     }
    }
   }
@@ -1483,9 +1483,11 @@
   "NOT-TUBE-Setup-1.0.8.exe": 66956307,
   "NOT-TUBE-1.0.8-Portable.exe": 86705522,
   "REX-7-ENGINE-REAL-EX-Setup-1.0.0.exe": 131571837,
-  "REX-7-ENGINE-REAL-EX-Portable-1.0.0.exe": 191747128
+  "REX-7-ENGINE-REAL-EX-Portable-1.0.0.exe": 191747128,
+  "REX-7-ENGINE-REAL-EX-Setup-1.0.1.exe": 131575100,
+  "REX-7-ENGINE-REAL-EX-Portable-1.0.1.exe": 191748952
  },
- "updated": "2026-11-11T23:36:52Z",
+ "updated": "2026-11-11T23:47:00Z",
  "rows": [
   {
    "id": "GAMES",
