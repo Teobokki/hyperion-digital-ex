@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 52,
+ "catalog_version": 53,
  "featured": [
   "piknott-celestika",
   "piknott-sapphire"
@@ -1275,49 +1275,49 @@
    "portable": [
     "NOT TUBE.exe"
    ],
-   "version": "1.0.6",
+   "version": "1.0.7",
    "app_id": "{F7397060-9B24-49F6-AB06-1358C47FDB97}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/not-tube/main/latest.json",
    "art": {
     "capsule.jpg": {
-     "size": 29646,
-     "sha256": "cd0cc3df87ba14c01beb7051a45ff6890813e7c65bdb3b9f4033429e1e87dbcb"
+     "size": 41786,
+     "sha256": "d7b9994154138ee27bc95cbefe24241ae41c35ba6a998f2cbc4e6943f6c3ac85"
     },
     "cover.jpg": {
      "size": 109064,
      "sha256": "34f0ad89f49f03fce5b9c0f15c1b2a12dad6dde912edc6a4d5f09d7e65805710"
     },
     "hero.jpg": {
-     "size": 120990,
-     "sha256": "32925d819a951caddc5ece5c318ded271ce4afa134a1b3c3b480d8e4419ec3eb"
+     "size": 140137,
+     "sha256": "33c677e4ab60572dc584938199189d584af1c8d711f7b0a30319da489fa5b850"
     },
     "hero_bg.jpg": {
-     "size": 120022,
-     "sha256": "6d576c8b1c11b8f5ed10c72397ec707bf0f2a701dac870aa0507ce0796a011ce"
+     "size": 27932,
+     "sha256": "7c85dfefb23e29e8c6b2fed49ab98abf7eb5ae88942f246d557186c80ec50a0e"
     },
     "icon.png": {
      "size": 39703,
      "sha256": "13f0e926bce8f029b2a704fb94c8616bc49684c8e1b32f6f0a95a00e1ecaac5f"
     },
     "shot0.jpg": {
-     "size": 242324,
-     "sha256": "97e9e41ca33b6eee5042be47660e681befe235e3db64574a89bddbe69142d362"
+     "size": 242166,
+     "sha256": "8d7648f39d150c5efe520b9bf72fdd57778c7f2f9ce44745b9123066b295f1d7"
     },
     "shot1.jpg": {
-     "size": 151574,
-     "sha256": "0ed44aa188a2aa0da1139d7dc43284454403bf0164d86c834cd4541382f72d48"
+     "size": 236494,
+     "sha256": "e598e30d281cd3ce212d8c1528ea167854fbe86d20291f3dde85159d64c726bd"
     },
     "shot2.jpg": {
-     "size": 162157,
-     "sha256": "267bcdb38351f55dae50a357793388500ec427b4f7a41ae0a8d6f07131aad4b8"
+     "size": 256982,
+     "sha256": "4d8d9a366ceed620cbf1817fd21f6682af820a95e8fa5766baeb7ac500e46bb0"
     },
     "shot3.jpg": {
-     "size": 97192,
-     "sha256": "fb3f237e290a7d417ba00831a697ed662b63615577a3be129257a37124375606"
+     "size": 93475,
+     "sha256": "7b64994d7f6f098f72202216b9b1fc1765518c2525a6e72e65c18ce288b46f82"
     },
     "shot4.jpg": {
-     "size": 68468,
-     "sha256": "55972af4f548bfdd8717437c978f455132fa3e2812db4a9ec4d5d94d636d8b38"
+     "size": 68577,
+     "sha256": "9c18af880f2666b85f8a6c96b59bc4336c0519e69ab0f62a826798b7ff16a009"
     }
    }
   }
@@ -1410,9 +1410,11 @@
   "FIREOUT-ONLINE-1.0.0-Windows-x64.zip": 292246181,
   "PIKNOTT.SAPPHIRE.Setup.1.0.0.exe": 30695441,
   "PIKNOTT.SAPPHIRE.1.0.0.Windows.x64.zip": 44751650,
-  "PIKNOTT.SAPPHIRE.Portable.exe": 44654765
+  "PIKNOTT.SAPPHIRE.Portable.exe": 44654765,
+  "NOT-TUBE-Setup-1.0.7.exe": 66947385,
+  "NOT-TUBE-1.0.7-Windows-x64.zip": 86973595
  },
- "updated": "2026-11-11T20:25:36Z",
+ "updated": "2026-11-11T21:21:55Z",
  "rows": [
   {
    "id": "GAMES",
