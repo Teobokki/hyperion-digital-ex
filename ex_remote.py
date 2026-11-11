@@ -153,7 +153,7 @@ def validate_title(t, rows=None):
     if not m or ".." in lu:
         raise ValueError("latest_url")
     out["latest_url"] = lu; out["latest_repo"], out["latest_path"] = m.group(1), m.group(2)
-    for k, n in (("genre", 200), ("tagline", 600), ("about", 6000), ("publisher", 120), ("developer", 120), ("release", 40)):
+    for k, n in (("genre", 200), ("tagline", 600), ("about", 6000), ("publisher", 120), ("developer", 120), ("release", 40), ("license", 200)):
         v = t.get(k if k != "about" else ("description" if "description" in t else "about"))
         if v is not None:
             if not isinstance(v, str) or len(v) > n:

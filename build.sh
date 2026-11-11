@@ -2,7 +2,7 @@ set -e
 export WINEPREFIX=/workspace/exwifi/.wine WINEDEBUG=-all
 cd /workspace/hde-fresh
 PY='C:\Python311\python.exe'
-V=2.96
+V=2.97
 wine "$PY" -m PyInstaller --noconfirm "HYPERION DIGITAL EX.spec" > build_dir.log 2>&1; echo DIR_DONE
 wine "C:\\InnoSetup\\ISCC.exe" installer.iss > build_iss.log 2>&1; echo ISS_DONE
 wine "$PY" -m PyInstaller --noconfirm --workpath build_onefile --distpath dist_onefile "HYPERION DIGITAL EX onefile.spec" > build_1f.log 2>&1

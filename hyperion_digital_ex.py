@@ -829,7 +829,11 @@ class ProductPage(QWidget):
         rows = [("CATEGORY", a["category"]), ("GENRE", a["genre"]), ("LATEST VERSION", svc.latest_version(aid)),
                 ("INSTALLED", (inst + ("  \u2B06 UPDATE" if svc.outdated_copies(aid) else "  \u2714 up to date")) if inst else "Not installed"),
                 ("DOWNLOAD SIZE", svc.size_text(aid)),
-                ("DEVELOPER", "EX Inc."), ("PUBLISHER", a.get("publisher", PUBLISHER)), ("PLATFORM", "Windows 10/11 x64"), ("SOURCE", "github.com/Teobokki/" + a["repo"])]
+                ("DEVELOPER", a.get("developer", "EX Inc.")), ("PUBLISHER", a.get("publisher", PUBLISHER)), ("PLATFORM", "Windows 10/11 x64"), ("SOURCE", "github.com/Teobokki/" + a["repo"])]
+        # Per-title LICENSE only from the catalog field. Hide a HYPERION license when the title sets its own developer/publisher (FIREOUT ONLINE must not show one).
+        lic = (a.get("license") or "").strip() if isinstance(a.get("license"), str) else ""
+        if lic and not ((a.get("developer") or a.get("publisher")) and "HYPERION" in lic.upper()):
+            rows.insert(-2, ("LICENSE", lic))
         for r, (k, val) in enumerate(rows):
             g.addWidget(lbl(k, "small"), r, 0); vv = lbl(val); vv.setStyleSheet("color:%s;font-size:12px" % ACCENT if k == "SOURCE" else "font-size:12px"); g.addWidget(vv, r, 1)
         info.setFixedWidth(340); side.addWidget(info); side.addStretch(1)
