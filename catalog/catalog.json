@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 51,
+ "catalog_version": 52,
  "featured": [
   "piknott-celestika",
   "piknott-sapphire"
@@ -1412,7 +1412,7 @@
   "PIKNOTT.SAPPHIRE.1.0.0.Windows.x64.zip": 44751650,
   "PIKNOTT.SAPPHIRE.Portable.exe": 44654765
  },
- "updated": "2026-11-11T20:12:45Z",
+ "updated": "2026-11-11T20:25:36Z",
  "rows": [
   {
    "id": "GAMES",
@@ -1447,5 +1447,6 @@
  ],
  "library_pinned": [
   "piknott-celestika"
- ]
+ ],
+ "spotlight": "not-tube"
 }
