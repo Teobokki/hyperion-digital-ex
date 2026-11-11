@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 50,
+ "catalog_version": 51,
  "featured": [
   "piknott-celestika",
   "piknott-sapphire"
@@ -102,6 +102,10 @@
     "capsule.jpg": {
      "size": 50448,
      "sha256": "1ad72953140b5b80e1fba68f85ebc3057dd0b4865439db2e13f356bf58400b7f"
+    },
+    "cover.jpg": {
+     "size": 876846,
+     "sha256": "733670775c0c851f32c1ac7ac32cece954613efa30d36c6080361821e9f8140a"
     },
     "hero.jpg": {
      "size": 123088,
@@ -1408,7 +1412,7 @@
   "PIKNOTT.SAPPHIRE.1.0.0.Windows.x64.zip": 44751650,
   "PIKNOTT.SAPPHIRE.Portable.exe": 44654765
  },
- "updated": "2026-11-11T19:15:03Z",
+ "updated": "2026-11-11T20:12:45Z",
  "rows": [
   {
    "id": "GAMES",
