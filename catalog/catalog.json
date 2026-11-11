@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 54,
+ "catalog_version": 55,
  "featured": [
   "piknott-celestika",
   "piknott-sapphire"
@@ -1320,6 +1320,75 @@
      "sha256": "9c18af880f2666b85f8a6c96b59bc4336c0519e69ab0f62a826798b7ff16a009"
     }
    }
+  },
+  {
+   "id": "rex7-engine",
+   "row": "APPS",
+   "name": "REX 7 ENGINE REAL EX",
+   "repo": "rex7-engine",
+   "genre": "Web · Creative · Animation",
+   "tagline": "REX ENGINE: perchance.org in its own built-in engine, plus the REX 7 ELITE image & animation board.",
+   "description": "REX 7 ENGINE REAL EX opens perchance.org inside the app with its own bundled web engine, so there's no separate runtime to install, and your logins and saves persist. REX 7 ELITE is an image board: upload images from Downloads, then move, scale, rotate, layer and draw over them, and export a PNG. Turn on Animation for frames, onion skin, playback and GIF/MP4 export. ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "features": [
+    "perchance.org in a bundled web engine: no separate runtime needed",
+    "Back, Forward, Reload, Home and address bar; saves and logins persist",
+    "Import to board: capture the web page onto your REX 7 ELITE board",
+    "REX 7 ELITE image board: upload from Downloads, move, scale, rotate, layers, Bin and Download",
+    "Brush, eraser, fill, colour picker, sizes, undo/redo and canvas presets",
+    "Optional Animation: frame timeline, onion skin, play/loop at 1-30 FPS",
+    "Export PNG, GIF, MP4 and PNG sequence; save .rex7 projects",
+    "Per-user install, no admin needed, plus a portable exe"
+   ],
+   "publisher": "EX Inc./HYPERION DIGITAL",
+   "developer": "EX Inc./HYPERION DIGITAL",
+   "release": "2026",
+   "reg": "{5B7E2C41-7A0D-4F3E-9C2B-9D4A6B2E81F3}_is1",
+   "exe": "REX 7 ENGINE REAL EX.exe",
+   "folder": "REX 7 ENGINE REAL EX",
+   "portable": [
+    "REX 7 ENGINE REAL EX.exe"
+   ],
+   "version": "1.0.0",
+   "app_id": "{5B7E2C41-7A0D-4F3E-9C2B-9D4A6B2E81F3}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/rex7-engine/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 24219,
+     "sha256": "3d16018c193db4b178f470722712ce1fea2273596288b71bc37ea584068ff9f7"
+    },
+    "cover.jpg": {
+     "size": 111420,
+     "sha256": "5d8f68e8e5ac3c365e15e76cc2d3782c8d6a5bd14a9a29b452a30327ce0f2154"
+    },
+    "hero.jpg": {
+     "size": 115792,
+     "sha256": "74194518a18575fbcee76acef9ef5306a5ae2650f894351facd27b39216cd643"
+    },
+    "hero_bg.jpg": {
+     "size": 20581,
+     "sha256": "1ba78e96721b2716ea0ce031577602888b703845dd2b87f119d7311552051496"
+    },
+    "icon.png": {
+     "size": 41758,
+     "sha256": "e39cefdcb6dd2aaefcaeb05085bac05ff30250727137572cb8f064fa3bcb4849"
+    },
+    "shot0.jpg": {
+     "size": 127693,
+     "sha256": "bbf77087bff8654390117aedf340b109328677a2a74e6123535c6321cf5e5836"
+    },
+    "shot1.jpg": {
+     "size": 132886,
+     "sha256": "a293111ee4e97d6f1a6ccc03648b625671fc9fbf2bcf9518e0613e30a89f363d"
+    },
+    "shot2.jpg": {
+     "size": 150741,
+     "sha256": "306f7f0137998cb6da7e257fb33a059fc2ec2e75c2c2734a90ffdce318eb0035"
+    },
+    "shot3.jpg": {
+     "size": 146869,
+     "sha256": "6e77aeac2d26d3984fc38ff21c8c87c23ffe6d12a9fe7b16f2bc8fb7aa25ab19"
+    }
+   }
   }
  ],
  "known_sizes": {
@@ -1412,9 +1481,11 @@
   "PIKNOTT.SAPPHIRE.1.0.0.Windows.x64.zip": 44751650,
   "PIKNOTT.SAPPHIRE.Portable.exe": 44654765,
   "NOT-TUBE-Setup-1.0.8.exe": 66956307,
-  "NOT-TUBE-1.0.8-Portable.exe": 86705522
+  "NOT-TUBE-1.0.8-Portable.exe": 86705522,
+  "REX-7-ENGINE-REAL-EX-Setup-1.0.0.exe": 131571837,
+  "REX-7-ENGINE-REAL-EX-Portable-1.0.0.exe": 191747128
  },
- "updated": "2026-11-11T23:15:37Z",
+ "updated": "2026-11-11T23:36:52Z",
  "rows": [
   {
    "id": "GAMES",
