@@ -1,12 +1,12 @@
 {
-  "version": "2.98",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v2.98",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.98/HYPERION.DIGITAL.EX.Setup.2.98.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.98/HYPERION.DIGITAL.EX.Setup.2.98.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.98/HYPERION.DIGITAL.EX.2.98.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.98/HYPERION.DIGITAL.EX.Portable.exe",
-  "sha256": "f1711d38af4da93355f6a4b366ec2010214b59d9c4a792aa611d4ed935118da8",
-  "zip_sha256": "f1faf434364b367d49f1a536b57405a3015bf5f7d8ea194dbb43958e79782ce7",
+  "version": "2.99",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v2.99",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.99/HYPERION.DIGITAL.EX.Setup.2.99.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.99/HYPERION.DIGITAL.EX.Setup.2.99.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.99/HYPERION.DIGITAL.EX.2.99.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.99/HYPERION.DIGITAL.EX.Portable.exe",
+  "sha256": "96fb3ece0d514dc35452b2d5bfa3bfcf8b5b8de9c70ddda4c7cdcdfaeef407b5",
+  "zip_sha256": "d3d4539a86058fe0ff79ba47c1cdc3a80afc0b0bc63e27f40cf401d31edde189",
   "released": "2026-11-11",
-  "notes": "Featured & Recommended can now show two titles as a split card: the left half and the right half each open their own product page. A single featured title (or a legacy string) still uses the full-width card, and three or more titles keep the rotating carousel."
+  "notes": "Store Home has a catalog-driven spotlight card above Featured & Recommended. Catalog v52 sets that spotlight to NOT TUBE: a full-width card that uses the existing NOT TUBE hero art fitted whole, opens the NOT TUBE product page, and has the usual Install / Open action. The Featured & Recommended split of PIKNOTT CELESTIKA and PIKNOTT SAPPHIRE is unchanged. Offline, the built-in fallback also shows the NOT TUBE spotlight. This build also bundles the PIKNOTT CELESTIKA cover so that half of the split card is not cropped on first run."
 }
