@@ -1,12 +1,12 @@
 {
-  "version": "2.96",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v2.96",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.96/HYPERION.DIGITAL.EX.Setup.2.96.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.96/HYPERION.DIGITAL.EX.Setup.2.96.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.96/HYPERION.DIGITAL.EX.2.96.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.96/HYPERION.DIGITAL.EX.Portable.exe",
-  "sha256": "3131228cc94889ca047d0502172e5f45109e707a0f040ede1638d7e532a23ce5",
-  "zip_sha256": "c747d398e4d8cc8821507ceb8bab4f97503ab20f4a7ee1bec282f6c6adc59dc7",
-  "released": "2026-11-08",
-  "notes": "PIKNOTT CELESTIKA is the Featured & Recommended main card and is pinned at the top of Library. Offline fallbacks match the live catalog. Title lists still refresh through CHECK FOR STORE UPDATES."
+  "version": "2.97",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v2.97",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.97/HYPERION.DIGITAL.EX.Setup.2.97.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.97/HYPERION.DIGITAL.EX.Setup.2.97.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.97/HYPERION.DIGITAL.EX.2.97.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.97/HYPERION.DIGITAL.EX.Portable.exe",
+  "sha256": "16fc162dceca9082cbcbafcbcec9db7f2b87c3571a1bfe828800819f20abfc43",
+  "zip_sha256": "117cfe2b8701ef928256456a9c54d45a689a02417f23dc34e3dbfc4ce87502cb",
+  "released": "2026-11-11",
+  "notes": "Store product pages now show each title's catalog developer (for example FIREOUT ONLINE shows Developer EX ROMANIA and Publisher EX Inc.). A per-title license line is only shown from the catalog license field, and a HYPERION license is hidden when a title sets its own developer or publisher."
 }
