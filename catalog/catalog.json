@@ -1,8 +1,8 @@
 {
  "schema": 1,
- "catalog_version": 48,
+ "catalog_version": 49,
  "featured": [
-  "piknott-celestika"
+  "not-tube"
  ],
  "titles": [
   {
@@ -1330,7 +1330,7 @@
   "FIREOUT-ONLINE-Setup-1.0.0.exe": 231278864,
   "FIREOUT-ONLINE-1.0.0-Windows-x64.zip": 292246181
  },
- "updated": "2026-11-11T16:54:03Z",
+ "updated": "2026-11-11T18:38:56Z",
  "rows": [
   {
    "id": "GAMES",
