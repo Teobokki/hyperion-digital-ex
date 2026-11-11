@@ -1,12 +1,12 @@
 {
-  "version": "2.97",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v2.97",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.97/HYPERION.DIGITAL.EX.Setup.2.97.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.97/HYPERION.DIGITAL.EX.Setup.2.97.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.97/HYPERION.DIGITAL.EX.2.97.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.97/HYPERION.DIGITAL.EX.Portable.exe",
-  "sha256": "16fc162dceca9082cbcbafcbcec9db7f2b87c3571a1bfe828800819f20abfc43",
-  "zip_sha256": "117cfe2b8701ef928256456a9c54d45a689a02417f23dc34e3dbfc4ce87502cb",
+  "version": "2.98",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v2.98",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.98/HYPERION.DIGITAL.EX.Setup.2.98.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.98/HYPERION.DIGITAL.EX.Setup.2.98.exe",
+  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.98/HYPERION.DIGITAL.EX.2.98.Windows.x64.zip",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.98/HYPERION.DIGITAL.EX.Portable.exe",
+  "sha256": "f1711d38af4da93355f6a4b366ec2010214b59d9c4a792aa611d4ed935118da8",
+  "zip_sha256": "f1faf434364b367d49f1a536b57405a3015bf5f7d8ea194dbb43958e79782ce7",
   "released": "2026-11-11",
-  "notes": "Store product pages now show each title's catalog developer (for example FIREOUT ONLINE shows Developer EX ROMANIA and Publisher EX Inc.). A per-title license line is only shown from the catalog license field, and a HYPERION license is hidden when a title sets its own developer or publisher."
+  "notes": "Featured & Recommended can now show two titles as a split card: the left half and the right half each open their own product page. A single featured title (or a legacy string) still uses the full-width card, and three or more titles keep the rotating carousel."
 }
