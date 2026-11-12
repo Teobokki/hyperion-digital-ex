@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 58,
+ "catalog_version": 59,
  "featured": [
   "piknott-celestika",
   "piknott-sapphire"
@@ -1409,6 +1409,76 @@
      "sha256": "a9c4c60305ef00f04e8ede1435431c95cbd158d15d92136eefd7460769a52513"
     }
    }
+  },
+  {
+   "id": "mixe",
+   "row": "APPS",
+   "name": "MIXE",
+   "repo": "mixe",
+   "genre": "Tools · Emulator · Apps",
+   "tagline": "Run Android apps on your PC — QEMU engine + Android-x86, sideload any APK. No Play Store bundled.",
+   "description": "MIXE is a BlueStacks-style shell by EX Inc. that boots a real Android-x86 guest through bundled open-source QEMU. Download the system image on first run, start the guest, then sideload APKs with adb. Shared folder at Documents/MIXE/Shared. No Google Play Services. ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "features": [
+    "Real Android-x86 guest via bundled QEMU (qemu-system-x86_64)",
+    "First-run HTTPS download of android-x86_64-9.0-r2.iso with SHA-1 verify",
+    "Install APK: drag-and-drop or browse; adb push + pm install",
+    "Sidebar controls: Back, Home, Recents, Rotate, Volume, Shake",
+    "Keyboard mapping pad for game-oriented keyevents",
+    "WHPX acceleration when Windows Hypervisor Platform is on; clear BIOS guidance if not",
+    "Shared folder at Documents/MIXE/Shared",
+    "Per-user install, no admin needed, plus a portable exe"
+   ],
+   "publisher": "EX Inc./HYPERION DIGITAL",
+   "developer": "EX Inc./HYPERION DIGITAL",
+   "release": "2026",
+   "reg": "{A1D8E4C2-9F70-4B3E-8C15-6D2A9E7B4F01}_is1",
+   "exe": "MIXE.exe",
+   "folder": "MIXE",
+   "portable": [
+    "MIXE.exe",
+    "MIXE Portable.exe"
+   ],
+   "version": "1.0.0",
+   "app_id": "{A1D8E4C2-9F70-4B3E-8C15-6D2A9E7B4F01}",
+   "latest_url": "https://raw.githubusercontent.com/Teobokki/mixe/main/latest.json",
+   "art": {
+    "capsule.jpg": {
+     "size": 25442,
+     "sha256": "538003e2a08206be6e46bda5f3f35b863f4d5074b672daf8acf93cc5d21f9f97"
+    },
+    "cover.jpg": {
+     "size": 106455,
+     "sha256": "1c424d8e4278e6b82db01ec1029c39e484e1062fbf5d1218c0f79af82aec0e01"
+    },
+    "hero.jpg": {
+     "size": 64298,
+     "sha256": "1f5a2d8b6a8ebf04c02d030db2bd0e2609b6f24932279573e43e64db9d709cd0"
+    },
+    "hero_bg.jpg": {
+     "size": 21736,
+     "sha256": "dff3e2da488cf8df8d9ad7aeb7104ac998a679a4cc78801c3b0a0d7689a10a0a"
+    },
+    "icon.png": {
+     "size": 4619,
+     "sha256": "55bbd8681fddd1ef03577c4dfa74a7a849a69d60a3a5f14f9613c9c44b4c4003"
+    },
+    "shot0.jpg": {
+     "size": 106455,
+     "sha256": "1c424d8e4278e6b82db01ec1029c39e484e1062fbf5d1218c0f79af82aec0e01"
+    },
+    "shot1.jpg": {
+     "size": 57110,
+     "sha256": "5e3137ad767aad3f6a6bbb649f01d1acec88d376d9193c29f5446bcdd39d9b0f"
+    },
+    "shot2.jpg": {
+     "size": 93390,
+     "sha256": "7cd916ae74bc357f486d83ea62a937751336059a829afcae4d3f08b48de2d131"
+    },
+    "shot3.jpg": {
+     "size": 55647,
+     "sha256": "11b18f9a5627e2a57e7db4562ac04cafcffd4d9a1208167f518d342e79d5431a"
+    }
+   }
   }
  ],
  "known_sizes": {
@@ -1511,7 +1581,7 @@
   "EPISODIA-Setup-1.1.3.exe": 160339358,
   "EPISODIA-1.1.3-Portable.exe": 190221909
  },
- "updated": "2026-11-12T18:46:15Z",
+ "updated": "2026-11-12T20:18:21Z",
  "rows": [
   {
    "id": "GAMES",
