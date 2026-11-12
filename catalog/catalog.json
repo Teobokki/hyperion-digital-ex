@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 56,
+ "catalog_version": 57,
  "featured": [
   "piknott-celestika",
   "piknott-sapphire"
@@ -1327,10 +1327,10 @@
    "name": "REX 7 ENGINE REAL EX",
    "repo": "rex7-engine",
    "genre": "Web · Creative · Animation",
-   "tagline": "REX ENGINE: perchance.org's AI Photo Generator in its own built-in engine, plus the REX 7 ELITE image & animation board.",
-   "description": "REX 7 ENGINE REAL EX opens perchance.org/ai-photo-generator inside the app with its own bundled web engine, so there's no separate runtime to install, and your logins and saves persist. REX 7 ELITE is an image board: upload images from Downloads, then move, scale, rotate, layer and draw over them, and export a PNG. Turn on Animation for frames, onion skin, playback and GIF/MP4 export. ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "tagline": "REX ENGINE: perchance.org's AI Photo Generator on your PC's web runtime, plus the REX 7 ELITE image & animation board.",
+   "description": "REX 7 ENGINE REAL EX opens perchance.org/ai-photo-generator inside the app using your PC's web runtime (Setup installs it if it's missing), and your logins and saves persist. REX 7 ELITE is an image board: upload images from Downloads, then move, scale, rotate, layer and draw over them, and export a PNG. Turn on Animation for frames, onion skin, playback and GIF/MP4 export. ©2026 EX Inc./HYPERION DIGITAL ©2026",
    "features": [
-    "perchance.org/ai-photo-generator in a bundled web engine: no separate runtime needed",
+    "perchance.org/ai-photo-generator on the PC's web runtime; Setup installs the runtime if it's missing",
     "Back, Forward, Reload, Home and address bar; saves and logins persist",
     "Import to board: capture the web page onto your REX 7 ELITE board",
     "REX 7 ELITE image board: upload from Downloads, move, scale, rotate, layers, Bin and Download",
@@ -1348,7 +1348,7 @@
    "portable": [
     "REX 7 ENGINE REAL EX.exe"
    ],
-   "version": "1.0.1",
+   "version": "1.0.2",
    "app_id": "{5B7E2C41-7A0D-4F3E-9C2B-9D4A6B2E81F3}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/rex7-engine/main/latest.json",
    "art": {
@@ -1485,9 +1485,11 @@
   "REX-7-ENGINE-REAL-EX-Setup-1.0.0.exe": 131571837,
   "REX-7-ENGINE-REAL-EX-Portable-1.0.0.exe": 191747128,
   "REX-7-ENGINE-REAL-EX-Setup-1.0.1.exe": 131575100,
-  "REX-7-ENGINE-REAL-EX-Portable-1.0.1.exe": 191748952
+  "REX-7-ENGINE-REAL-EX-Portable-1.0.1.exe": 191748952,
+  "REX-7-ENGINE-REAL-EX-Setup-1.0.2.exe": 60687973,
+  "REX-7-ENGINE-REAL-EX-Portable-1.0.2.exe": 85189182
  },
- "updated": "2026-11-11T23:47:00Z",
+ "updated": "2026-11-12T15:04:54Z",
  "rows": [
   {
    "id": "GAMES",
