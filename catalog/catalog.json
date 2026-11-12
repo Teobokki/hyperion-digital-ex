@@ -1193,11 +1193,13 @@
    "repo": "gaechu-trass",
    "genre": "Creative · Video · Episode",
    "tagline": "Korean-first episode maker (formerly 개추 트래스): ⌂ EPISODIA maker first, 에피소드 watching second. Optional TTS SUBTITLES per scene (KO · JA · EN · RO).",
-   "description": "EPISODIA (formerly 개추 트래스) is a Korean-first cinematic episode maker by EX Inc. The top bar lists ⌂ EPISODIA (maker) first and 에피소드 (watching) second; it opens on the maker board. Add any number of pictures from Downloads (no image limit) and compose a widescreen episode with title card, Ken Burns scenes, crossfades, and end card. Every scene has its own optional TTS SUBTITLES field — type a line in Korean, Japanese, English, or Romanian and it appears as an on-screen caption and is narrated in the exported MP4; leave it empty and the scene stays silent. Romanian uses ro-RO-EmilNeural online (Windows Romanian voice offline) and DejaVu Sans so ă â î ș ț burn in correctly. 에피소드 home keeps the bundled teaser EPISODIA (에피소드 1) and your exports with an in-app player (재생, 일시정지, 정지, seek, 전체 화면). UI is Korean; titles and subtitles accept Hangul, Japanese, English, and Romanian. ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "description": "EPISODIA (formerly 개추 트래스) is a Korean-first cinematic episode maker by EX Inc. The top bar lists ⌂ EPISODIA (maker) first and 에피소드 (watching) second; it opens on the maker board. Add any number of pictures from Downloads (no image limit) and compose a widescreen episode with title card, Ken Burns scenes, crossfades, and end card. Every scene has its own optional TTS SUBTITLES field — type a line in Korean, Japanese, English, or Romanian and it appears as an on-screen caption and is narrated in the exported MP4; leave it empty and the scene stays silent. A 음성 언어 (voice language) selector lets you force 한국어 / 日本語 / English / Română, and plain-ASCII Romanian is auto-detected too. Romanian uses the real Romanian voices ro-RO-EmilNeural (male) or ro-RO-AlinaNeural (female) online, and a bundled offline Romanian voice with a real accent when there is no internet — it never reads Romanian in an English voice. DejaVu Sans burns ă â î ș ț correctly. 에피소드 home keeps the bundled teaser EPISODIA (에피소드 1) and your exports with an in-app player (재생, 일시정지, 정지, seek, 전체 화면). UI is Korean; titles and subtitles accept Hangul, Japanese, English, and Romanian. ©2026 EX Inc./HYPERION DIGITAL ©2026",
    "features": [
     "Top bar: ⌂ EPISODIA maker first, 에피소드 watching second — opens on maker",
     "Top bar badge: SUPPORTS KOREAN TTS · JAPANESE TTS · ENGLISH TTS · ROMANIAN TTS",
     "Optional TTS SUBTITLES per scene: caption + voice narration (한국어 · 日本語 · English · Română)",
+    "음성 언어 selector: force 한국어 · 日本語 · English · Română (Emil male / Alina female), or Auto-detect",
+    "Offline Romanian with a real accent (bundled voice) — no English fallback for Romanian",
     "에피소드 home with featured bundled teaser EPISODIA",
     "In-app cinematic player: 재생, 일시정지, 정지, timeline, 전체 화면",
     "Add any number of pictures from Downloads — no image limit",
@@ -1216,7 +1218,7 @@
    "portable": [
     "EPISODIA.exe"
    ],
-   "version": "1.1.2",
+   "version": "1.1.3",
    "app_id": "{09A0D0B7-E132-4385-B05F-6E708A3A15B7}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/gaechu-trass/main/latest.json",
    "art": {
@@ -1505,9 +1507,11 @@
   "REX-7-ENGINE-REAL-EX-Setup-1.0.2.exe": 60687973,
   "REX-7-ENGINE-REAL-EX-Portable-1.0.2.exe": 85189182,
   "NOT-TUBE-Setup-1.0.9.exe": 67017667,
-  "NOT-TUBE-1.0.9-Portable.exe": 86772821
+  "NOT-TUBE-1.0.9-Portable.exe": 86772821,
+  "EPISODIA-Setup-1.1.3.exe": 160339358,
+  "EPISODIA-1.1.3-Portable.exe": 190221909
  },
- "updated": "2026-11-12T17:57:53Z",
+ "updated": "2026-11-12T18:46:15Z",
  "rows": [
   {
    "id": "GAMES",
