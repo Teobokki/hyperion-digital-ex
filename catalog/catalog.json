@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 57,
+ "catalog_version": 58,
  "featured": [
   "piknott-celestika",
   "piknott-sapphire"
@@ -1258,6 +1258,7 @@
    "tagline": "NOT TUBE THE YOUTUBE RIVAL APP NOW AVAILABLE REGAIN YOUR USER RIGHTS AND MORE",
    "description": "NOT TUBE THE YOUTUBE RIVAL APP NOW AVAILABLE REGAIN YOUR USER RIGHTS AND MORE ©2026 EX Inc./HYPERION DIGITAL ©2026",
    "features": [
+    "Not AI: key moments with clickable timestamps, plain-language search, title & tag helper and transparent picks, all on this PC",
     "Make your own channel and upload videos to Home in NOT TUBE STUDIO",
     "Featured channels on Home with glamorous AI-generated try-on haul videos",
     "NOT SHORTS: vertical short videos with a looping swipe-style player",
@@ -1275,7 +1276,7 @@
    "portable": [
     "NOT TUBE.exe"
    ],
-   "version": "1.0.8",
+   "version": "1.0.9",
    "app_id": "{F7397060-9B24-49F6-AB06-1358C47FDB97}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/not-tube/main/latest.json",
    "art": {
@@ -1300,22 +1301,38 @@
      "sha256": "13f0e926bce8f029b2a704fb94c8616bc49684c8e1b32f6f0a95a00e1ecaac5f"
     },
     "shot0.jpg": {
+     "size": 192877,
+     "sha256": "45e66cae6db27bb912646c9316b25af1cc5efdfdccb8328a82d50a554fb4c305"
+    },
+    "shot1.jpg": {
+     "size": 300988,
+     "sha256": "c4e774bb313cb88ade9bcac41f72ee6e2df24b30e46a95304a902cd668031a7c"
+    },
+    "shot2.jpg": {
+     "size": 139727,
+     "sha256": "b686bd32a92255e9664b96500f86aa539daf09d8d5616256425898c3238d4aa7"
+    },
+    "shot3.jpg": {
+     "size": 319002,
+     "sha256": "7101cfe140594b5d6e8f170440d063dcb644a4b08b615577cf00ad5dde7f9bdf"
+    },
+    "shot4.jpg": {
      "size": 242166,
      "sha256": "8d7648f39d150c5efe520b9bf72fdd57778c7f2f9ce44745b9123066b295f1d7"
     },
-    "shot1.jpg": {
+    "shot5.jpg": {
      "size": 236494,
      "sha256": "e598e30d281cd3ce212d8c1528ea167854fbe86d20291f3dde85159d64c726bd"
     },
-    "shot2.jpg": {
+    "shot6.jpg": {
      "size": 256982,
      "sha256": "4d8d9a366ceed620cbf1817fd21f6682af820a95e8fa5766baeb7ac500e46bb0"
     },
-    "shot3.jpg": {
+    "shot7.jpg": {
      "size": 93475,
      "sha256": "7b64994d7f6f098f72202216b9b1fc1765518c2525a6e72e65c18ce288b46f82"
     },
-    "shot4.jpg": {
+    "shot8.jpg": {
      "size": 68577,
      "sha256": "9c18af880f2666b85f8a6c96b59bc4336c0519e69ab0f62a826798b7ff16a009"
     }
@@ -1480,16 +1497,16 @@
   "PIKNOTT.SAPPHIRE.Setup.1.0.0.exe": 30695441,
   "PIKNOTT.SAPPHIRE.1.0.0.Windows.x64.zip": 44751650,
   "PIKNOTT.SAPPHIRE.Portable.exe": 44654765,
-  "NOT-TUBE-Setup-1.0.8.exe": 66956307,
-  "NOT-TUBE-1.0.8-Portable.exe": 86705522,
   "REX-7-ENGINE-REAL-EX-Setup-1.0.0.exe": 131571837,
   "REX-7-ENGINE-REAL-EX-Portable-1.0.0.exe": 191747128,
   "REX-7-ENGINE-REAL-EX-Setup-1.0.1.exe": 131575100,
   "REX-7-ENGINE-REAL-EX-Portable-1.0.1.exe": 191748952,
   "REX-7-ENGINE-REAL-EX-Setup-1.0.2.exe": 60687973,
-  "REX-7-ENGINE-REAL-EX-Portable-1.0.2.exe": 85189182
+  "REX-7-ENGINE-REAL-EX-Portable-1.0.2.exe": 85189182,
+  "NOT-TUBE-Setup-1.0.9.exe": 67017667,
+  "NOT-TUBE-1.0.9-Portable.exe": 86772821
  },
- "updated": "2026-11-12T15:04:54Z",
+ "updated": "2026-11-12T17:43:10Z",
  "rows": [
   {
    "id": "GAMES",
