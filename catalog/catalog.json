@@ -1192,19 +1192,20 @@
    "name": "EPISODIA",
    "repo": "gaechu-trass",
    "genre": "Creative · Video · Episode",
-   "tagline": "Korean-first episode maker (formerly 개추 트래스): ⌂ EPISODIA maker first, 에피소드 watching second. Optional TTS SUBTITLES per scene.",
-   "description": "EPISODIA (formerly 개추 트래스) is a Korean-first cinematic episode maker by EX Inc. The top bar lists ⌂ EPISODIA (maker) first and 에피소드 (watching) second; it opens on the maker board. Add any number of pictures from Downloads (no image limit) and compose a widescreen episode with title card, Ken Burns scenes, crossfades, and end card. Every scene has its own optional TTS SUBTITLES field — type a line in Korean, Japanese, or English and it appears as an on-screen caption and is narrated in the exported MP4; leave it empty and the scene stays silent. 에피소드 home keeps the bundled teaser EPISODIA (에피소드 1) and your exports with an in-app player (재생, 일시정지, 정지, seek, 전체 화면). UI is Korean; titles and subtitles accept Hangul, Japanese, and English. ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "tagline": "Korean-first episode maker (formerly 개추 트래스): ⌂ EPISODIA maker first, 에피소드 watching second. Optional TTS SUBTITLES per scene (KO · JA · EN · RO).",
+   "description": "EPISODIA (formerly 개추 트래스) is a Korean-first cinematic episode maker by EX Inc. The top bar lists ⌂ EPISODIA (maker) first and 에피소드 (watching) second; it opens on the maker board. Add any number of pictures from Downloads (no image limit) and compose a widescreen episode with title card, Ken Burns scenes, crossfades, and end card. Every scene has its own optional TTS SUBTITLES field — type a line in Korean, Japanese, English, or Romanian and it appears as an on-screen caption and is narrated in the exported MP4; leave it empty and the scene stays silent. Romanian uses ro-RO-EmilNeural online (Windows Romanian voice offline) and DejaVu Sans so ă â î ș ț burn in correctly. 에피소드 home keeps the bundled teaser EPISODIA (에피소드 1) and your exports with an in-app player (재생, 일시정지, 정지, seek, 전체 화면). UI is Korean; titles and subtitles accept Hangul, Japanese, English, and Romanian. ©2026 EX Inc./HYPERION DIGITAL ©2026",
    "features": [
     "Top bar: ⌂ EPISODIA maker first, 에피소드 watching second — opens on maker",
-    "Top bar badge: SUPPORTS KOREAN TTS · JAPANESE TTS · ENGLISH TTS",
-    "Optional TTS SUBTITLES per scene: caption + voice narration (한국어 · 日本語 · English)",
+    "Top bar badge: SUPPORTS KOREAN TTS · JAPANESE TTS · ENGLISH TTS · ROMANIAN TTS",
+    "Optional TTS SUBTITLES per scene: caption + voice narration (한국어 · 日本語 · English · Română)",
     "에피소드 home with featured bundled teaser EPISODIA",
     "In-app cinematic player: 재생, 일시정지, 정지, timeline, 전체 화면",
     "Add any number of pictures from Downloads — no image limit",
     "Exports appear on home so you can rewatch your episodes",
     "Widescreen letterbox episode compose with pan/zoom and crossfades",
-    "Episode title accepts Hangul, Japanese, and English",
-    "Per-user install, no admin needed"
+    "Episode title and captions accept Hangul, Japanese, English, and Romanian (ă â î ș ț)",
+    "Per-user install, no admin needed",
+    "Setup installer plus a single portable exe (no zip)"
    ],
    "publisher": "EX Inc./HYPERION DIGITAL",
    "developer": "EX Inc./HYPERION DIGITAL",
@@ -1215,7 +1216,7 @@
    "portable": [
     "EPISODIA.exe"
    ],
-   "version": "1.1.1",
+   "version": "1.1.2",
    "app_id": "{09A0D0B7-E132-4385-B05F-6E708A3A15B7}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/gaechu-trass/main/latest.json",
    "art": {
@@ -1236,8 +1237,8 @@
      "sha256": "56dca3dc85ac756597cf452763c278d37ff6272565844267cadd3c90f4c77a0c"
     },
     "shot0.jpg": {
-     "size": 49039,
-     "sha256": "961b94e658e4b37dfbd00e3a877ed11340fa47b2fa6b2ad8b29031de2bf29473"
+     "size": 62886,
+     "sha256": "c498eb6a2a6dd1938afa150aaf5062ff08593b79df921970e8b564657612bb67"
     },
     "shot1.jpg": {
      "size": 82059,
@@ -1506,7 +1507,7 @@
   "NOT-TUBE-Setup-1.0.9.exe": 67017667,
   "NOT-TUBE-1.0.9-Portable.exe": 86772821
  },
- "updated": "2026-11-12T17:43:10Z",
+ "updated": "2026-11-12T17:57:53Z",
  "rows": [
   {
    "id": "GAMES",
