@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 60,
+ "catalog_version": 61,
  "featured": [
   "piknott-celestika",
   "piknott-sapphire"
@@ -1437,7 +1437,7 @@
     "MIXE.exe",
     "MIXE Portable.exe"
    ],
-   "version": "2.0.0",
+   "version": "2.0.1",
    "app_id": "{A1D8E4C2-9F70-4B3E-8C15-6D2A9E7B4F01}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/mixe/main/latest.json",
    "art": {
@@ -1580,9 +1580,11 @@
   "EPISODIA-Setup-1.1.3.exe": 160339358,
   "EPISODIA-1.1.3-Portable.exe": 190221909,
   "MIXE-Setup-2.0.0.exe": 21024709,
-  "MIXE-Portable-2.0.0.exe": 27424279
+  "MIXE-Portable-2.0.0.exe": 27424279,
+  "MIXE-Setup-2.0.1.exe": 21105310,
+  "MIXE-Portable-2.0.1.exe": 27423245
  },
- "updated": "2026-11-14T17:45:35Z",
+ "updated": "2026-11-14T17:55:00Z",
  "rows": [
   {
    "id": "GAMES",
