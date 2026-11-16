@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 63,
+ "catalog_version": 64,
  "featured": [
   "piknott-celestika",
   "piknott-sapphire"
@@ -1506,7 +1506,7 @@
     "AGE OF CHICS.exe",
     "AGE OF CHICS Portable.exe"
    ],
-   "version": "1.0.1",
+   "version": "1.0.2",
    "app_id": "{91B2B294-5897-4C19-BCAB-2DE8943F2CB8}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/age-of-chics/main/latest.json",
    "art": {
@@ -1531,8 +1531,8 @@
      "sha256": "9d6139ee25d45364fa462f8954431ba7b0111ad27b7dd4ad66451113d1d803a3"
     },
     "shot0.jpg": {
-     "size": 50046,
-     "sha256": "08396c4adbebfceb1b3ad5cbe58513ea954d960f62427a10a32093b49a101e59"
+     "size": 44199,
+     "sha256": "faf5e83bb56a1f2875bf03c5195e4d09909b0b3d11cac256db80a5711b93c98b"
     },
     "shot1.jpg": {
      "size": 147346,
@@ -1655,9 +1655,11 @@
   "AGE-OF-CHICS-Setup-1.0.0.exe": 24318785,
   "AGE-OF-CHICS-Portable-1.0.0.exe": 30784802,
   "AGE-OF-CHICS-Setup-1.0.1.exe": 24319074,
-  "AGE-OF-CHICS-Portable-1.0.1.exe": 30784819
+  "AGE-OF-CHICS-Portable-1.0.1.exe": 30784819,
+  "AGE-OF-CHICS-Setup-1.0.2.exe": 24826526,
+  "AGE-OF-CHICS-Portable-1.0.2.exe": 31072153
  },
- "updated": "2026-11-16T13:28:01Z",
+ "updated": "2026-11-16T13:41:33Z",
  "rows": [
   {
    "id": "GAMES",
