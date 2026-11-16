@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 62,
+ "catalog_version": 63,
  "featured": [
   "piknott-celestika",
   "piknott-sapphire"
@@ -1482,11 +1482,11 @@
   {
    "id": "age-of-chics",
    "row": "APPS",
-   "name": "AGE OF CHICS",
+   "name": "AGE OF CHICS™ BY HYPERION",
    "repo": "age-of-chics",
    "genre": "Viewer · Presentation",
-   "tagline": "The AGE OF CHICS presentation — watch it, present it, or export it as a PDF.",
-   "description": "AGE OF CHICS is a standalone presentation of the AGE OF CHICS deck. Open the title screen, step through the slides, present fullscreen, or export a PDF. The original deck can be opened in your default app. Checks for updates on startup. Per-user install, no admin needed, plus a portable exe. ©2026 EX Inc./HYPERION DIGITAL ©2026",
+   "tagline": "AGE OF CHICS™ BY HYPERION — watch the presentation, present it fullscreen, or export it as a PDF.",
+   "description": "AGE OF CHICS™ BY HYPERION is a standalone presentation of the AGE OF CHICS deck. Open the title screen, step through the slides, present fullscreen, or export a PDF. The original deck can be opened in your default app. Checks for updates on startup. Per-user install, no admin needed, plus a portable exe. ©2026 EX Inc./HYPERION DIGITAL ©2026",
    "features": [
     "Bundled AGE OF CHICS presentation (7 slides)",
     "Title screen, slide viewer, and fullscreen present mode (F5)",
@@ -1506,21 +1506,21 @@
     "AGE OF CHICS.exe",
     "AGE OF CHICS Portable.exe"
    ],
-   "version": "1.0.0",
+   "version": "1.0.1",
    "app_id": "{91B2B294-5897-4C19-BCAB-2DE8943F2CB8}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/age-of-chics/main/latest.json",
    "art": {
     "capsule.jpg": {
-     "size": 15310,
-     "sha256": "78b171849f03776b4efde4702b6013abe044df73cf7e8461b882d5e2f0e62c99"
+     "size": 15820,
+     "sha256": "0de0617e947348383a08e16952adf67edc6b1265fed760377a3f3f2c4e91e055"
     },
     "cover.jpg": {
-     "size": 164703,
-     "sha256": "f6369dce46728f32ac3656d9c7d341f61299a2f645cd84624f4feb1b5c0842e4"
+     "size": 166085,
+     "sha256": "f32c4740ca7c37e3250b231a0293bbf818216e1461461bfce142c15a64906e7a"
     },
     "hero.jpg": {
-     "size": 153462,
-     "sha256": "67c93ec5bb48c32381a8ed41072a991839d5162efee1015fee8c905da190a18d"
+     "size": 154009,
+     "sha256": "58e3d091e1e7c32e2aa74ef56cdd3c6d1085f1b3017815dee69f13a2c823b4a5"
     },
     "hero_bg.jpg": {
      "size": 95788,
@@ -1531,20 +1531,20 @@
      "sha256": "9d6139ee25d45364fa462f8954431ba7b0111ad27b7dd4ad66451113d1d803a3"
     },
     "shot0.jpg": {
-     "size": 44015,
-     "sha256": "00ef3938bd43dd66270733f0542bfba8fa3f6f070c9bd15428486739b2d5b58d"
+     "size": 50046,
+     "sha256": "08396c4adbebfceb1b3ad5cbe58513ea954d960f62427a10a32093b49a101e59"
     },
     "shot1.jpg": {
-     "size": 144975,
-     "sha256": "b00acb2a853827308cb911e3a110431f50919a36d06991fd236f4feff184f9fd"
+     "size": 147346,
+     "sha256": "9af16b0f30bcb3f4c4a9106bfea5d7b3eb6954e33c031f9980b58cedbf126971"
     },
     "shot2.jpg": {
      "size": 144561,
      "sha256": "7086e564c0f573fae739e0969decebdf84b140fd9cac8f05a4068bc17529c0c3"
     },
     "shot3.jpg": {
-     "size": 16147,
-     "sha256": "5af02d2305266ee52744025b6ef852327df5cba5cf1a0cdead2b69b4c4511eba"
+     "size": 18430,
+     "sha256": "fb1a823f1373786c196efb7d3bc955012315b5893edf433eaf3538a60583070b"
     }
    }
   }
@@ -1653,9 +1653,11 @@
   "MIXE-Setup-2.0.1.exe": 21105310,
   "MIXE-Portable-2.0.1.exe": 27423245,
   "AGE-OF-CHICS-Setup-1.0.0.exe": 24318785,
-  "AGE-OF-CHICS-Portable-1.0.0.exe": 30784802
+  "AGE-OF-CHICS-Portable-1.0.0.exe": 30784802,
+  "AGE-OF-CHICS-Setup-1.0.1.exe": 24319074,
+  "AGE-OF-CHICS-Portable-1.0.1.exe": 30784819
  },
- "updated": "2026-11-16T13:23:38Z",
+ "updated": "2026-11-16T13:28:01Z",
  "rows": [
   {
    "id": "GAMES",
