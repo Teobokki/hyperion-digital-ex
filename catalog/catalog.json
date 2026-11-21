@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 70,
+ "catalog_version": 71,
  "featured": [
   "age-of-chics",
   "piknott-celestika",
@@ -1369,7 +1369,7 @@
    "portable": [
     "REX 7 ENGINE REAL EX.exe"
    ],
-   "version": "1.0.2",
+   "version": "1.0.3",
    "app_id": "{5B7E2C41-7A0D-4F3E-9C2B-9D4A6B2E81F3}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/rex7-engine/main/latest.json",
    "art": {
@@ -1671,9 +1671,11 @@
   "AGE-OF-CHICS-Setup-2.3.1.exe": 25125783,
   "AGE-OF-CHICS-Portable-2.3.1.exe": 31635852,
   "AGE-OF-CHICS-Setup-2.4.0.exe": 35938244,
-  "AGE-OF-CHICS-Portable-2.4.0.exe": 46672985
+  "AGE-OF-CHICS-Portable-2.4.0.exe": 46672985,
+  "REX-7-ENGINE-REAL-EX-Setup-1.0.3.exe": 60689852,
+  "REX-7-ENGINE-REAL-EX-Portable-1.0.3.exe": 85190159
  },
- "updated": "2026-11-21T13:37:24Z",
+ "updated": "2026-11-21T18:06:01Z",
  "rows": [
   {
    "id": "GAMES",
