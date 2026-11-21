@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 73,
+ "catalog_version": 74,
  "featured": [
   "age-of-chics"
  ],
@@ -1673,7 +1673,7 @@
   "REX-7-ENGINE-REAL-EX-Setup-1.0.3.exe": 60689852,
   "REX-7-ENGINE-REAL-EX-Portable-1.0.3.exe": 85190159
  },
- "updated": "2026-11-21T18:20:55Z",
+ "updated": "2026-11-21T18:23:07Z",
  "rows": [
   {
    "id": "GAMES",
@@ -1707,7 +1707,7 @@
   }
  ],
  "library_pinned": [
-  "piknott-celestika"
+  "age-of-chics"
  ],
  "spotlight": "not-tube"
 }
