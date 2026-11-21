@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 74,
+ "catalog_version": 75,
  "featured": [
   "age-of-chics"
  ],
@@ -1480,7 +1480,7 @@
   },
   {
    "id": "age-of-chics",
-   "row": "APPS",
+   "row": "GAMES",
    "name": "AGE OF CHICS™ BY HYPERION",
    "repo": "age-of-chics",
    "genre": "Viewer · Presentation",
@@ -1673,7 +1673,7 @@
   "REX-7-ENGINE-REAL-EX-Setup-1.0.3.exe": 60689852,
   "REX-7-ENGINE-REAL-EX-Portable-1.0.3.exe": 85190159
  },
- "updated": "2026-11-21T18:23:07Z",
+ "updated": "2026-11-21T18:25:06Z",
  "rows": [
   {
    "id": "GAMES",
