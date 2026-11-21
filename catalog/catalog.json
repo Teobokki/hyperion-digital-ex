@@ -1,7 +1,8 @@
 {
  "schema": 1,
- "catalog_version": 68,
+ "catalog_version": 69,
  "featured": [
+  "age-of-chics",
   "piknott-celestika",
   "piknott-sapphire"
  ],
@@ -1514,20 +1515,20 @@
    "latest_url": "https://raw.githubusercontent.com/Teobokki/age-of-chics/main/latest.json",
    "art": {
     "capsule.jpg": {
-     "size": 133032,
-     "sha256": "382338a86d17f72e3a1b253073b88173d2b73ceccd8ec1f8387cf067c3286813"
+     "size": 133549,
+     "sha256": "106655d0b12ec552569f129a60e27eebe9e5bd76d6d538f57c3c356effa18e79"
     },
     "cover.jpg": {
-     "size": 221550,
-     "sha256": "e886d89dfdf2c567b2fe032979aa835ba49a4128e6c04456f9908a5616815dd1"
+     "size": 227780,
+     "sha256": "3b96aa81a6091f700b8e8fb8160584d063f1c497e92165b6468ff99892601237"
     },
     "hero.jpg": {
-     "size": 154009,
-     "sha256": "58e3d091e1e7c32e2aa74ef56cdd3c6d1085f1b3017815dee69f13a2c823b4a5"
+     "size": 121764,
+     "sha256": "2977aa2a4ec44c45d50cf900f06457ad072950613a72b53aeba45a1c4023ac16"
     },
     "hero_bg.jpg": {
-     "size": 95788,
-     "sha256": "f656e4b3fb34d9844ee92941d871d60905748435c6223a8864b3d48b266a061a"
+     "size": 32756,
+     "sha256": "22c0e0b8c2758c208750b52cef426d5fe152f8b9892649263a40aa79431d7b1d"
     },
     "icon.png": {
      "size": 84254,
@@ -1672,7 +1673,7 @@
   "AGE-OF-CHICS-Setup-2.4.0.exe": 35938244,
   "AGE-OF-CHICS-Portable-2.4.0.exe": 46672985
  },
- "updated": "2026-11-21T13:25:46Z",
+ "updated": "2026-11-21T13:33:33Z",
  "rows": [
   {
    "id": "GAMES",
