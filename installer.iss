@@ -27,19 +27,17 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 CloseApplications=yes
 
-[Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
-
 [InstallDelete]
 Type: filesandordirs; Name: "{app}\_internal"
 
 [Files]
 Source: "dist\HYPERION DIGITAL EX\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "dist\HYPERION.DIGITAL.EX.Portable.exe"; DestDir: "{userdesktop}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\HYPERION DIGITAL EX"; Filename: "{app}\HYPERION DIGITAL EX.exe"
 Name: "{group}\Uninstall HYPERION DIGITAL EX"; Filename: "{uninstallexe}"
-Name: "{userdesktop}\HYPERION DIGITAL EX"; Filename: "{app}\HYPERION DIGITAL EX.exe"; Tasks: desktopicon
+Name: "{userdesktop}\HYPERION DIGITAL EX"; Filename: "{app}\HYPERION DIGITAL EX.exe"
 
 [Run]
 Filename: "{app}\HYPERION DIGITAL EX.exe"; Description: "Launch HYPERION DIGITAL EX now"; Flags: nowait postinstall skipifsilent
