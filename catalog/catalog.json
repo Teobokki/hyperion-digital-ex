@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 75,
+ "catalog_version": 76,
  "featured": [
   "age-of-chics"
  ],
@@ -827,7 +827,7 @@
    "exe": "EX CREATOR STUDIO.exe",
    "folder": "EX CREATOR STUDIO",
    "portable": [],
-   "version": "1.5.5",
+   "version": "1.5.6",
    "app_id": "{C3E7A1D4-5B2F-4E8A-9C61-0A1B2C3D4E5F}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/ex-creator-studio/main/latest.json",
    "art": {
@@ -1671,9 +1671,11 @@
   "AGE-OF-CHICS-Setup-2.4.0.exe": 35938244,
   "AGE-OF-CHICS-Portable-2.4.0.exe": 46672985,
   "REX-7-ENGINE-REAL-EX-Setup-1.0.3.exe": 60689852,
-  "REX-7-ENGINE-REAL-EX-Portable-1.0.3.exe": 85190159
+  "REX-7-ENGINE-REAL-EX-Portable-1.0.3.exe": 85190159,
+  "EX.CREATOR.STUDIO.Setup.1.5.6.exe": 73160358,
+  "EX.CREATOR.STUDIO.Portable.1.5.6.exe": 105760791
  },
- "updated": "2026-11-21T18:25:06Z",
+ "updated": "2026-11-22T17:08:03Z",
  "rows": [
   {
    "id": "GAMES",
