@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 76,
+ "catalog_version": 77,
  "featured": [
   "age-of-chics"
  ],
@@ -1484,7 +1484,7 @@
    "name": "AGE OF CHICS™ BY HYPERION",
    "repo": "age-of-chics",
    "genre": "Viewer · Presentation",
-   "tagline": "AGE OF CHICS™ BY HYPERION — watch the presentation, present it fullscreen, or export it as a PDF.",
+   "tagline": "GORGEOUS WOMEN PLAY NOW POWERPOINT IS REQUIRED",
    "description": "AGE OF CHICS™ BY HYPERION is a standalone presentation of the AGE OF CHICS deck. Open the title screen, step through the slides, present fullscreen, or export a PDF. You can also open your own PowerPoint or PDF files from your PC; the last file is remembered and reloaded from disk so your edits show up. The original deck can be opened in your default app. Checks for updates on startup. Per-user install, no admin needed, plus a portable exe. ©2026 EX Inc./HYPERION DIGITAL ©2026",
    "features": [
     "Bundled AGE OF CHICS presentation (7 slides)",
@@ -1675,7 +1675,7 @@
   "EX.CREATOR.STUDIO.Setup.1.5.6.exe": 73160358,
   "EX.CREATOR.STUDIO.Portable.1.5.6.exe": 105760791
  },
- "updated": "2026-11-22T17:08:03Z",
+ "updated": "2026-11-22T17:25:11Z",
  "rows": [
   {
    "id": "GAMES",
