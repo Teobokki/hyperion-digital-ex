@@ -458,8 +458,8 @@ class DreamVineCard(QFrame):
         qp.drawRoundedRect(QRectF(1, 1, w - 2, h - 2), 10, 10)
 
 
-FEATURED_IDS = ("piknott-celestika", "piknott-sapphire")
-LIBRARY_PINNED_IDS = ("piknott-celestika",)  # offline/fallback Library pin; live order prefers catalog library_pinned via svc.library_pinned()
+FEATURED_IDS = ("age-of-chics",)
+LIBRARY_PINNED_IDS = ("age-of-chics",)  # offline/fallback Library pin; live order prefers catalog library_pinned via svc.library_pinned()
 FEATURED_BANNER = False
 
 
