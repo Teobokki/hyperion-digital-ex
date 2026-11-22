@@ -1,12 +1,10 @@
 {
-  "version": "2.99",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v2.99",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.99/HYPERION.DIGITAL.EX.Setup.2.99.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.99/HYPERION.DIGITAL.EX.Setup.2.99.exe",
-  "full_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.99/HYPERION.DIGITAL.EX.2.99.Windows.x64.zip",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v2.99/HYPERION.DIGITAL.EX.Portable.exe",
-  "sha256": "96fb3ece0d514dc35452b2d5bfa3bfcf8b5b8de9c70ddda4c7cdcdfaeef407b5",
-  "zip_sha256": "d3d4539a86058fe0ff79ba47c1cdc3a80afc0b0bc63e27f40cf401d31edde189",
-  "released": "2026-11-11",
-  "notes": "Store Home has a catalog-driven spotlight card above Featured & Recommended. Catalog v52 sets that spotlight to NOT TUBE: a full-width card that uses the existing NOT TUBE hero art fitted whole, opens the NOT TUBE product page, and has the usual Install / Open action. The Featured & Recommended split of PIKNOTT CELESTIKA and PIKNOTT SAPPHIRE is unchanged. Offline, the built-in fallback also shows the NOT TUBE spotlight. This build also bundles the PIKNOTT CELESTIKA cover so that half of the split card is not cropped on first run."
+  "version": "3.0",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v3.0",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v3.0/HYPERION.DIGITAL.EX.Setup.3.0.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v3.0/HYPERION.DIGITAL.EX.Setup.3.0.exe",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v3.0/HYPERION.DIGITAL.EX.Portable.exe",
+  "sha256": "42b40af76721a37377dfe3e4b2abb78b14884f7cbc2268c9fa6c0c1a6f2ac5ce",
+  "released": "2026-11-22",
+  "notes": "Fresh build so every installed copy can update. The app icon is now the white brush H on black. Setup always places a Desktop shortcut to the installed app, and also puts the standalone portable exe (HYPERION.DIGITAL.EX.Portable.exe) on the Desktop; uninstall removes both. Offline, Featured & Recommended and the Library pin now default to AGE OF CHICS\u2122 BY HYPERION, matching the live catalog. The catalog-driven Home spotlight and the rest of the store are unchanged."
 }
