@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 77,
+ "catalog_version": 78,
  "featured": [
   "age-of-chics"
  ],
@@ -1367,7 +1367,7 @@
    "portable": [
     "REX 7 ENGINE REAL EX.exe"
    ],
-   "version": "1.0.4",
+   "version": "1.0.5",
    "app_id": "{5B7E2C41-7A0D-4F3E-9C2B-9D4A6B2E81F3}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/rex7-engine/main/latest.json",
    "art": {
@@ -1675,7 +1675,7 @@
   "EX.CREATOR.STUDIO.Setup.1.5.6.exe": 73160358,
   "EX.CREATOR.STUDIO.Portable.1.5.6.exe": 105760791
  },
- "updated": "2026-11-22T17:25:11Z",
+ "updated": "2026-11-23T15:02:33Z",
  "rows": [
   {
    "id": "GAMES",
