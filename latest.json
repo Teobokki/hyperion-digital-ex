@@ -1,10 +1,10 @@
 {
-  "version": "3.0",
-  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v3.0",
-  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v3.0/HYPERION.DIGITAL.EX.Setup.3.0.exe",
-  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v3.0/HYPERION.DIGITAL.EX.Setup.3.0.exe",
-  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v3.0/HYPERION.DIGITAL.EX.Portable.exe",
-  "sha256": "42b40af76721a37377dfe3e4b2abb78b14884f7cbc2268c9fa6c0c1a6f2ac5ce",
-  "released": "2026-11-22",
-  "notes": "Fresh build so every installed copy can update. The app icon is now the white brush H on black. Setup always places a Desktop shortcut to the installed app, and also puts the standalone portable exe (HYPERION.DIGITAL.EX.Portable.exe) on the Desktop; uninstall removes both. Offline, Featured & Recommended and the Library pin now default to AGE OF CHICS\u2122 BY HYPERION, matching the live catalog. The catalog-driven Home spotlight and the rest of the store are unchanged."
+  "version": "3.1",
+  "release_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/tag/v3.1",
+  "url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v3.1/HYPERION.DIGITAL.EX.Setup.3.1.exe",
+  "installer_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v3.1/HYPERION.DIGITAL.EX.Setup.3.1.exe",
+  "portable_url": "https://github.com/Teobokki/hyperion-digital-ex/releases/download/v3.1/HYPERION.DIGITAL.EX.Portable.exe",
+  "sha256": "b0bf84cbcc764776d8fccba8fdef927034e00788ca73bdd217e5baa7fd2ae2b1",
+  "released": "2026-11-24",
+  "notes": "On a title's store page, when the release lists both a Setup installer and a portable exe at the same version, you now get Install Desktop and Get Portable. Get Portable downloads the standalone exe, checks its SHA-256, and saves it to Downloads. AGE OF CHICS™ BY HYPERION 2.5.1 shows both builds this way. The H icon, Desktop shortcut and portable-on-Desktop Setup, and the AGE OF CHICS featured/library pin, are unchanged."
 }
