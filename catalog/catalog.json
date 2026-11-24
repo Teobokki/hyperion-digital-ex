@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 81,
+ "catalog_version": 82,
  "featured": [
   "age-of-chics"
  ],
@@ -1675,7 +1675,7 @@
   "EX.CREATOR.STUDIO.Setup.1.5.6.exe": 73160358,
   "EX.CREATOR.STUDIO.Portable.1.5.6.exe": 105760791
  },
- "updated": "2026-11-24T21:32:27Z",
+ "updated": "2026-11-24T22:37:04Z",
  "rows": [
   {
    "id": "GAMES",
@@ -1711,5 +1711,5 @@
  "library_pinned": [
   "age-of-chics"
  ],
- "spotlight": "not-tube"
+ "spotlight": ""
 }
