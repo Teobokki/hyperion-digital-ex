@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 80,
+ "catalog_version": 81,
  "featured": [
   "age-of-chics"
  ],
@@ -1508,7 +1508,7 @@
     "AGE OF CHICS.exe",
     "AGE OF CHICS Portable.exe"
    ],
-   "version": "2.5.0",
+   "version": "2.5.1",
    "app_id": "{91B2B294-5897-4C19-BCAB-2DE8943F2CB8}",
    "latest_url": "https://raw.githubusercontent.com/Teobokki/age-of-chics/main/latest.json",
    "art": {
@@ -1675,7 +1675,7 @@
   "EX.CREATOR.STUDIO.Setup.1.5.6.exe": 73160358,
   "EX.CREATOR.STUDIO.Portable.1.5.6.exe": 105760791
  },
- "updated": "2026-11-24T21:21:01Z",
+ "updated": "2026-11-24T21:32:27Z",
  "rows": [
   {
    "id": "GAMES",
