@@ -202,17 +202,19 @@ def lbl(text, name=None, wrap=False):
 
 # ---------------------------------------------------------------- action bar (Install / Play / Update / progress)
 class ActionBar(QWidget):
-    def __init__(self, ui, aid, big=True, uninstall=True):
+    def __init__(self, ui, aid, big=True, uninstall=True, editions=False):
         super().__init__()
-        self.ui, self.svc, self.aid = ui, ui.svc, aid; self.allow_uninst = uninstall
+        self.ui, self.svc, self.aid = ui, ui.svc, aid; self.allow_uninst = uninstall; self.editions = editions
         v = QVBoxLayout(self); v.setContentsMargins(0, 0, 0, 0); v.setSpacing(6)
         row = QHBoxLayout(); row.setSpacing(8)
         self.main = QPushButton("INSTALL"); self.main.setObjectName("primary"); self.main.setCursor(Qt.PointingHandCursor)
-        self.main.setMinimumWidth(170 if big else 120); self.main.clicked.connect(self.on_main)
+        self.main.setMinimumWidth((300 if editions else 170) if big else 120); self.main.clicked.connect(self.on_main)
+        self.port = QPushButton("Get Portable"); self.port.setObjectName("ghost"); self.port.setCursor(Qt.PointingHandCursor)
+        self.port.setMinimumWidth((260 if editions else 170) if big else 120); self.port.clicked.connect(self.on_portable)
         self.pause = QPushButton("Pause"); self.pause.setObjectName("ghost"); self.pause.clicked.connect(self.on_pause)
         self.cancel = QPushButton("Cancel"); self.cancel.setObjectName("ghost"); self.cancel.clicked.connect(lambda: self.svc.cancel(self.aid))
         self.uninst = QPushButton("Uninstall"); self.uninst.setObjectName("ghost"); self.uninst.clicked.connect(self.on_uninstall)
-        row.addWidget(self.main); row.addWidget(self.pause); row.addWidget(self.cancel); row.addStretch(1); row.addWidget(self.uninst)
+        row.addWidget(self.main); row.addWidget(self.port); row.addWidget(self.pause); row.addWidget(self.cancel); row.addStretch(1); row.addWidget(self.uninst)
         v.addLayout(row)
         self.bar = QProgressBar(); self.bar.setRange(0, 1000); self.bar.setTextVisible(False); self.bar.setFixedHeight(10)
         self.info = lbl("", "small", True)
@@ -227,6 +229,8 @@ class ActionBar(QWidget):
         mode = {"update": "update", "playing": "playing", "queued": "busy", "downloading": "busy", "verifying": "busy", "installing": "busy"}.get(st, "")
         if st == "update":
             text = "UPDATE TO %s" % latest
+        if self.editions and self.svc.has_portable(self.aid) and st == "install":
+            text = "INSTALL DESKTOP  v%s" % latest
         self.main.setText(("\u25B6  " if st == "play" else ("\u2B06  " if st == "update" else "")) + text)
         if self.main.property("mode") != mode:
             self.main.setProperty("mode", mode); self.main.style().unpolish(self.main); self.main.style().polish(self.main)
@@ -234,6 +238,10 @@ class ActionBar(QWidget):
         active = st in ("queued", "downloading", "paused", "verifying", "installing", "error")
         self.pause.setVisible(st in ("queued", "downloading")); self.cancel.setVisible(st in ("queued", "downloading", "paused", "error"))
         self.uninst.setVisible(self.allow_uninst and bool(inf) and not active and st != "playing")
+        have_p = self.editions and self.svc.has_portable(self.aid)
+        self.port.setVisible(bool(have_p))
+        self.port.setText("GET PORTABLE  v%s" % latest)
+        self.port.setEnabled(bool(have_p) and not self.svc.job_for(self.aid) and st not in ("playing",))
         self.bar.setVisible(active)
         if j:
             self.bar.setValue(int(j.fraction * 1000))
@@ -271,6 +279,10 @@ class ActionBar(QWidget):
             self.svc.resume(self.aid)
         self.ui.refresh_all()
 
+    def on_portable(self):
+        self.svc.install_portable(self.aid)
+        self.ui.refresh_all()
+
     def on_pause(self):
         self.svc.pause(self.aid)
 
@@ -297,6 +309,8 @@ def job_text(j):
     if j.state == "verifying":
         return "Verifying SHA-256 of %s…" % j.name
     if j.state == "installing":
+        if j.kind == "portable":
+            return "Saving portable to Downloads…  " + getattr(j, "verified", "")
         return "Installing silently with EX CONNECT…  " + getattr(j, "verified", "")
     if j.state == "error":
         return "Error: " + j.error
@@ -1014,7 +1028,7 @@ class ProductPage(QWidget):
         inst = (svc.installed.get(aid) or {}).get("version")
         rows = [("CATEGORY", a["category"]), ("GENRE", a["genre"]), ("LATEST VERSION", svc.latest_version(aid)),
                 ("INSTALLED", (inst + ("  \u2B06 UPDATE" if svc.outdated_copies(aid) else "  \u2714 up to date")) if inst else "Not installed"),
-                ("DOWNLOAD SIZE", svc.size_text(aid)),
+                ("DOWNLOAD SIZE", ("Desktop %s  ·  Portable %s" % (svc.size_text_kind(aid, "installer"), svc.size_text_kind(aid, "portable"))) if svc.has_portable(aid) else svc.size_text(aid)),
                 ("DEVELOPER", a.get("developer", "EX Inc.")), ("PUBLISHER", a.get("publisher", PUBLISHER)), ("PLATFORM", "Windows 10/11 x64"), ("SOURCE", "github.com/Teobokki/" + a["repo"])]
         # Per-title LICENSE only from the catalog field. Hide a HYPERION license when the title sets its own developer/publisher (FIREOUT ONLINE must not show one).
         lic = (a.get("license") or "").strip() if isinstance(a.get("license"), str) else ""
@@ -1029,7 +1043,7 @@ class ProductPage(QWidget):
         box = QFrame(); box.setObjectName("panel"); bl = QVBoxLayout(box); bl.setContentsMargins(20, 16, 20, 16)
         verb = row.get("verb") or ("Play" if a["category"] == GAMES else "Get")
         bl.addWidget(lbl("%s %s" % (verb, a["name"]), None)); box.findChildren(QLabel)[0].setStyleSheet("font-size:18px;font-weight:800")
-        self.bar = ActionBar(self.ui, aid); bl.addWidget(self.bar); box.setMaximumWidth(1160)
+        self.bar = ActionBar(self.ui, aid, editions=True); bl.addWidget(self.bar); box.setMaximumWidth(1160)
         self.v.addWidget(box)
         # about
         about = QFrame(); about.setObjectName("panel"); al = QVBoxLayout(about); al.setContentsMargins(20, 16, 20, 16); al.setSpacing(8)
@@ -2020,9 +2034,30 @@ class Main(QMainWindow):
             return
         if ev == "selfcheck":
             self.on_self_checked(); return
+        if ev == "portable_ready":
+            self.refresh_all(); self.offer_portable(aid); return
         if ev == "error":
             QMessageBox.warning(self, APP_NAME, "EX CONNECT could not find a download for %s. Check your connection and try again." % self.svc.catalog[aid]["name"])
         self.refresh_all()
+
+    def offer_portable(self, aid):
+        path = (self.svc.last_portable or {}).get(aid)
+        if not path or not os.path.isfile(path):
+            return
+        a = self.svc.catalog.get(aid) or {}
+        box = QMessageBox(self)
+        box.setWindowTitle(APP_NAME)
+        box.setText("%s v%s portable is ready." % (a.get("name", aid), self.svc.latest_version(aid)))
+        box.setInformativeText("Saved to:\n%s" % path)
+        open_btn = box.addButton("Open folder", QMessageBox.AcceptRole)
+        run_btn = box.addButton("Run", QMessageBox.ActionRole)
+        box.addButton("Close", QMessageBox.RejectRole)
+        box.exec()
+        clicked = box.clickedButton()
+        if clicked is open_btn:
+            QDesktopServices.openUrl(QUrl.fromLocalFile(os.path.dirname(path)))
+        elif clicked is run_btn:
+            QDesktopServices.openUrl(QUrl.fromLocalFile(path))
 
     def refresh_light(self):
         cur = self.stack.currentWidget()
@@ -2230,6 +2265,27 @@ def smoke(win, out_dir, phase):
         at(9000, lambda: win.open_product("dream-vine"))
         at(10000, lambda: shot("screenshot_dv_update_product.png"))
         at(10500, lambda: win.close())
+    elif phase == "aocbuilds":
+        at(1000, lambda: win.resize(1440, 900))
+        t0 = {"t": time.time()}
+        def go():
+            app = win.svc.catalog.get("age-of-chics") or {}
+            lj = app.get("latest") or {}
+            if not (lj.get("portable_url") and lj.get("installer_url")) and time.time() - t0["t"] < 25:
+                return QTimer.singleShot(400, go)
+            L("latest", lj.get("version"), "installer", bool(lj.get("installer_url")), "portable", bool(lj.get("portable_url")),
+              "has_portable", win.svc.has_portable("age-of-chics"))
+            win.open_product("age-of-chics")
+            def snap():
+                page = win.pages["product"]
+                if page.bar:
+                    page.sc.ensureWidgetVisible(page.bar, 24, 24)
+                win.grab().save(os.path.join(out_dir, "hde_aoc_both_builds.png")); L("shot", "hde_aoc_both_builds.png")
+                if page.bar:
+                    L("main", page.bar.main.text(), "port", page.bar.port.text(), "port_visible", page.bar.port.isVisible())
+                win.close()
+            QTimer.singleShot(900, snap)
+        at(2500, go)
     elif phase == "banner":
         at(6000, lambda: shot("screenshot_store_banner.png"))
         at(7000, lambda: win.pages["store"].banner.clicked.emit())

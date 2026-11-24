@@ -5,7 +5,7 @@ import hashlib, json, os, re, shutil, ssl, subprocess, sys, threading, time, url
 from ex_catalog import CATALOG, KNOWN_SIZES
 import ex_remote as rm
 
-APP_VERSION = "3.0"
+APP_VERSION = "3.1"
 UA = {"User-Agent": "HYPERION-DIGITAL-EX/" + APP_VERSION + " (EX CONNECT)"}
 RAW = "https://raw.githubusercontent.com/Teobokki/%s/main/latest.json"
 API = "https://api.github.com/repos/Teobokki/%s/releases/tags/v%s"
@@ -395,6 +395,7 @@ class Job:
         self.part = kw["part"]; self.total = kw.get("total", 0); self.sha256 = kw.get("sha256"); self.version = kw.get("version")
         self.target = kw.get("target"); self.state = kw.get("state", "queued"); self.done = 0; self.speed = 0.0
         self.error = ""; self.pause_flag = False; self.cancel_flag = False; self.created = kw.get("created", time.time())
+        self.prompt = bool(kw.get("prompt", False))
         if os.path.exists(self.part):
             self.done = os.path.getsize(self.part)
 
@@ -415,6 +416,7 @@ class ExConnect:
         self.state_path = os.path.join(self.dir, "state.json")
         self.lock = threading.RLock()
         self.state = self._load(self.state_path, {})
+        self.last_portable = {}
         self.state.setdefault("settings", {"library": os.path.join(self.dir, "library"), "method": "setup", "startup": False})
         self.state.setdefault("playtime", {}); self.state.setdefault("last_played", {}); self.state.setdefault("jobs", [])
         self.state.setdefault("ex_installs", {}); self.state.pop("wishlist", None)   # old saved wishlist data is ignored and dropped
@@ -650,10 +652,13 @@ class ExConnect:
     def _asset(self, aid, kind):
         a = self.catalog[aid]; lj = a.get("latest") or {}
         ver = self.latest_version(aid)
+        lj_size = lj_sha = None
         if kind == "installer":
             url = lj.get("installer_url") or lj.get("url")
+            lj_size, lj_sha = lj.get("size"), lj.get("sha256")
         elif kind == "portable":
             url = lj.get("portable_url")
+            lj_size, lj_sha = lj.get("portable_size"), lj.get("portable_sha256")
         else:
             url = lj.get("full_url")
         if not url and not lj:  # offline fallback: well-known asset names
@@ -665,7 +670,44 @@ class ExConnect:
         meta = (a.get("assets") or {}).get(name, {}) if fresh else {}
         if fresh and a.get("assets") and name not in a["assets"]:
             return None  # e.g. latest.json lists a zip the release doesn't carry
-        return {"url": url, "name": name, "size": meta.get("size") or self.cat_meta.get("known_sizes", {}).get(name) or KNOWN_SIZES.get(name, 0), "sha256": meta.get("sha256"), "version": ver}
+        return {"url": url, "name": name,
+                "size": meta.get("size") or lj_size or self.cat_meta.get("known_sizes", {}).get(name) or KNOWN_SIZES.get(name, 0),
+                "sha256": meta.get("sha256") or lj_sha, "version": ver}
+
+    def has_portable(self, aid):
+        return bool(self._asset(aid, "portable"))
+
+    def size_text_kind(self, aid, kind):
+        a = self._asset(aid, kind)
+        return human(a["size"]) if a and a["size"] else "—"
+
+    def portable_dest_name(self, aid):
+        names = [n for n in (self.catalog[aid].get("portable") or []) if isinstance(n, str) and n.strip()]
+        for n in names:
+            if "portable" in n.lower():
+                return n
+        if names:
+            return names[-1]
+        a = self._asset(aid, "portable")
+        return a["name"] if a else "Portable.exe"
+
+    def install_portable(self, aid):
+        """Download the title's portable exe to the user's Downloads folder, verify SHA-256, then offer to open/run."""
+        if self.job_for(aid):
+            return
+        asset = self._asset(aid, "portable")
+        if not asset:
+            self.notify("error", aid); return
+        dest = os.path.join(downloads_folder(), self.portable_dest_name(aid))
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        dl = os.path.join(self.dir, "downloads"); os.makedirs(dl, exist_ok=True)
+        tag = "." + hashlib.sha1(dest.lower().encode()).hexdigest()[:8]
+        with self.lock:
+            self.jobs.append(Job(app_id=aid, url=asset["url"], name=asset["name"], kind="portable",
+                                 part=os.path.join(dl, asset["name"] + tag + ".part"),
+                                 total=asset["size"], sha256=asset["sha256"], version=asset["version"],
+                                 target=dest, prompt=True))
+        self.save(); self._wake.set(); self.notify("jobs", aid)
 
     def install_choice(self, aid):
         """(kind, asset) that EX CONNECT would use for a fresh install."""
@@ -955,6 +997,9 @@ class ExConnect:
         except OSError:
             pass
         self.scan(); self.notify("installed", j.app_id)
+        if j.state == "done" and j.kind == "portable" and getattr(j, "prompt", False) and j.target:
+            self.last_portable[j.app_id] = j.target
+            self.notify("portable_ready", j.app_id)
 
     def _install_file(self, j, path):
         app = self.catalog[j.app_id]
