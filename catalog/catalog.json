@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "catalog_version": 82,
+ "catalog_version": 83,
  "featured": [
   "age-of-chics"
  ],
@@ -1513,20 +1513,20 @@
    "latest_url": "https://raw.githubusercontent.com/Teobokki/age-of-chics/main/latest.json",
    "art": {
     "capsule.jpg": {
-     "size": 110660,
-     "sha256": "bfb3e922224749cfbd421f31e3890b14626e097e1442f57fbff710eacb548a6d"
+     "size": 187856,
+     "sha256": "e80a0ff14cc8becbed01f2a8bdc6067f5eecd85d44116801f19168eb9ff633a4"
     },
     "cover.jpg": {
-     "size": 232568,
-     "sha256": "2e660fae4660bcc63a249a0aa3f890543bd98f51ef0786db2ff80536c62f057e"
+     "size": 425715,
+     "sha256": "e73285daff98dec682171749cbf57a64adf02a64cf4b4da2a6e22533d6ac8964"
     },
     "hero.jpg": {
-     "size": 104707,
-     "sha256": "7214c0ac368944f315360cea74d2cc2d289f2a9a51cc86a94babf92374a1603a"
+     "size": 120925,
+     "sha256": "77338c2095c3e1e9684524caee55c4cc456591fd05fd846459ccf3acfbe47ea1"
     },
     "hero_bg.jpg": {
-     "size": 32326,
-     "sha256": "538e92958e0240a17d12ece239a409f1995006b9816bae9966f35ba14b91837c"
+     "size": 15387,
+     "sha256": "50d79f9507a816acfe736af2c7730fed83c3ac91fad5c00fc051dc9e4ac7a34e"
     },
     "icon.png": {
      "size": 84254,
@@ -1675,7 +1675,7 @@
   "EX.CREATOR.STUDIO.Setup.1.5.6.exe": 73160358,
   "EX.CREATOR.STUDIO.Portable.1.5.6.exe": 105760791
  },
- "updated": "2026-11-24T22:37:04Z",
+ "updated": "2026-11-28T18:49:18Z",
  "rows": [
   {
    "id": "GAMES",
